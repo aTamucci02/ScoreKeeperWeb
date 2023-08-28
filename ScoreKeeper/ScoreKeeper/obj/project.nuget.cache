@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "m0c2ar6B/8BKxnNWsRFXf7an1uHyQ5Hr3eYSuRLvwP41+PcexUBnWq9jh4p83e6Ejf2Bu8k9jQx2/yO+sf7IdA==",
+  "dgSpecHash": "NSXQvOEkHAsotdwVSP0d6aKdS6p8bvd0Uww0nN1qDhWJpnlcXsmJDdpQvfUiqRNZmS5J8Z+JLrS8ydvcqsQOKw==",
   "success": true,
-  "projectFilePath": "/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeper.csproj",
+  "projectFilePath": "/Users/atamucci/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/ScoreKeeper.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

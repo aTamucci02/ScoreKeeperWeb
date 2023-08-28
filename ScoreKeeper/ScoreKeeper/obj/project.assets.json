@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeper.csproj",
+      "projectUniqueName": "/Users/atamucci/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/ScoreKeeper.csproj",
       "projectName": "ScoreKeeper",
-      "projectPath": "/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeper.csproj",
+      "projectPath": "/Users/atamucci/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/ScoreKeeper.csproj",
       "packagesPath": "/Users/atamucci/.nuget/packages/",
-      "outputPath": "/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/obj/",
+      "outputPath": "/Users/atamucci/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/atamucci/.nuget/NuGet/NuGet.Config"
