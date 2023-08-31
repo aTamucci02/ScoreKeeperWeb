@@ -1,7 +1,4 @@
 ﻿<Properties StartupConfiguration="{ABFE7544-5794-4DA0-8FCE-929332F96991}|https">
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.ScoreKeeper PreferredExecutionTarget="/Applications/Brave Browser.app" />
   <MonoDevelop.Ide.Workbench ActiveDocument="ScoreKeeper/Pages/Shared/_Layout.cshtml">
     <Files>
       <File FileName="ScoreKeeper/Program.cs" />
@@ -15,8 +12,11 @@
       <File FileName="ScoreKeeper/Pages/Shared/_Layout.cshtml" Line="27" Column="30" />
     </Files>
   </MonoDevelop.Ide.Workbench>
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.ScoreKeeper PreferredExecutionTarget="/Applications/Brave Browser.app" />
 </Properties>
