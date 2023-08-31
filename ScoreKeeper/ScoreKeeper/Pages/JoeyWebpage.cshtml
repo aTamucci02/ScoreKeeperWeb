@@ -1,0 +1,66 @@
+﻿@page
+@model ScoreKeeper.Pages.JoeyWebpageModel
+@{
+    ViewData["Title"] = "Joey's Test Webpage";
+}
+
+<head>
+<style>
+.button {
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.button1 {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+}
+
+.button1:hover {
+  background-color: black;
+  color: white;
+}
+
+</style>
+</head>
+
+
+<h1>@ViewData["Title"]</h1>
+
+<div id="div1">
+    <p>This is a test to see if I can make a webpage   </p>
+</div>
+
+<button class="button button1" onclick="testFunction()">Testing!!</button>
+
+<div id="div2">
+
+</div>
+
+<script>
+    function testFunction() {
+        const testPara = document.createElement("p");
+        const testText = document.createTextNode("The website and button are working as intended.");
+        testPara.appendChild(testText);
+
+        const element = document.getElementById("div2");
+        element.appendChild(testPara);
+
+        setTimeout(fade_out, 2500);
+
+        function fade_out() {
+            testPara.remove();
+        }
+    }
+</script>
+
+
