@@ -1,11 +1,7 @@
 ﻿<Properties StartupConfiguration="{ABFE7544-5794-4DA0-8FCE-929332F96991}|https">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.ScoreKeeper PreferredExecutionTarget="/Applications/Brave Browser.app" />
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.ScoreKeeper PreferredExecutionTarget="/Applications/Brave Browser.app" />
   <MonoDevelop.Ide.Workbench ActiveDocument="ScoreKeeper/Pages/Shared/_Layout.cshtml">
     <Files>
       <File FileName="ScoreKeeper/Program.cs" />
@@ -16,20 +12,11 @@
       <File FileName="ScoreKeeper/Pages/_ViewStart.cshtml" />
       <File FileName="ScoreKeeper/Pages/_ViewImports.cshtml" />
       <File FileName="ScoreKeeper/Pages/Shared/_ValidationScriptsPartial.cshtml" />
-      <File FileName="ScoreKeeper/Pages/Shared/_Layout.cshtml" Line="18" Column="62" />
+      <File FileName="ScoreKeeper/Pages/Shared/_Layout.cshtml" Line="27" Column="30" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="ScoreKeeper" expanded="True" selected="True">
-            <Node name="ScoreKeeper" expanded="True">
-              <Node name="Pages" expanded="True">
-                <Node name="Shared" expanded="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>
