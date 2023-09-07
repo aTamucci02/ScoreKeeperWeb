@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ScoreKeeper.Pages
 {
-    public class JoeyWebpageModel : PageModel
+    public class TestWebpageModel : PageModel
     {
-        private readonly ILogger<JoeyWebpageModel> _logger;
+        private readonly ILogger<TestWebpageModel> _logger;
 
-        public JoeyWebpageModel(ILogger<JoeyWebpageModel> logger)
+        public TestWebpageModel(ILogger<TestWebpageModel> logger)
         {
             _logger = logger;
         }
