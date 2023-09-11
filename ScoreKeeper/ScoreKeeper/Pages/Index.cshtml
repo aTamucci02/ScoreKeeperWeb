@@ -4,8 +4,104 @@
     ViewData["Title"] = "Home page";
 }
 
+<head>
+    <style>
+
+        .top_buttons {
+            text-align: right;
+            margin: 0px auto 0px auto;
+        }
+
+        .button {
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+
+        .button1 {
+            background-color: white;
+            padding: 32px 48px;
+            font-size: 32px;
+            color: black;
+            border: 2px solid black;
+        }
+
+            .button1:hover {
+                background-color: black;
+                color: white;
+            }
+
+        .button2 {
+            background-color: white;
+            padding: 16px 32px;
+            font-size: 16px;
+            color: black;
+            border: 2px solid black;
+        }
+
+            .button2:hover {
+                background-color: black;
+                color: white;
+            }
+
+        .button3 {
+            background-color: white;
+            padding: 12px 24px;
+            font-size: 12px;
+            color: black;
+            border: 2px solid black;
+        }
+
+            .button3:hover {
+                background-color: black;
+                color: white;
+            }
+
+    </style>
+</head>
+
+<!--Top buttons section-->
+<div class="top_buttons">
+    <button class="button button3" onclick="testFunction('Create Game');">Create Game</button>
+    <button class="button button3" onclick="testFunction('Scoreboard');">Scoreboard</button>
+<div/>
+
+<!--Main section with title and main buttons-->
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Title</h1>
+    <br />
+    <br />
+    <br />
+    <br />
+    <button class="button button1" onclick="testFunction('Join Game');">Join Game</button>
+    <br />
+    <button class="button button2" onclick="testFunction('Spectate');">Spectate</button>
 </div>
+
+
+
+<div id="testResult">
+</div>
+
+<script>
+    function testFunction(buttonFunction) {
+        const testPara = document.createElement("p");
+        const testText = document.createTextNode("" + buttonFunction + " working as intended");
+        testPara.appendChild(testText);
+
+        const element = document.getElementById("testResult");
+        element.appendChild(testPara);
+
+        setTimeout(fade_out, 2500);
+
+        function fade_out() {
+            testPara.remove();
+        }
+    }
+</script>
 
