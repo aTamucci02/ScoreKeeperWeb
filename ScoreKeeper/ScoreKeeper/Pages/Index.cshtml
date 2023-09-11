@@ -67,9 +67,11 @@
 
 <!--Top buttons section-->
 <div class="top_buttons">
-    <button class="button button3" onclick="testFunction('Create Game');">Create Game</button>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CreateGameModal">
+        Create Game
+    </button>
     <button class="button button3" onclick="testFunction('Scoreboard');">Scoreboard</button>
-<div/>
+</div>
 
 <!--Main section with title and main buttons-->
 <div class="text-center">
@@ -78,8 +80,11 @@
     <br />
     <br />
     <br />
-    <button class="button button1" onclick="testFunction('Join Game');">Join Game</button>
-    <br />
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#JoinGameModal">
+            Join Game
+        </button>
+        <div />
+        <br />
     <button class="button button2" onclick="testFunction('Spectate');">Spectate</button>
 </div>
 
@@ -87,6 +92,53 @@
 
 <div id="testResult">
 </div>
+
+<!-- Create Game Modal -->
+
+<div class="modal fade" id="CreateGameModal" tabindex="-1" aria-labelledby="CreateGameModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="CreateGameModalLabel">Create Game</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Questions:</label>
+                    <input type="number" class="form-control" id="question_amt">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Join Game Modal -->
+<div class="modal fade" id="JoinGameModal" tabindex="-1" aria-labelledby="JoinGameModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="JoinGameModalLabel">Join Game Lobby</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Game Code:</label>
+                    <input type="text" class="form-control" id="question_amt">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Join</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script>
     function testFunction(buttonFunction) {
@@ -104,4 +156,5 @@
         }
     }
 </script>
+
 
