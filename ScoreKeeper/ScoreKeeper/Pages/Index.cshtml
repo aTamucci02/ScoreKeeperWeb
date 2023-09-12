@@ -19,7 +19,7 @@
             text-decoration: none;
             display: inline-block;
             margin: 4px 2px;
-            transition-duration: 0.4s;
+            transition-duration: 0.3s;
             cursor: pointer;
         }
 
@@ -52,7 +52,7 @@
         .button3 {
             background-color: white;
             padding: 12px 24px;
-            font-size: 12px;
+            font-size: 14px;
             color: black;
             border: 2px solid black;
         }
@@ -67,7 +67,7 @@
 
 <!--Top buttons section-->
 <div class="top_buttons">
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CreateGameModal">
+    <button type="button" class="button button3" data-bs-toggle="modal" data-bs-target="#CreateGameModal">
         Create Game
     </button>
     <button class="button button3" onclick="testFunction('Scoreboard');">Scoreboard</button>
@@ -80,7 +80,7 @@
     <br />
     <br />
     <br />
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#JoinGameModal">
+        <button type="button" class="button button1" data-bs-toggle="modal" data-bs-target="#JoinGameModal">
             Join Game
         </button>
         <div />
@@ -133,7 +133,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Join</button>
+                <button type="button" class="btn btn-primary" onclick="window.location.href='/TestWebpage'">Join</button>
             </div>
         </div>
     </div>
