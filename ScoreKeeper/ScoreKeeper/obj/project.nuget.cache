@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "WVhAvggF7zTIkFGlHBZgJGkkS9iKh8gh0969ywExtTNmqZgiW7nYYWKc6NJ5dOPBfx8MBMxnsipEsYCnBY01cg==",
+  "dgSpecHash": "QjkweQQhVY/NEezqzIoLZY2Oi5BXdDQoOKsqDgvXFrHUTKAqTOZgWxGFINgzMh96SvI7cUalVSWWiewIdSjxqg==",
   "success": true,
-  "projectFilePath": "/Users/wjohnson/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/ScoreKeeper.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/ScoreKeeper.csproj",
+  "expectedPackageFiles": [
+    "/Users/atamucci/.nuget/packages/bootstrap/5.3.1/bootstrap.5.3.1.nupkg.sha512"
+  ],
   "logs": []
 }

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/wjohnson/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/ScoreKeeper.csproj": {}
+    "/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/ScoreKeeper.csproj": {}
   },
   "projects": {
-    "/Users/wjohnson/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/ScoreKeeper.csproj": {
+    "/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/ScoreKeeper.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/wjohnson/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/ScoreKeeper.csproj",
+        "projectUniqueName": "/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/ScoreKeeper.csproj",
         "projectName": "ScoreKeeper",
-        "projectPath": "/Users/wjohnson/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/ScoreKeeper.csproj",
-        "packagesPath": "/Users/wjohnson/.nuget/packages/",
-        "outputPath": "/Users/wjohnson/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/",
+        "projectPath": "/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/ScoreKeeper.csproj",
+        "packagesPath": "/Users/atamucci/.nuget/packages/",
+        "outputPath": "/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/wjohnson/.nuget/NuGet/NuGet.Config"
+          "/Users/atamucci/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
@@ -38,6 +38,12 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
+          "dependencies": {
+            "bootstrap": {
+              "target": "Package",
+              "version": "[5.3.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
