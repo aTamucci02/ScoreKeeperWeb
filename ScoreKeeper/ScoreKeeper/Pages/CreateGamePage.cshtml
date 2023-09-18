@@ -5,26 +5,9 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-<p> </p>
-<!-- Button trigger modal -->
+<p>Assign Points to each question</p>
 
 <div class="form-group">
     <label for="recipient-name" class="col-form-label">Points:</label>
     <input type="text" class="form-control" id="question_points">
 </div>
-<div>
-@Html.RenderPartialAsync("MenuBar");
-</div>
-
-<partial>
-    <Title>
-        Point Input
-    </Title>
-    <label for="recipient-name" class="col-form-label">Points:</label>
-    <input type="text" class="form-control" id="question_points">
-<script>
-    for (int i = 0; i < 5; i++) {
-        
-    }
-</script>
-
