@@ -1,4 +1,9 @@
-﻿<Properties StartupConfiguration="{ABFE7544-5794-4DA0-8FCE-929332F96991}|https">
+﻿<Properties>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workbench ActiveDocument="ScoreKeeper/Pages/Privacy.cshtml">
     <Files>
       <File FileName="ScoreKeeper/Program.cs" />
@@ -8,34 +13,19 @@
       <File FileName="ScoreKeeper/Properties/launchSettings.json" />
       <File FileName="ScoreKeeper/Pages/_ViewStart.cshtml" />
       <File FileName="ScoreKeeper/Pages/Shared/_ValidationScriptsPartial.cshtml" />
-      <File FileName="ScoreKeeper/Pages/Shared/_Layout.cshtml" Line="13" Column="21" />
-      <File FileName="ScoreKeeper/Pages/Index.cshtml" Line="69" Column="2" />
-      <File FileName="ScoreKeeper/Pages/Privacy.cshtml" Line="14" Column="1" />
+      <File FileName="ScoreKeeper/Pages/Shared/_Layout.cshtml" />
+      <File FileName="ScoreKeeper/Pages/Index.cshtml" />
+      <File FileName="ScoreKeeper/Pages/Privacy.cshtml" Line="32" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="ScoreKeeper">
-            <Node name="ScoreKeeper">
-              <Node name="Dependencies" expanded="True">
-                <Node name="FrameworkReferences" expanded="True" />
-                <Node name="PackageDependencies" expanded="True" />
-              </Node>
-              <Node name="Pages">
-                <Node name="Shared" expanded="True" />
-                <Node name="Privacy.cshtml" selected="True" />
-              </Node>
-            </Node>
+            <Node name="ScoreKeeper" selected="True" />
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.ScoreKeeper PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
 </Properties>
