@@ -1,22 +1,56 @@
 ﻿<Properties StartupConfiguration="{ABFE7544-5794-4DA0-8FCE-929332F96991}|https">
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.ScoreKeeper PreferredExecutionTarget="/Applications/Brave Browser.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="ScoreKeeper/Pages/Shared/_Layout.cshtml">
+  <MonoDevelop.Ide.Workbench ActiveDocument="ScoreKeeper/Pages/JudgeWaitingPage.cshtml">
     <Files>
       <File FileName="ScoreKeeper/Program.cs" />
       <File FileName="ScoreKeeper/appsettings.Development.json" />
       <File FileName="ScoreKeeper/wwwroot/js/site.js" />
       <File FileName="ScoreKeeper/wwwroot/css/site.css" />
       <File FileName="ScoreKeeper/Properties/launchSettings.json" />
-      <File FileName="ScoreKeeper/Pages/_ViewStart.cshtml" />
+      <File FileName="ScoreKeeper/Pages/_ViewStart.cshtml" Line="1" Column="1" />
       <File FileName="ScoreKeeper/Pages/_ViewImports.cshtml" />
-      <File FileName="ScoreKeeper/Pages/Shared/_ValidationScriptsPartial.cshtml" />
-      <File FileName="ScoreKeeper/Pages/Shared/_Layout.cshtml" Line="29" Column="112" />
+      <File FileName="ScoreKeeper/Pages/Shared/_ValidationScriptsPartial.cshtml" Line="1" Column="1" />
+      <File FileName="ScoreKeeper/Pages/Shared/_Layout.cshtml.css" Line="1" Column="1" />
+      <File FileName="ScoreKeeper/Pages/Index.cshtml.cs" />
+      <File FileName="ScoreKeeper/Pages/Error.cshtml.cs" />
+      <File FileName="ScoreKeeper/Pages/Privacy.cshtml.cs" />
+      <File FileName="ScoreKeeper/Pages/TestWebpage.cshtml" Line="10" Column="26" />
+      <File FileName="ScoreKeeper/Pages/TestWebpage.cshtml.cs" />
+      <File FileName="ScoreKeeper/Pages/JudgeWaitingPage.cshtml" Line="2" Column="47" />
+      <File FileName="ScoreKeeper/Pages/JudgeWaitingPage.cshtml.cs" />
+      <File FileName="ScoreKeeper/Pages/Shared/_Layout.cshtml" Line="37" Column="15" />
+      <File FileName="ScoreKeeper/Pages/Error.cshtml" Line="1" Column="1" />
+      <File FileName="ScoreKeeper/Pages/Index.cshtml" Line="1" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="ScoreKeeper" expanded="True">
+            <Node name="ScoreKeeper" expanded="True">
+              <Node name="Dependencies" expanded="True">
+                <Node name="FrameworkReferences" expanded="True" />
+              </Node>
+              <Node name="Pages" expanded="True">
+                <Node name="Shared" expanded="True">
+                  <Node name="_Layout.cshtml" expanded="True" />
+                </Node>
+                <Node name="JudgeWaitingPage.cshtml" expanded="True" selected="True" />
+              </Node>
+              <Node name="Properties" expanded="True" />
+              <Node name="wwwroot" expanded="True">
+                <Node name="lib" expanded="True" />
+              </Node>
+              <Node name="appsettings.json" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.ScoreKeeper PreferredExecutionTarget="/Applications/Brave Browser.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
