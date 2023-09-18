@@ -16,6 +16,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = /Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper
 build_property._RazorSourceGeneratorDebug = 
 
+[/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/CreateGamePage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ3JlYXRlR2FtZVBhZ2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -26,6 +30,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUHJpdmFjeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/Shared/MenuBar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2hhcmVkL01lbnVCYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/Shared/_ValidationScriptsPartial.cshtml]
