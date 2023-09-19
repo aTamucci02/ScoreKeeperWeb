@@ -9,45 +9,45 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ScoreKeeper
 build_property.RootNamespace = ScoreKeeper
-build_property.ProjectDir = /Users/wjohnson/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/
+build_property.ProjectDir = /Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/
 build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /Users/wjohnson/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper
+build_property.MSBuildProjectDirectory = /Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper
 build_property._RazorSourceGeneratorDebug = 
 
-[/Users/wjohnson/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/Error.cshtml]
+[/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/wjohnson/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/Index.cshtml]
+[/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/wjohnson/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/JudgeWaitingPage.cshtml]
+[/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/JudgeWaitingPage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSnVkZ2VXYWl0aW5nUGFnZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/wjohnson/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/Privacy.cshtml]
+[/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/wjohnson/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/Shared/_ValidationScriptsPartial.cshtml]
+[/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/wjohnson/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/TestWebpage.cshtml]
+[/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/TestWebpage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvVGVzdFdlYnBhZ2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/wjohnson/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/_ViewImports.cshtml]
+[/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/wjohnson/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/_ViewStart.cshtml]
+[/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/wjohnson/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/Shared/_Layout.cshtml]
+[/Users/atamucci/Projects/Misc/ScoreKeeper/ScoreKeeper/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/Pages/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2hhcmVkL19MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-20a5ehb973
