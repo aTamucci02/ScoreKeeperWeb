@@ -5,31 +5,7 @@
 }
 
 <head>
-    <style>
-        .button {
-            border: none;
-            color: white;
-            padding: 16px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            transition-duration: 0.4s;
-            cursor: pointer;
-        }
-
-        .button1 {
-            background-color: white;
-            color: black;
-            border: 2px solid black;
-        }
-
-            .button1:hover {
-                background-color: green;
-                color: white;
-            }
-    </style>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 
 <h1>@ViewData["Title"]</h1>
@@ -38,13 +14,13 @@
     <p>Welcome, Judge. Please wait for the next question.</p>
 </div>
 
-<button class="button button1" onclick="testFunction()">Leaderboard</button>
+<button class="button buttonmed" onclick="testFunction()">Leaderboard</button>
 
 <div id="div2">
 
 </div>
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<button type="button" class="button buttonmed" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Modal button test
 </button>
 
@@ -66,7 +42,7 @@
 
 </div>
 
-<button type="button" onclick="window.location.href='/Index'" class=" btn btn-primary">Back to Home</button>
+<button type="button" onclick="window.location.href='/Index'" class=" button buttonmed">Back to Home</button>
 
 <script>function testFunction() {
         const testPara = document.createElement("p");
