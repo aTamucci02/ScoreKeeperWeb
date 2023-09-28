@@ -1,14 +1,14 @@
 ﻿@page
 @model IndexModel
 @{
-    
+
 }
 
 <head>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <style>
 
-        
+
         .header {
             background-color: #74C5E5;
             margin-left: calc(50% - 50vw);
@@ -16,7 +16,7 @@
             width: 100vw;
         }
 
-        .header-container{
+        .header-container {
             width: 90vw;
             margin-left: calc(50% - 45vw);
             display: flex;
@@ -31,26 +31,26 @@
             background-color: #102F3B;
             width: 100vw;
             margin-left: calc(50% - 50vw);
-
-        }
-        .main-window .content-container{
-            display: contents;
-        }
-        .main-window .header{
-            flex: 0 1 auto;
-        }
-        .main-window .button-container{
-            flex: 1 1 auto;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
         }
 
-        
+            .main-window .content-container {
+                display: contents;
+            }
+
+            .main-window .header {
+                flex: 0 1 auto;
+            }
+
+            .main-window .button-container {
+                flex: 1 1 auto;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+            }
     </style>
 </head>
-   
-    
+
+
 <!--Main section with title and main buttons-->
 <div class="main-window">
     <div class="content-container">
@@ -180,11 +180,7 @@
 </div>
 
 
-
-
-
-<script>
-    function testFunction(buttonFunction) {
+<script>function testFunction(buttonFunction) {
         const testPara = document.createElement("p");
         const testText = document.createTextNode("" + buttonFunction + " working as intended");
         testPara.appendChild(testText);
@@ -197,7 +193,6 @@
         function fade_out() {
             testPara.remove();
         }
-    }
-</script>
+    }</script>
 
 
