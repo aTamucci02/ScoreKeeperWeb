@@ -3,46 +3,81 @@
 @{
     ViewData["Title"] = "Judge Waiting Page";
 }
-
 <head>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+
+
+        .header {
+            background-color: #74C5E5;
+            margin-left: calc(50% - 50vw);
+            margin-top: 0;
+            width: 100vw;
+        }
+
+        .header-container {
+            width: 90vw;
+            margin-left: calc(50% - 45vw);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .main-window {
+            display: flex;
+            flex-flow: column;
+            height: 100vh;
+            background-color: #102F3B;
+            width: 100vw;
+            margin-left: calc(50% - 50vw);
+        }
+
+            .main-window .content-container {
+                display: contents;
+            }
+
+            .main-window .header {
+                flex: 0 1 auto;
+            }
+
+            .main-window .button-container {
+                flex: 1 1 auto;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+            }
+    </style>
 </head>
 
-<h1>@ViewData["Title"]</h1>
 
-<div id="div1">
-    <p>Welcome, Judge. Please wait for the next question.</p>
-</div>
+<!--Main section with title and main buttons-->
+<div class="main-window">
+    <div class="content-container">
 
-<button class="button buttonmed" onclick="testFunction()">Leaderboard</button>
-
-<div id="div2">
-
-</div>
-
-<button type="button" class="button buttonmed" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Modal button test
-</button>
-
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Will modal test</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Modal test. Just copying Davis lol
+        <!--Top buttons section-->
+        <div class="header">
+            <div class="header-container">
+                <div>
+                    <button type="button" onclick="window.location.href='/Index'" class="button buttonmed" data-bs-toggle="modal" data-bs-target="#HomeModal">
+                        Home
+                    </button>
+                </div>
+                <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
             </div>
         </div>
     </div>
 </div>
 
-<div id="div3">
-
+<div id="div1" style=" text-align: center; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: white; font-weight: bold;">
+    <p>
+        You’ve joined the game. There are x teams in this lobby.
+    </p>
+    <p>
+        The game will start when the game administrator is ready to begin.
+    </p>
 </div>
 
-<button type="button" onclick="window.location.href='/Index'" class=" button buttonmed">Back to Home</button>
+
 
 <script>function testFunction() {
         const testPara = document.createElement("p");
