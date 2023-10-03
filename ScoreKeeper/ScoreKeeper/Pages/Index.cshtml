@@ -14,6 +14,7 @@
             margin-left: calc(50% - 50vw);
             margin-top: 0;
             width: 100vw;
+            flex: 0 1 auto;
         }
 
         .header-container {
@@ -27,33 +28,32 @@
         .main-window {
             display: flex;
             flex-flow: column;
-            height: 100%;
-            background-color: #102F3B;
+            height: 100vh;    
             width: 100vw;
             margin-left: calc(50% - 50vw);
+            overflow: hidden;
         }
 
-            .main-window .content-container {
-                display: contents;
-            }
+        
 
-            .main-window .header {
-                flex: 0 1 auto;
-            }
+        .content-container {
+            display: contents;
+        }
 
-            .main-window .button-container {
-                flex: 1 1 auto;
-                display: flex;
-                justify-content: space-around;
-                align-items: center;
-            }
+
+        .button-container {
+            flex: 1 1 auto;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: #102F3B;
+        }
     </style>
 </head>
 
 
 <!--Main section with title and main buttons-->
 <div class="main-window">
-    <div class="content-container">
 
         <!--Top buttons section-->
         <div class="header">
@@ -86,7 +86,6 @@
             </button>
 
         </div>
-    </div>
 </div>
 
 
