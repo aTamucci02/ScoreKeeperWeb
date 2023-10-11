@@ -31,7 +31,7 @@ body {
 
 .button {
     border: none;
-    color: lightgray;
+    background-color: lightgray;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -39,20 +39,18 @@ body {
     transition-duration: 0.4s;
     cursor: pointer;
 }
+.button:hover {
+    background-color: black;
+    color: lightgray;
+}
 
 .buttonbig {
-    background-color: lightgray;
     padding: 32px 48px;
     font-size: 32px;
     color: black;
     border: 2px solid black;
     border-radius: 16px;
 }
-
-    .buttonbig:hover {
-        background-color: black;
-        color: lightgray;
-    }
 
 .buttonmed {
     background-color: lightgray;
@@ -63,11 +61,6 @@ body {
     border-radius: 8px;
 }
 
-    .buttonmed:hover {
-        background-color: black;
-        color: lightgray;
-    }
-
 .buttonsmall {
     background-color: lightgray;
     padding: 12px 24px;
@@ -76,11 +69,6 @@ body {
     border: 2px solid black;
     border-radius: 6px;
 }
-
-    .buttonsmall:hover {
-        background-color: black;
-        color: lightgray;
-    }
 
 .header {
     background-color: #74C5E5;
