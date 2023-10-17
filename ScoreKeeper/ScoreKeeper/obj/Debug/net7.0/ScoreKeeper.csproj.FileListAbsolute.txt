@@ -89,33 +89,34 @@ C:/Users/12055/source/repos/aTamucci02/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/ob
 /Users/wjohnson/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/ScoreKeeper.pdb
 /Users/wjohnson/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/ScoreKeeper.genruntimeconfig.cache
 /Users/wjohnson/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/ref/ScoreKeeper.dll
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\bin\Debug\net7.0\appsettings.Development.json
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\bin\Debug\net7.0\appsettings.json
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\bin\Debug\net7.0\ScoreKeeper.staticwebassets.runtime.json
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\bin\Debug\net7.0\ScoreKeeper.exe
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\bin\Debug\net7.0\ScoreKeeper.deps.json
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\bin\Debug\net7.0\ScoreKeeper.runtimeconfig.json
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\bin\Debug\net7.0\ScoreKeeper.dll
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\bin\Debug\net7.0\ScoreKeeper.pdb
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\ScoreKeeper.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\ScoreKeeper.AssemblyInfoInputs.cache
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\ScoreKeeper.AssemblyInfo.cs
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\ScoreKeeper.csproj.CoreCompileInputs.cache
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\ScoreKeeper.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\ScoreKeeper.RazorAssemblyInfo.cache
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\ScoreKeeper.RazorAssemblyInfo.cs
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\staticwebassets\msbuild.ScoreKeeper.Microsoft.AspNetCore.StaticWebAssets.props
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\staticwebassets\msbuild.build.ScoreKeeper.props
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.ScoreKeeper.props
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.ScoreKeeper.props
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\staticwebassets.pack.json
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\staticwebassets.build.json
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\staticwebassets.development.json
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\scopedcss\bundle\ScoreKeeper.styles.css
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\scopedcss\projectbundle\ScoreKeeper.bundle.scp.css
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\ScoreKeeper.dll
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\refint\ScoreKeeper.dll
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\ScoreKeeper.pdb
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\ScoreKeeper.genruntimeconfig.cache
-C:\Users\Joey Tarnowski\Source\Repos\aTamucci02\ScoreKeeperWeb\ScoreKeeper\ScoreKeeper\obj\Debug\net7.0\ref\ScoreKeeper.dll
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/bin/Debug/net7.0/appsettings.Development.json
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/bin/Debug/net7.0/appsettings.json
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/bin/Debug/net7.0/ScoreKeeper.staticwebassets.runtime.json
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/bin/Debug/net7.0/ScoreKeeper
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/bin/Debug/net7.0/ScoreKeeper.deps.json
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/bin/Debug/net7.0/ScoreKeeper.runtimeconfig.json
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/bin/Debug/net7.0/ScoreKeeper.dll
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/bin/Debug/net7.0/ScoreKeeper.pdb
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/ScoreKeeper.csproj.AssemblyReference.cache
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/ScoreKeeper.GeneratedMSBuildEditorConfig.editorconfig
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/ScoreKeeper.AssemblyInfoInputs.cache
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/ScoreKeeper.AssemblyInfo.cs
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/ScoreKeeper.csproj.CoreCompileInputs.cache
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/ScoreKeeper.MvcApplicationPartsAssemblyInfo.cache
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/ScoreKeeper.RazorAssemblyInfo.cache
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/ScoreKeeper.RazorAssemblyInfo.cs
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/staticwebassets/msbuild.ScoreKeeper.Microsoft.AspNetCore.StaticWebAssets.props
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/staticwebassets/msbuild.build.ScoreKeeper.props
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/staticwebassets/msbuild.buildMultiTargeting.ScoreKeeper.props
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/staticwebassets/msbuild.buildTransitive.ScoreKeeper.props
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/staticwebassets.pack.json
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/staticwebassets.build.json
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/staticwebassets.development.json
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/scopedcss/Pages/Shared/_Layout.cshtml.rz.scp.css
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/scopedcss/bundle/ScoreKeeper.styles.css
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/scopedcss/projectbundle/ScoreKeeper.bundle.scp.css
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/ScoreKeeper.dll
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/refint/ScoreKeeper.dll
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/ScoreKeeper.pdb
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/ScoreKeeper.genruntimeconfig.cache
+/Users/davisgraham/Projects/ScoreKeeperWeb/ScoreKeeper/ScoreKeeper/obj/Debug/net7.0/ref/ScoreKeeper.dll
