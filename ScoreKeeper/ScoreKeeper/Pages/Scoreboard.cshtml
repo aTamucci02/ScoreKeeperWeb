@@ -1,0 +1,36 @@
+﻿@page
+@model ScoreKeeper.Pages.ScoreboardModel
+@{
+    ViewData["Title"] = "Scoreboard Page";
+}
+<head>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+
+
+        .main-window {
+            background-color: #102F3B;
+        }
+    </style>
+</head>
+
+<!--Main section with title and main buttons-->
+<div class="main-window">
+
+    <!--Top buttons section-->
+    <div class="header">
+        <div class="header-container">
+            <div>
+                <button type="button" class="button buttonmed" data-bs-toggle="modal" data-bs-target="#HomeButtonModal">
+                    Home
+                </button>
+            </div>
+            <h1 class="display-4">Game Over!</h1>
+            <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
+        </div>
+    </div>
+</div>
+
+<div id="div1" style=" text-align: center; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: white; font-weight: bold;">
+    
+</div>
