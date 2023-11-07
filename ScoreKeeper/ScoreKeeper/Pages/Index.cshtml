@@ -1,7 +1,7 @@
 ﻿@page
 @model IndexModel
 @{
-
+    ViewData["Title"] = "Home";
 }
 
 <head>
@@ -127,8 +127,8 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="recipient-name" class="col-form-label">Game Code:</label>
-                    <input type="text" class="form-control" id="question_amt">
+                    <label for="recipient-name" class="col-form-label">Scoreboard Code:</label>
+                    <input type="text" class="form-control" id="scoreboardcode" placeholder="Scoreboard Code">
                 </div>
                 <div class="col-sm-4" id="incorrect-gamecode">
                     <small id="gamecodeHelp" class="text-danger">
@@ -137,7 +137,11 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" onclick="window.location.href='/Scoreboard'" class=" btn btn-primary">View Scoreboard</button>
+                <button type="button" onclick="testScoreboardCode();" class=" btn btn-primary">View Scoreboard</button>
+            </div>
+            <div class="col-sm-3" id="incorrect-gamecode">
+                <small id="gamecodeHelp" class="text-danger">
+                </small>
             </div>
         </div>
     </div>
@@ -147,11 +151,11 @@
 <script>
     function testPasscode() {
         var passcode = $("#JoinGameModal #passcode").val().trim();
-        console.log(passcode);
+        var isLoaded = false;
 
         $.ajax({
-            url: "https://csdev.samford.edu/gamesapi/list.php",
-            type: 'POST',
+            url: "https://csdev.samford.edu/gamesapi/games/list",
+            type: 'GET',
             dataType: 'json',
             data: {},
             crossDomain: true,
@@ -174,6 +178,41 @@
             },
             error: function (xhr, status, error) {
                 
+                console.log("Error: " + error.message);
+            }
+        });
+    }
+
+    // Once we get the gamecodes working correctly, we need to 
+    function testScoreboardCode(){
+        var scorecode = $("#ScoreboardModal #scoreboardcode").val().trim();
+        var isLoaded = false;
+
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/list",
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                $("#rawdata").html(JSON.stringify(response));
+                var games = response;
+                games.forEach(function (item) {
+                    if (item.gamecode === scorecode) {
+                        window.location.assign("/Scoreboard?gamecode=" + scorecode);
+                        isLoaded = true;
+                        // We'll want to put something here that stores the judge and what game they're assigned to
+                    }
+                });
+                // Changes class of input box to indicate passcode is incorrect
+                if (!isLoaded) {
+                    $("#ScoreboardModal #scoreboardcode").removeClass('form-control');
+                    $("#ScoreboardModal #scoreboardcode").addClass('form-control is-invalid');
+                    document.getElementById("gamecodeHelp").textContent = 'Game code is incorrect';
+                }
+            },
+            error: function (xhr, status, error) {
+
                 console.log("Error: " + error.message);
             }
         });
