@@ -47,42 +47,48 @@
                 align-items: center;
             }
     </style>
-
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
 
 </head>
 
-<!--Main section with title and main buttons-->
-<div class="main-window">
-    <div class="content-container">
 
-        <!--Top buttons section-->
-        <div class="header">
-            <div class="header-container">
-                <div>
-                    <button type="button" class="button buttonmed" data-bs-toggle="modal" data-bs-target="#HomeButtonModal">
-                        Home
-                    </button>
+<body onload="getGameData();">
+
+    <!--Main section with title and main buttons-->
+    <div class="main-window">
+        <div class="content-container">
+
+            <!--Top buttons section-->
+            <div class="header">
+                <div class="header-container">
+                    <div>
+                        <button type="button" class="button buttonmed" data-bs-toggle="modal" data-bs-target="#HomeButtonModal">
+                            Home
+                        </button>
+                    </div>
+                    <h1 class="display-4" id="page-title"></h1>
+                    <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
                 </div>
-                <h1 class="display-4">Teams joined: x</h1>
-                <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
             </div>
         </div>
     </div>
-</div>
 
-<div id="div1" style=" text-align: left; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: white; font-weight: bold;">
-    <h1>@ViewData["Title"]</h1>
+    <div id="div1" style=" text-align: left; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: white; font-weight: bold;">
+        
 
-    <p>Remove From Game Button?</p>
+        <p>Remove From Game Button?</p>
 
-    <p>Scrollable List of Teams Here</p>
+        <p>Scrollable List of Teams Here</p>
 
-</div>
+    </div>
 
 
-<button type="button" class="button buttonmed" style="position: absolute; bottom: 10px; right: 10px;" data-bs-toggle="modal" data-bs-target="#StartGameModal">
-    Start Game
-</button>
+    <button type="button" class="button buttonmed" style="position: absolute; bottom: 10px; right: 10px;" data-bs-toggle="modal" data-bs-target="#StartGameModal">
+        Start Game
+    </button>
+</body>
 
 
 <!-- Home Button Modal -->
@@ -116,3 +122,34 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Sets the title of the page
+    function getGameData() {
+        const searchParams = new URLSearchParams(window.location.search);
+        var gamecode = searchParams.get('gamecode');
+
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/list",
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                JSON.stringify(response);
+                var games = response;
+                games.forEach(function (item) {
+                    if (item.gamecode === gamecode) {
+                        console.log(item);
+                        document.getElementById('page-title').textContent = item.title;
+                    }
+                });
+
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
+    }
+</script>
