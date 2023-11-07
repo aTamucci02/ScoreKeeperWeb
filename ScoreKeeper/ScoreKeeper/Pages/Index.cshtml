@@ -6,7 +6,9 @@
 
 <head>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" 
+            crossorigin="anonymous"></script>
 </head>
 
 
@@ -80,13 +82,17 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="recipient-name" class="col-form-label">Game Code:</label>
-                    <input type="text" class="form-control" id="question_amt">
+                    <label for="game-passcode" class="col-form-label">Game Code:</label>
+                    <input type="text" class="form-control" id="passcode" placeholder="Game Code">
+                </div>
+                <div class="col-sm-4">
+                    <small id="passcodeHelp" class="text-danger">
+                    </small>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" onclick="window.location.href='/JudgeWaitingPage'" class=" btn btn-primary">Join</button>
+                <button type="button" onclick="testPasscode();" class=" btn btn-primary">Join</button>
             </div>
         </div>
     </div>
@@ -103,7 +109,11 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Game Code:</label>
-                    <input type="text" class="form-control" id="question_amt">
+                    <input type="text" class="form-control" id="gamecode" placeholder="Game Code">
+                </div>
+                <div class="col-sm-3" id="incorrect-gamecode">
+                    <small id="gamecodeHelp" class="text-danger">
+                    </small>
                 </div>
             </div>
             <div class="modal-footer">
@@ -137,19 +147,37 @@
 </div>
 
 
-<script>function testFunction(buttonFunction) {
-        const testPara = document.createElement("p");
-        const testText = document.createTextNode("" + buttonFunction + " working as intended");
-        testPara.appendChild(testText);
+<script>
+    function testPasscode() {
+        var passcode = $("#JoinGameModal #passcode").val().trim();
+        console.log(passcode);
 
-        const element = document.getElementById("testResult");
-        element.appendChild(testPara);
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/list.php",
+            type: 'POST',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                $("#rawdata").html(JSON.stringify(response));
+                var games = response;
+                games.forEach(function (item) {
+                    if (item.passcode === passcode) {
+                        window.location.assign("/JudgeWaitingPage");
+                        // We'll want to put something here that stores the judge and what game they're assigned to
+                    }
+                });
+                $("#JoinGameModal #passcode").removeClass('form-control');
+                $("#JoinGameModal #passcode").addClass('form-control is-invalid');
+                document.getElementById("passcodeHelp").textContent = 'Game code is incorrect';
+            },
+            error: function (xhr, status, error) {
+                
+                console.log("Error: " + error.message);
+            }
+        });
+    }
 
-        setTimeout(fade_out, 2500);
-
-        function fade_out() {
-            testPara.remove();
-        }
-    }</script>
+</script>
 
 
