@@ -45,7 +45,7 @@
         var gamecode = searchParams.get('gamecode');
 
         $.ajax({
-            url: "https://csdev.samford.edu/gamesapi/list.php",
+            url: "https://csdev.samford.edu/gamesapi/games/list",
             type: 'GET',
             dataType: 'json',
             data: {},
@@ -54,7 +54,8 @@
                 $("#rawdata").html(JSON.stringify(response));
                 var games = response;
                 games.forEach(function (item) {
-                    if (item.passcode === gamecode) {
+                    if (item.gamecode === gamecode) {
+                        console.log(item);
                         document.getElementById('headerTitle').textContent = item.title;
                     }
                 });
