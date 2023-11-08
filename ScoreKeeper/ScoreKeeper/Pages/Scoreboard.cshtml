@@ -28,7 +28,7 @@
             crossorigin="anonymous"></script>
 </head>
 
-<body onload="getGameData();">
+<body onload="getGameData(); displayLeaderboard();">
     <!--Main section with title and main buttons-->
     <div class="main-window">
 
@@ -51,21 +51,6 @@
                 <th>Score</th>
             </tr>
             <tbody id="scoreboardContent">
-                <tr>
-                    <td>1</td>
-                    <td>Samford</td>
-                    <td>1000</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Michigan</td>
-                    <td>500</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Northwestern</td>
-                    <td>250</td>
-                </tr>
             </tbody>
         </table>
     </div>
@@ -132,7 +117,7 @@
     // Creates and sorts the leaderboard
 
     function displayLeaderboard() {
-        let scoreExport = "";
+        var scoreExport = '';
         var rank = 1;
         const searchParams = new URLSearchParams(window.location.search);
         var gamecode = searchParams.get('gamecode');
@@ -147,9 +132,11 @@
             success: function (response) {
                 JSON.stringify(response);
                 var games = response;
+                console.log(response);
                 games.forEach(function (item) {
                     if (item.gamecode === gamecode) {
                         teams = item.teams;
+                        console.log(item.teams);
                     }
                 });
                 
@@ -157,16 +144,16 @@
                 teams.forEach(function (team) {
                     scoreExport += '<tr><td>' + rank + '</td><td>' + team.teamname + '</td><td>' + team.score + '</td></tr>';
                     rank += 1;
+                    console.log(scoreExport);
                 });
-
+                document.getElementById("scoreboardContent").innerHTML = scoreExport; 
             },
             error: function (xhr, status, error) {
 
                 console.log("Error: " + error.message);
             }
         });
-
-        document.getElementById("scoreboardContent").innerHTML = scoreExport; 
+        
     }
 
 </script>
