@@ -1,17 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\.github",
-    "\\.github\\workflows",
-    "\\ScoreKeeper",
-    "\\ScoreKeeper\\ScoreKeeper",
-    "\\ScoreKeeper\\ScoreKeeper\\bin",
-    "\\ScoreKeeper\\ScoreKeeper\\obj",
-    "\\ScoreKeeper\\ScoreKeeper\\Pages",
-    "\\ScoreKeeper\\ScoreKeeper\\Pages\\Shared",
-    "\\ScoreKeeper\\ScoreKeeper\\Properties",
-    "\\ScoreKeeper\\ScoreKeeper\\wwwroot"
+    ""
   ],
-  "SelectedNode": "\\ScoreKeeper\\ScoreKeeper.sln",
+  "SelectedNode": "\\ScoreKeeper.sln",
   "PreviewInSolutionExplorer": false
 }

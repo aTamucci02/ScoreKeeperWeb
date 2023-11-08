@@ -22,6 +22,9 @@
                     <button type="button" class="button buttonsmall" data-bs-toggle="modal" data-bs-target="#CreateGameModal">
                         Create Game
                     </button>
+                <button type="button" class="button buttonsmall" data-bs-toggle="modal" data-bs-target="#StartGameModal">
+                    Start Game
+                </button>
                 </div>
 
                 <h1 class="display-4">Home Page</h1>
@@ -89,6 +92,33 @@
         </div>
     </div>
 </div>
+
+<!-- Start Game Modal -->
+<div class="modal fade" id="StartGameModal" tabindex="-1" aria-labelledby="StartGameModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="StartGameModalLabel">Start Game Lobby</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="game-passcode" class="col-form-label">Game Name:</label>
+                    <input type="text" class="form-control" id="gameName" placeholder="Game Name">
+                </div>
+                <div class="col-sm-4">
+                    <small id="gameNameHelp" class="text-danger">
+                    </small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" onclick="StartGame();" class=" btn btn-primary">Start</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- Join Game Modal -->
 <div class="modal fade" id="JoinGameModal" tabindex="-1" aria-labelledby="JoinGameModalLabel" aria-hidden="true">
@@ -306,6 +336,43 @@
                 document.getElementById("createScoreCodeHelp").textContent = '';
             }
         }
+    }
+
+    // Start an Existing Game. Will just bring the admin to the waiting page and skip the point assignment
+    function StartGame() {
+        var gameName = $("#StartGameModal #gameName").val().trim();
+        var isLoaded = false;
+
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/list",
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                console.log(response);
+                JSON.stringify(response);
+                var games = response;
+                games.forEach(function (item) {
+                    console.log(item);
+                    if (item.title === gameName) {
+                        window.location.assign("/AdminWaiting?gamecode=" + item.title);
+                        isLoaded = true;
+                        // We'll want to put something here that stores the judge and what game they're assigned to
+                    }
+                });
+                // Changes class of input box to indicate passcode is incorrect
+                if (!isLoaded) {
+                    $("#StartGameModal #gameName").removeClass('form-control');
+                    $("#StartGameModal #gameName").addClass('form-control is-invalid');
+                    document.getElementById("gameName").textContent = 'Game name is incorrect';
+                }
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
     }
 
 </script>
