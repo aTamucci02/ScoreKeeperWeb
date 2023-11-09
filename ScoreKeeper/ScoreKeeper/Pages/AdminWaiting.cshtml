@@ -75,14 +75,27 @@
         </div>
     </div>
 
-    <div id="div1" style=" text-align: left; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: white; font-weight: bold;">
+    <style>
+    div.scroll {
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 20px;
+    text-align: left;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+     color: white;
+    font-weight: bold;
+    }
+    </style>
+
+    <h2>  test  </h2>
+
+    <div class ="scroll" id="div1" >
         
-
-        <p>Remove From Game Button?</p>
-
-        <p>Scrollable List of Teams Here</p>
-
     </div>
+
 
 
     <button type="button" class="button buttonmed" style="position: absolute; bottom: 10px; right: 10px;" data-bs-toggle="modal" data-bs-target="#StartGameModal">
@@ -127,7 +140,7 @@
     // Sets the title of the page
     function getGameData() {
         const searchParams = new URLSearchParams(window.location.search);
-        var gamecode = searchParams.get('gamecode');
+        var title = searchParams.get('gamecode');
 
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/games/list",
@@ -139,9 +152,9 @@
                 JSON.stringify(response);
                 var games = response;
                 games.forEach(function (item) {
-                    if (item.gamecode === gamecode) {
-                        console.log(item);
+                    if (item.title === title) {
                         document.getElementById('page-title').textContent = item.title;
+                        loadTeams(item.id);
                     }
                 });
 
@@ -151,5 +164,38 @@
                 console.log("Error: " + error.message);
             }
         });
+    }
+    function loadTeams(gameID) {
+        const searchParams = new URLSearchParams(window.location.search);
+        var title = searchParams.get('gamecode');
+
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/teams/list",
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                JSON.stringify(response);
+                var teams = response;
+                var teamList = "";
+                var teamNum = 1;
+                teams.forEach(function (item) {
+                    if (item.game_id === gameID) {
+                        teamList += ""+ teamNum+ ". "+ item.teamname + "      ";
+                        teamNum++;
+                    }
+
+                });
+                console.log(teamList);
+                document.getElementById('div1').textContent = teamList;
+
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
+
     }
 </script>
