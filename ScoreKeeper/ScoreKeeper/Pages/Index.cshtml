@@ -354,9 +354,10 @@
                 JSON.stringify(response);
                 var games = response;
                 games.forEach(function (item) {
-                    console.log(item);
+                    // console.log(item);
                     if (item.title === gameName) {
-                        window.location.assign("/AdminWaiting?gamecode=" + item.title);
+                        console.log(item.id)
+                        window.location.assign("/AdminWaiting?gamecode=" + item.title +"&id=" + item.id);
                         isLoaded = true;
                         // We'll want to put something here that stores the judge and what game they're assigned to
                     }

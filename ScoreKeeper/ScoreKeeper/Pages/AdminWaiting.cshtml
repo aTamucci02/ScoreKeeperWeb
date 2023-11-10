@@ -128,7 +128,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" onclick="window.location.href='/AdminActiveQ'" class=" btn btn-primary">Confirm</button>
+                <button type="button" onclick="startGame()" class=" btn btn-primary">Confirm</button>
             </div>
         </div>
     </div>
@@ -180,17 +180,75 @@
                 var teamNum = 1;
                 teams.forEach(function (item) {
                     if (item.game_id === gameID) {
-                        teamList += ""+ teamNum+ ". "+ item.teamname + "      ";
+                        teamList += ""+ teamNum+ ". "+ item.teamname + "      \n";
                         teamNum++;
                     }
 
                 });
-                console.log(teamList);
+                // console.log(teamList);
                 document.getElementById('div1').textContent = teamList;
 
             },
             error: function (xhr, status, error) {
 
+                console.log("Error: " + error.message);
+            }
+        });
+
+    }
+    function startGame(){
+        const searchParams = new URLSearchParams(window.location.search);
+        var id = searchParams.get('id');
+        console.log(id);
+
+        var url =window.location.href;
+        console.log(url);
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/edit/1",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                "description": "Q1",
+            },
+            crossDomain: true,
+            success: function (response) {
+                window.location.assign("/AdminActiveQ?id=" + id + "Q1");
+
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
+
+    }
+    function getGame(){
+        const searchParams = new URLSearchParams(window.location.search);
+        var title = searchParams.get('gamecode');
+        var game;
+
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/list",
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                JSON.stringify(response);
+                var games = response;
+                games.forEach(function (item) {
+                    if (title == item.title){
+                        game = item;
+                        return game;
+                    }
+                        
+                });
+                return game;
+                
+
+            },
+            error: function (xhr, status, error) {
+                return "1";
                 console.log("Error: " + error.message);
             }
         });
