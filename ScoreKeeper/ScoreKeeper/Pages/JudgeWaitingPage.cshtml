@@ -47,11 +47,6 @@
     </div>
 
 
-    <!-- Judge Submission Page Button -->
-    <button type="button" class="button buttonmed" style="position: absolute; bottom: 10px; right: 200px;" onclick="window.location.href='/JudgeSubmission'">
-        Judge Submission
-    </button>
-
 </body>
 
 <!-- Home Button Modal -->
@@ -114,8 +109,7 @@
         const searchParams = new URLSearchParams(window.location.search);
         var gamecode = searchParams.get('gamecode');
         var teamname = searchParams.get('teamname');
-        var id = searchParams.get('gameid');
-        var gameid;
+        var gameid = searchParams.get('gameid');
         // Check the url to see if the judge is assigned a team. If not, it prompts the judge to enter a team
         if (teamname == null) {
             $.ajax({
@@ -130,7 +124,6 @@
                     games.forEach(function (item) {
                         if (item.gamecode === gamecode) {
                             console.log(item);
-                            gameid = item.id;
                             document.getElementById('headerTitle').textContent = item.title;
                             document.getElementById('team-total').textContent = "You’ve joined the game. There are " + item.teams.length + " teams in this lobby.";
                             enterTeamNameModal();
@@ -146,46 +139,45 @@
 
 
         }else{
-            setInterval(updatePageInfo(id, teamname), 5000);
+            updatePageInfo();
+            setInterval(updatePageInfo, 5000);
         }
 
-        
-
-    }
-
-    function updatePageInfo(gameid, teamname){
-        console.log("Attempting to update page info. gameid: " + gameid + " teamname: " + teamname);
-        $.ajax({
-            url: "https://csdev.samford.edu/gamesapi/games/list",
-            type: 'GET',
-            dataType: 'json',
-            data: {},
-            crossDomain: true,
-            success: function (response) {
-                JSON.stringify(response);
-                console.log(response);
-                var games = response;
-                games.forEach(function (item) {
-                    if (item.id === parseInt(gameid)) {
-                        console.log(item);
-                        document.getElementById('headerTitle').textContent = item.title;
-                        document.getElementById('judging-id').textContent = "You are currently judging: " + teamname;
-                        document.getElementById('team-total').textContent = "You’ve joined the game. There are " + item.teams.length + " teams in this lobby.";
-                        if (item.description == "Q1") {
-                            window.location.assign("/JudgeSubmission?&teamname=" + teamname + "&gameid=" + gameid + "&qnum=1");
+        function updatePageInfo(){
+            console.log("Attempting to update page info. gameid: " + gameid + " teamname: " + teamname);
+            $.ajax({
+                url: "https://csdev.samford.edu/gamesapi/games/list",
+                type: 'GET',
+                dataType: 'json',
+                data: {},
+                crossDomain: true,
+                success: function (response) {
+                    JSON.stringify(response);
+                    console.log(response);
+                    var games = response;
+                    games.forEach(function (item) {
+                        if (item.id === parseInt(gameid)) {
+                            console.log(item);
+                            document.getElementById('headerTitle').textContent = item.title;
+                            document.getElementById('judging-id').textContent = "You are currently judging: " + teamname;
+                            document.getElementById('team-total').textContent = "You’ve joined the game. There are " + item.teams.length + " teams in this lobby.";
+                            if (item.description == "Q1") {
+                                window.location.assign("/JudgeSubmission?&teamname=" + teamname + "&gameid=" + gameid + "&qnum=1");
+                            }
                         }
-                    }
-                });
+                    });
                 
                 
-            },
-            error: function (xhr, status, error) {
+                },
+                error: function (xhr, status, error) {
 
-                console.log("Error: " + error.message);
-            }
-        });
+                    console.log("Error: " + error.message);
+                }
+            });
         
+        }
     }
+
 
     function enterTeamNameModal() {
         var teamModal = new bootstrap.Modal(document.getElementById('EnterTeamModal'), {});
