@@ -53,45 +53,46 @@
     </style>
 </head>
 
-
-<!--Main section with title and main buttons-->
-<div class="main-window">
-    <!--Top buttons section-->
-    <div class="header">
-        <div class="header-container">
+<body onload="getGameData();">
+    <!--Main section with title and main buttons-->
+    <div class="main-window">
+        <!--Top buttons section-->
+        <div class="header">
+            <div class="header-container">
+                <div>
+                    <button type="button" class="button buttonmed" data-bs-toggle="modal" data-bs-target="#HomeButtonModal">
+                        Home
+                    </button>
+                </div>
+                <div style="display:flex; flex-direction:column; align-items:center;">
+                    <h2 id="teaminfo" class="display-6">Judge your team's answer</h2>
+                    <h2 class="display-6">and submit the result</h2>
+                </div>
+                <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
+            </div>
+        </div>
+        <div class="container-submit">
             <div>
-                <button type="button" class="button buttonmed" data-bs-toggle="modal" data-bs-target="#HomeButtonModal">
-                    Home
+                <button type="button" class="button" data-bs-toggle="modal" data-bs-target="#IncorrectModal">
+                    <div class="button-text">Incorrect</div>
+                    <div class="answer-symbol">x</div>
                 </button>
             </div>
-            <div style="display:flex; flex-direction:column; align-items:center;">
-                <h2 class="display-6">Judge your team's answer and</h2>
-                <h2 class="display-6">submit the result</h2>
+            <div>
+                <button type="button" class="button" data-bs-toggle="modal" data-bs-target="#NoAnswerModal">
+                    <div class="button-text">No Answer</div>
+                    <div class="answer-symbol">-</div>
+                </button>
             </div>
-            <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
+            <div>
+                <button type="button" class="button" data-bs-toggle="modal" data-bs-target="#CorrectModal">
+                    <div class="button-text">Correct</div>
+                    <div id="checkmark"></div>
+                </button>
+            </div>
         </div>
     </div>
-    <div class="container-submit">
-        <div>
-            <button type="button" class="button" data-bs-toggle="modal" data-bs-target="#IncorrectModal">
-                <div class="button-text">Incorrect</div>
-                <div class="answer-symbol">x</div>
-            </button>
-        </div>
-        <div>
-            <button type="button" class="button" data-bs-toggle="modal" data-bs-target="#NoAnswerModal">
-                <div class="button-text">No Answer</div>
-                <div class="answer-symbol">-</div>
-            </button>
-        </div>
-        <div>
-            <button type="button" class="button" data-bs-toggle="modal" data-bs-target="#CorrectModal">
-                <div class="button-text">Correct</div>
-                <div id="checkmark"></div>
-            </button>
-        </div>
-    </div>
-</div>
+</body>
 
 
 
@@ -121,7 +122,7 @@
             </div>
             <div class="modal-footer" style="justify-content:space-around">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change Submission</button>
-                <button type="button" onclick="window.location.href='/JudgePostSubmission'" class=" btn btn-primary">Confirm</button>
+                <button type="button" onclick="submitAnswer(0);" class=" btn btn-primary">Confirm</button>
             </div>
         </div>
     </div>
@@ -137,7 +138,7 @@
             </div>
             <div class="modal-footer" style="justify-content:space-around">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change Submission</button>
-                <button type="button" onclick="window.location.href='/JudgePostSubmission'" class=" btn btn-primary">Confirm</button>
+                <button type="button" onclick="submitAnswer(2);" class=" btn btn-primary">Confirm</button>
             </div>
         </div>
     </div>
@@ -153,27 +154,145 @@
             </div>
             <div class="modal-footer" style="justify-content:space-around">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change Submission</button>
-                <button type="button" onclick="window.location.href='/JudgePostSubmission'" class=" btn btn-primary">Confirm</button>
+                <button type="button" onclick="submitAnswer(1);" class=" btn btn-primary">Confirm</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-function testFunction() {
-        const testPara = document.createElement("p");
-        const testText = document.createTextNode("Leaderboard would appear here?");
-        testPara.appendChild(testText);
+    function getGameData() {
+        const searchParams = new URLSearchParams(window.location.search);
+        var teamname = searchParams.get('teamname');
+        var gameid = searchParams.get('gameid');
+        var qnum = parseInt(searchParams.get('Q'));
+        document.getElementById("teaminfo").innerHTML = "Judge " + teamname + "'s answer for question " + qnum;
+    }
+    function submitAnswer(answerVal){
+        console.log("submitting answer");
+        const searchParams = new URLSearchParams(window.location.search);
+        var teamname = searchParams.get('teamname');
+        var teamid;
+        var gameid = parseInt(searchParams.get('gameid'));
+        var qnum = searchParams.get('Q');
+        var questionid;
+        var numcorrect = 0;
+        var numskipped = 0; 
+        var nummissed = 0;
+        var points = 0;
+        var score = 0;
+        var correct = 0;
+        var ans;
 
-        const element = document.getElementById("div2");
-        element.appendChild(testPara);
 
-        setTimeout(fade_out, 4500);
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/list",
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                console.log(response);
+                JSON.stringify(response);
+                var games = response;
+                games.forEach(function (item) {
+                    if (item.id === gameid) {
+                        console.log("Found game");
+                        item.questions.forEach(function (question) {
+                            if (question.title == qnum) {
+                                console.log("Found question");
+                                points = question.pointscorrect;
+                                questionid = question.id;
+                            }
+                        });
+                        item.teams.forEach(function (team) {
+                            if (team.teamname == teamname) {
+                                console.log("Found team");
+                                teamid = team.id;
+                                nummissed += team.nummissed;
+                                numcorrect += team.numcorrect;
+                                numskipped += team.numskipped;
+                                score += team.score;
 
-        function fade_out() {
-            testPara.remove();
-        }
-    }</script>
+                                if (answerVal == 0) {
+                                    // Incorrect
+                                    nummissed += 1;
+                                    score -= points;
+                                    ans = 0;
+                                    changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, ans, qnum);
+                                } else if (answerVal == 1) {
+                                    // Correct
+                                    numcorrect += 1;
+                                    score += points;
+                                    correct = 1;
+                                    ans = 1;
+                                    changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, ans, qnum);
+                                } else {
+                                    //No Answer
+                                    numskipped += 1;
+                                    ans = 2;
+                                    changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, ans, qnum);
+                                }
+                                
+                            }
+                        });
+                    }
+                });
+
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
+
+        
+        
+        
+    }
+
+    function changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, ans, qnum) {
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/teams/edit/" + teamid,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                "game_id": gameid,
+                "score": score,
+                "numcorrect": numcorrect,
+                "nummissed": nummissed,
+                "numskipped": numskipped
+            },
+            crossDomain: true,
+            success: function (response) {
+                finalSubmitAnswer(gameid, teamname, questionid, teamid, correct, ans, qnum);
+            },
+            error: function (xhr, status, error) {
+                console.log("Error: " + error.message);
+            }
+        });
+    }
+
+    function finalSubmitAnswer(gameid, teamname, questionid, teamid, correct, ans, qnum){
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/answers/add",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                "team_id": teamid,
+                "question_id": questionid,
+                "correct": correct
+            },
+            crossDomain: true,
+            success: function (response) {
+                window.location.assign("/JudgePostSubmission?gameid=" + gameid + "&teamname=" + teamname + "&Q=" + qnum + "&ans=" + ans);
+            },
+            error: function (xhr, status, error) {
+                console.log("Error: " + error.message);
+            }
+        });
+    }
+</script>
 
 
 
