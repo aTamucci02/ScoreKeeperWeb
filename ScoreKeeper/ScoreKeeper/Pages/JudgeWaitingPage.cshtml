@@ -161,12 +161,11 @@
                             document.getElementById('headerTitle').textContent = item.title;
                             document.getElementById('judging-id').textContent = "You are currently judging: " + teamname;
                             document.getElementById('team-total').textContent = "You’ve joined the game. There are " + item.teams.length + " teams in this lobby.";
-                            if (item.description == "Q1") {
-                                window.location.assign("/JudgeSubmission?&teamname=" + teamname + "&gameid=" + gameid + "&qnum=1");
+                            if (item.description != 0) {
+                                window.location.assign("/JudgeSubmission?&teamname=" + teamname + "&gameid=" + gameid + "&Q=" + item.description);
                             }
                         }
                     });
-                
                 
                 },
                 error: function (xhr, status, error) {
