@@ -101,7 +101,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="window.location.href='/Index'">Cancel</button>
                 <button type="button" onclick="submitTeam();" class="btn btn-primary">Confirm</button>
             </div>
         </div>
@@ -146,7 +146,6 @@
 
 
         }else{
-            updatePageInfo(id, teamname);
             setInterval(updatePageInfo(id, teamname), 5000);
         }
 
@@ -157,7 +156,7 @@
     function updatePageInfo(gameid, teamname){
         console.log("Attempting to update page info. gameid: " + gameid + " teamname: " + teamname);
         $.ajax({
-            url: "https://csdev.samford.edu/gamesapi/games/" + gameid,
+            url: "https://csdev.samford.edu/gamesapi/games/list",
             type: 'GET',
             dataType: 'json',
             data: {},
@@ -165,8 +164,20 @@
             success: function (response) {
                 JSON.stringify(response);
                 console.log(response);
-                document.getElementById('judging-id').textContent = "You are currently judging: " + teamname;
-                document.getElementById('team-total').textContent = "You’ve joined the game. There are " + response.teams.length + " teams in this lobby.";
+                var games = response;
+                games.forEach(function (item) {
+                    if (item.id === parseInt(gameid)) {
+                        console.log(item);
+                        document.getElementById('headerTitle').textContent = item.title;
+                        document.getElementById('judging-id').textContent = "You are currently judging: " + teamname;
+                        document.getElementById('team-total').textContent = "You’ve joined the game. There are " + item.teams.length + " teams in this lobby.";
+                        if (item.description == "Q1") {
+                            window.location.assign("/JudgeSubmission?&teamname=" + teamname + "&gameid=" + gameid + "&qnum=1");
+                        }
+                    }
+                });
+                
+                
             },
             error: function (xhr, status, error) {
 
@@ -186,6 +197,7 @@
         var gamecode = searchParams.get('gamecode');
         var teamname = $("#EnterTeamModal #team-name").val().trim();
         var gameid = -1;
+        var teamFound = false;
 
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/games/list",
@@ -198,9 +210,19 @@
                 var games = response;
                 games.forEach(function (item) {
                     if (item.gamecode === gamecode) {
-                        console.log("Found gameid:" + item.id);
                         gameid = item.id;
-                        createTeam(gameid, teamname, gamecode);
+                        item.teams.forEach(function (team) {
+                            if(team.teamname === teamname){
+                                teamFound = true;
+                                $('#EnterTeamModal').modal('hide');
+                                window.location.assign("/JudgeWaitingPage?gamecode=" + gamecode + "&teamname=" + teamname + "&gameid=" + gameid);
+                                
+                            }
+                        });
+                        if(!teamFound){
+                            createTeam(gameid, teamname, gamecode);
+                        }
+                        
                     }
                 });
 
