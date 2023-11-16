@@ -1,0 +1,205 @@
+﻿@page
+@model ScoreKeeper.Pages.PointAssignmentModel
+@{
+}
+<head>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+
+
+        .header {
+            background-color: #74C5E5;
+            margin-left: calc(50% - 50vw);
+            margin-top: 0;
+            width: 100vw;
+        }
+
+        .header-container {
+            width: 90vw;
+            margin-left: calc(50% - 45vw);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .main-window {
+            display: flex;
+            flex-flow: column;
+            height: 100vh;
+            background-color: #102F3B;
+            color: white;
+            width: 100vw;
+            margin-left: calc(50% - 50vw);
+            overflow-y: auto;
+        }
+
+            .main-window .content-container {
+                display: contents;
+            }
+
+            .main-window .header {
+                flex: 0 1 auto;
+            }
+
+            .main-window .button-container {
+                flex: 1 1 auto;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+            }
+    </style>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+
+</head>
+
+
+<body>
+
+    <!--Main section with title and main buttons-->
+    <div class="main-window">
+        <div class="content-container">
+
+            <!--Top buttons section-->
+            <div class="header">
+                <div class="header-container">
+                    <div>
+                        <button type="button" class="button buttonmed" data-bs-toggle="modal" data-bs-target="#HomeButtonModal">
+                            Home
+                        </button>
+                        <button type="button" class="button buttonmed" onclick="addInput()">
+                            Add Question
+                        </button>
+                        <button type="button" class="button buttonmed" onclick="compileInputs()">
+                            Log
+                        </button>
+
+                    </div>
+                    <h1 class="display-4" id="page-title">Create Questions</h1>
+                    <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
+                </div>
+            </div>
+        </div>
+        <div align="center" style = "color:white; padding:10px;" id="input-container">
+            <div class="input_container">
+                <label for="dynamicInput1">Question 1:</label>
+                <input type="text" name="dynamicInput[]" id="dynamicInput1"/>
+            </div>
+        </div>
+
+        <button type="button" class="button buttonmed" style="position: absolute; bottom: 10px; right: 10px;" data-bs-toggle="modal" data-bs-target="#StartGameModal">
+            Start Game
+        </button>
+
+    </div>
+
+
+    <button type="button" class="button buttonmed" style="position: absolute; bottom: 10px; right: 10px;" data-bs-toggle="modal" data-bs-target="#StartGameModal">
+        Start Game
+    </button>
+</body>
+
+
+<!-- Home Button Modal -->
+<div class="modal fade" id="HomeButtonModal" tabindex="-1" aria-labelledby="HomeButtonModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="HomeButtonModalLabel">Are you sure you want to leave the game?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" onclick="window.location.href='/Index'" class=" btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Start Game Modal -->
+<div class="modal fade" id="StartGameModal" tabindex="-1" aria-labelledby="StartGameModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="StartGameModalLabel">Are you sure you want to start the game?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" onclick="startGame()" class=" btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var counter = 1;
+    function addInput() {
+        // Increment the counter for labeling questions
+        counter++;
+
+        // Create a new label element
+        var newLabel = document.createElement("label");
+        newLabel.setAttribute("for", "dynamicInput" + counter);
+        newLabel.textContent = "Question " + counter + ":";
+
+        // Create a new input element
+        var newInput = document.createElement("input");
+        newInput.type = "text";
+        newInput.name = "dynamicInput[]";
+        newInput.id = "dynamicInput" + counter;
+
+        // Create a new container for the label and input
+        var newInputContainer = document.createElement("div");
+        newInputContainer.classList.add("input-container");
+        newInputContainer.appendChild(newLabel);
+        newInputContainer.appendChild(newInput);
+
+        // Append the new input container to the main container
+        document.getElementById("input-container").appendChild(newInputContainer);
+    }
+    function compileInputs() {
+        // Get all input elements with name "dynamicInput[]"
+        var inputElements = document.getElementsByName("dynamicInput[]");
+
+        // Create an array to store the input values
+        var inputValues = [];
+
+        // Loop through each input element and add its value to the array
+        for (var i = 0; i < inputElements.length; i++) {
+            inputValues.push(inputElements[i].value);
+        }
+
+        // Display the compiled list in the console (you can modify this part based on your needs)
+        console.log("Compiled Inputs:", inputValues);
+    }
+
+    function startGame() {
+        const searchParams = new URLSearchParams(window.location.search);
+        var id = searchParams.get('id');
+        console.log(id);
+
+        var url = window.location.href;
+        console.log(url);
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/edit/" + id,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                "description": "Q1",
+            },
+            crossDomain: true,
+            success: function (response) {
+                window.location.assign("/AdminActiveQ?id=" + id + "Q1");
+
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
+
+    }
+
+</script>

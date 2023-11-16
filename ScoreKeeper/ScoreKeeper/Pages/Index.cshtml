@@ -298,13 +298,13 @@
                 dataType: 'json',
                 data: {
                     "title": gameName,
-                    "description": null,
+                    "description": 0,
                     "gamecode": scoreCode,
                     "passcode": judgeCode
                 },
                 crossDomain: true,
                 success: function (response) {
-                    window.location.assign("/AdminWaiting?gamecode=" + scoreCode);
+                    window.location.assign("/PointAssignment?gamecode=" + scoreCode +"&id="+response);
                 },
                 error: function (xhr, status, error) {
                     console.log("Error: " + error.message);
