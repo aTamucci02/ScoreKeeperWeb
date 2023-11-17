@@ -84,7 +84,7 @@
         <div align="center" style = "color:white; padding:10px;" id="input-container">
             <div class="input_container">
                 <label for="dynamicInput1">Question 1:</label>
-                <input type="text" name="dynamicInput[]" id="dynamicInput1"/>
+                <input type="number" name="dynamicInput[]" id="dynamicInput1"/>
             </div>
         </div>
 
@@ -146,7 +146,7 @@
 
         // Create a new input element
         var newInput = document.createElement("input");
-        newInput.type = "text";
+        newInput.type = "number";
         newInput.name = "dynamicInput[]";
         newInput.id = "dynamicInput" + counter;
 
@@ -159,6 +159,7 @@
         // Append the new input container to the main container
         document.getElementById("input-container").appendChild(newInputContainer);
     }
+    
     function compileInputs() {
         // Get all input elements with name "dynamicInput[]"
         var inputElements = document.getElementsByName("dynamicInput[]");
@@ -173,12 +174,14 @@
 
         // Display the compiled list in the console (you can modify this part based on your needs)
         console.log("Compiled Inputs:", inputValues);
+        return inputValues;
     }
 
     function startGame() {
         const searchParams = new URLSearchParams(window.location.search);
         var id = searchParams.get('id');
         console.log(id);
+        addQuestions(id);
 
         var url = window.location.href;
         console.log(url);
@@ -200,6 +203,32 @@
             }
         });
 
+    }
+
+    function addQuestions(gameID) {
+        var count = 1;
+        var pointList = compileInputs();
+        pointList.forEach(function (item) {
+            $.ajax({
+                url: "https://csdev.samford.edu/gamesapi/questions/add",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    "game_id": gameID,
+                    "title": count,
+                    "pointscorrect": item,
+                },
+                crossDomain: true,
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (xhr, status, error) {
+
+                    console.log("Error: " + error.message);
+                }
+            });
+            count++;
+        });
     }
 
 </script>
