@@ -161,7 +161,7 @@
                             document.getElementById('headerTitle').textContent = item.title;
                             document.getElementById('judging-id').textContent = "You are currently judging: " + teamname;
                             document.getElementById('team-total').textContent = "You’ve joined the game. There are " + item.teams.length + " teams in this lobby.";
-                            if (item.description != 0) {
+                            if (item.description != 0 && item.description != null) {
                                 window.location.assign("/JudgeSubmission?&teamname=" + teamname + "&gameid=" + gameid + "&Q=" + item.description);
                             }
                         }
