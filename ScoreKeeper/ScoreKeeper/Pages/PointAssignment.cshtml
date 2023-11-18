@@ -71,20 +71,19 @@
                         <button type="button" class="button buttonmed" onclick="addInput()">
                             Add Question
                         </button>
-                        <button type="button" class="button buttonmed" onclick="compileInputs()">
-                            Log
-                        </button>
-
                     </div>
-                    <h1 class="display-4" id="page-title">Create Questions</h1>
+                    <h1 class="display-4" id="page-title" >Create Questions </h1>
                     <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
                 </div>
             </div>
         </div>
+        <div align="center" style="color:white; padding:10px;">
+        Enter the amount of points you'd like each question to be worth
+        </div>
         <div align="center" style = "color:white; padding:10px;" id="input-container">
             <div class="input_container">
                 <label for="dynamicInput1">Question 1:</label>
-                <input type="text" name="dynamicInput[]" id="dynamicInput1"/>
+                <input type="number" name="dynamicInput[]" id="dynamicInput1"/>
             </div>
         </div>
 
@@ -146,7 +145,7 @@
 
         // Create a new input element
         var newInput = document.createElement("input");
-        newInput.type = "text";
+        newInput.type = "number";
         newInput.name = "dynamicInput[]";
         newInput.id = "dynamicInput" + counter;
 
@@ -159,6 +158,7 @@
         // Append the new input container to the main container
         document.getElementById("input-container").appendChild(newInputContainer);
     }
+    
     function compileInputs() {
         // Get all input elements with name "dynamicInput[]"
         var inputElements = document.getElementsByName("dynamicInput[]");
@@ -173,12 +173,14 @@
 
         // Display the compiled list in the console (you can modify this part based on your needs)
         console.log("Compiled Inputs:", inputValues);
+        return inputValues;
     }
 
     function startGame() {
         const searchParams = new URLSearchParams(window.location.search);
         var id = searchParams.get('id');
         console.log(id);
+        addQuestions(id);
 
         var url = window.location.href;
         console.log(url);
@@ -187,11 +189,11 @@
             type: 'POST',
             dataType: 'json',
             data: {
-                "description": "Q1",
+                "description": "1",
             },
             crossDomain: true,
             success: function (response) {
-                window.location.assign("/AdminActiveQ?id=" + id + "Q1");
+                window.location.assign("/AdminActiveQ?id=" + id + "&Q=" + "1");
 
             },
             error: function (xhr, status, error) {
@@ -200,6 +202,32 @@
             }
         });
 
+    }
+
+    function addQuestions(gameID) {
+        var count = 1;
+        var pointList = compileInputs();
+        pointList.forEach(function (item) {
+            $.ajax({
+                url: "https://csdev.samford.edu/gamesapi/questions/add",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    "game_id": gameID,
+                    "title": count,
+                    "pointscorrect": item,
+                },
+                crossDomain: true,
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (xhr, status, error) {
+
+                    console.log("Error: " + error.message);
+                }
+            });
+            count++;
+        });
     }
 
 </script>

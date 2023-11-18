@@ -208,11 +208,11 @@
             type: 'POST',
             dataType: 'json',
             data: {
-                "description": "Q1",
+                "description": "1",
             },
             crossDomain: true,
             success: function (response) {
-                window.location.assign("/AdminActiveQ?id=" + id + "Q1");
+                window.location.assign("/AdminActiveQ?id=" + id + "&Q="  + "1");
 
             },
             error: function (xhr, status, error) {
