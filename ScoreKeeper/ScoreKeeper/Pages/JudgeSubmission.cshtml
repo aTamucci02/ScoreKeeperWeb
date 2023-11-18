@@ -171,6 +171,7 @@
         var qnum = parseInt(searchParams.get('Q'));
         document.getElementById("teaminfo").innerHTML = "Judge " + teamname + "'s answer for question " + qnum;
     }
+
     function submitAnswer(answerVal) {
         console.log("submitting answer");
         const searchParams = new URLSearchParams(window.location.search);
@@ -185,6 +186,8 @@
         var points = 0;
         var score = 0;
         var correct = 0;
+        var incorrect = 0;
+        var skipped = 0;
         var ans;
 
 
@@ -200,17 +203,14 @@
                 var games = response;
                 games.forEach(function (item) {
                     if (item.id === gameid) {
-                        console.log("Found game");
                         item.questions.forEach(function (question) {
                             if (question.title == qnum) {
-                                console.log("Found question");
                                 points = question.pointscorrect;
                                 questionid = question.id;
                             }
                         });
                         item.teams.forEach(function (team) {
                             if (team.teamname == teamname) {
-                                console.log("Found team");
                                 teamid = team.id;
                                 nummissed += team.nummissed;
                                 numcorrect += team.numcorrect;
@@ -221,21 +221,24 @@
                                     // Incorrect
                                     nummissed += 1;
                                     score -= points;
+                                    incorrect = 1;
                                     ans = 0;
-                                    changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, ans, qnum);
+                                    changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, incorrect, skipped, ans, qnum);
                                 } else if (answerVal == 1) {
                                     // Correct
                                     numcorrect += 1;
                                     score += points;
                                     correct = 1;
                                     ans = 1;
-                                    changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, ans, qnum);
+                                    changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, incorrect, skipped, ans, qnum);
                                 } else {
                                     //No Answer
                                     numskipped += 1;
+                                    skipped = 1;
                                     ans = 2;
-                                    changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, ans, qnum);
+                                    changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, incorrect, skipped, ans, qnum);
                                 }
+
                             }
                         });
                     }
@@ -250,9 +253,11 @@
 
 
 
+
     }
 
-    function changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, ans, qnum) {
+    // Edits team score and number of questions correct/incorrect/skipped
+    function changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, incorrect, skipped, ans, qnum) {
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/teams/edit/" + teamid,
             type: 'POST',
@@ -266,7 +271,7 @@
             },
             crossDomain: true,
             success: function (response) {
-                finalSubmitAnswer(gameid, teamname, questionid, teamid, correct, ans, qnum);
+                finalSubmitAnswer(gameid, teamname, questionid, teamid, correct, incorrect, skipped, ans, qnum);
             },
             error: function (xhr, status, error) {
                 console.log("Error: " + error.message);
@@ -274,7 +279,7 @@
         });
     }
 
-    function finalSubmitAnswer(gameid, teamname, questionid, teamid, correct, ans, qnum) {
+    function finalSubmitAnswer(gameid, teamname, questionid, teamid, correct, incorrect, skipped, ans, qnum) {
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/answers/add",
             type: 'POST',
@@ -282,7 +287,9 @@
             data: {
                 "team_id": teamid,
                 "question_id": questionid,
-                "correct": correct
+                "correct": correct,
+                "wrong": incorrect,
+                "skipped": skipped
             },
             crossDomain: true,
             success: function (response) {

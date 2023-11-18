@@ -57,7 +57,7 @@
                 <div>Want to change your submission?</div>
                 <div>
                     <button type="button" class="button buttonmed" style="font-size: 24px; margin-top: 15px;" data-bs-toggle="modal" data-bs-target="#RequestChangeModal">
-                        Request Submission Change From Administrator
+                        Change Submission
                     </button>
                 </div>
             
@@ -98,15 +98,15 @@
 
                 <select name="submission" id="submission">
                     <option disabled selected value="blank"> -- select an option -- </option>
-                    <option value="incorrect">Incorrect</option>
-                    <option value="no-answer">No Answer</option>
-                    <option value="correct">Correct</option>
+                    <option value="0">Incorrect</option>
+                    <option value="2">No Answer</option>
+                    <option value="1">Correct</option>
                 </select>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class=" btn btn-primary" id="submit" data-bs-dismiss="modal" disabled>Submit</button>
+                <button type="button" class=" btn btn-primary" id="submit" onclick="submitChange();" data-bs-dismiss="modal" disabled>Submit</button>
             </div>
         </div>
     </div>
@@ -115,15 +115,48 @@
 <script>
     const select = document.getElementById('submission');
     const submitButton = document.getElementById('submit');
+    const searchParams = new URLSearchParams(window.location.search);
+    var ans = parseInt(searchParams.get('ans'));
+    var teamname = searchParams.get('teamname');
+    var gameid = parseInt(searchParams.get('gameid'));
+    var qnum = searchParams.get('Q');
+    document.getElementById('RequestChangeModalLabel').innerHTML = "You submitted " + getAns();
     document.getElementById('submission').addEventListener('change', () => {
-        if (select.value === 'blank') {
+        if (select.value === 'blank' || select.value == ans) {
             submitButton.disabled = true;
         } else {
             submitButton.disabled = false;
         }
     });
+    setInterval(checkNextQ, 5000);
 
-    function getAns(){
+    function checkNextQ(){
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/list",
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                JSON.stringify(response);
+                var games = response;
+                games.forEach(function (item) {
+                    if (item.id === parseInt(gameid)) {
+                        if (item.description != qnum && item.description != null) {
+                            window.location.assign("/JudgeSubmission?&teamname=" + teamname + "&gameid=" + gameid + "&Q=" + item.description);
+                        }
+                    }
+                });
+
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
+    }
+
+    function getAns() {
         const searchParams = new URLSearchParams(window.location.search);
         var ans = parseInt(searchParams.get('ans'));
         var teamname = searchParams.get('teamname');
@@ -138,5 +171,188 @@
             answer = "NO ANSWER";
         }
         document.getElementById("answer").innerHTML = "You submitted: " + answer + " for " + teamname + " for question " + qnum;
+        return answer;
+    }
+
+    function submitChange() {
+        console.log("submitting answer");
+        var teamid;
+        var questionid;
+        var numcorrect = 0;
+        var numskipped = 0;
+        var nummissed = 0;
+        var points = 0;
+        var score = 0;
+        var correct = 0;
+        var incorrect = 0;
+        var skipped = 0;
+        var newAns = select.value;
+        var answerVal = parseInt(newAns);
+
+
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/list",
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                console.log(response);
+                JSON.stringify(response);
+                var games = response;
+                games.forEach(function (item) {
+                    if (item.id === gameid) {
+                        item.questions.forEach(function (question) {
+                            if (question.title == qnum) {
+                                points = question.pointscorrect;
+                                questionid = question.id;
+                            }
+                        });
+                        item.teams.forEach(function (team) {
+                            if (team.teamname == teamname) {
+                                teamid = team.id;
+                                nummissed += team.nummissed;
+                                numcorrect += team.numcorrect;
+                                numskipped += team.numskipped;
+                                score += team.score;
+
+                                // Removes the old answer and points 
+                                if (parseInt(ans) == 0) {
+                                    // Incorrect
+                                    nummissed -= 1;
+                                    score += points;
+                                    deleteOldAnswerRequest(questionid, teamid);
+                                } else if (parseInt(ans) == 1) {
+                                    // Correct
+                                    numcorrect -= 1;
+                                    score -= points;
+                                    deleteOldAnswerRequest(questionid, teamid);
+                                } else {
+                                    //No Answer
+                                    numskipped -= 1;
+                                    deleteOldAnswerRequest(questionid, teamid);
+                                }
+                                
+
+                                // Adds the new answer
+                                if (answerVal == 0) {
+                                    // Incorrect
+                                    nummissed += 1;
+                                    score -= points;
+                                    incorrect = 1;
+                                    changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, incorrect, skipped, newAns, qnum);
+                                } else if (answerVal == 1) {
+                                    // Correct
+                                    numcorrect += 1;
+                                    score += points;
+                                    correct = 1;
+                                    changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, incorrect, skipped, newAns, qnum);
+                                } else {
+                                    //No Answer
+                                    numskipped += 1;
+                                    skipped = 1;
+                                    changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, incorrect, skipped, newAns, qnum);
+                                }
+
+                            }
+                        });
+                    }
+                });
+
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
+
+    }
+
+    function changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, incorrect, skipped, ans, qnum) {
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/teams/edit/" + teamid,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                "game_id": gameid,
+                "score": score,
+                "numcorrect": numcorrect,
+                "nummissed": nummissed,
+                "numskipped": numskipped
+            },
+            crossDomain: true,
+            success: function (response) {
+                finalSubmitAnswer(gameid, teamname, questionid, teamid, correct, incorrect, skipped, ans, qnum);
+            },
+            error: function (xhr, status, error) {
+                console.log("Error: " + error.message);
+            }
+        });
+    }
+
+    function finalSubmitAnswer(gameid, teamname, questionid, teamid, correct, incorrect, skipped, ans, qnum) {
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/answers/add",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                "team_id": teamid,
+                "question_id": questionid,
+                "correct": correct,
+                "wrong": incorrect,
+                "skipped": skipped
+            },
+            crossDomain: true,
+            success: function (response) {
+                window.location.assign("/JudgePostSubmission?gameid=" + gameid + "&teamname=" + teamname + "&Q=" + qnum + "&ans=" + ans);
+            },
+            error: function (xhr, status, error) {
+                console.log("Error: " + error.message);
+            }
+        });
+    }
+
+    function deleteOldAnswerRequest(questionid, teamid) {
+        var answerid;
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/teams/" + teamid,
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                console.log(response);
+                JSON.stringify(response);
+                var team = response;
+                team.answers.forEach(function (answer) {
+                    if (answer.team_id == teamid && answer.question_id == questionid) {
+                        answerid = answer.id;
+                        deleteOldAnswer(answerid);
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
+    }
+    function deleteOldAnswer(answerid) {
+        var answerid;
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/answers/delete/" + answerid,
+            type: 'POST',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                console.log("successfully deleted answer");
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+
+        });
     }
 </script>
