@@ -5,37 +5,38 @@
 <head>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <style>
-        .button{
+        .button {
             display: flex;
-            flex-grow:1;
-            flex-direction:column;
-            justify-content:space-evenly;
-            justify-items:center;
-            align-content:center;
-            align-items:center;
+            flex-grow: 1;
+            flex-direction: column;
+            justify-content: space-evenly;
+            justify-items: center;
+            align-content: center;
+            align-items: center;
         }
+
         .container-submit {
-            flex-direction:row;
+            flex-direction: row;
             display: flex;
             background-color: #102F3B;
-            flex-grow:1;
+            flex-grow: 1;
             align-content: stretch;
             align-items: stretch;
             gap: 50px;
         }
-            .container-submit > div{
+
+            .container-submit > div {
                 display: flex;
                 flex-grow: 1;
                 margin: 30px;
-                
             }
-   
+
         .main-window {
             background-color: #102F3B;
         }
 
-        .button-text{
-            font-size:32px;
+        .button-text {
+            font-size: 32px;
         }
 
         .answer-symbol {
@@ -62,6 +63,9 @@
                 <div>
                     <button type="button" class="button buttonmed" data-bs-toggle="modal" data-bs-target="#HomeButtonModal">
                         Home
+                    </button>
+                    <button type="button" class="button buttonmed" onclick="gameOver()">
+                        Game Over
                     </button>
                 </div>
                 <div style="display:flex; flex-direction:column; align-items:center;">
@@ -93,7 +97,6 @@
         </div>
     </div>
 </body>
-
 
 
 <!-- Home Button Modal -->
@@ -168,7 +171,7 @@
         var qnum = parseInt(searchParams.get('Q'));
         document.getElementById("teaminfo").innerHTML = "Judge " + teamname + "'s answer for question " + qnum;
     }
-    function submitAnswer(answerVal){
+    function submitAnswer(answerVal) {
         console.log("submitting answer");
         const searchParams = new URLSearchParams(window.location.search);
         var teamname = searchParams.get('teamname');
@@ -177,7 +180,7 @@
         var qnum = searchParams.get('Q');
         var questionid;
         var numcorrect = 0;
-        var numskipped = 0; 
+        var numskipped = 0;
         var nummissed = 0;
         var points = 0;
         var score = 0;
@@ -233,7 +236,6 @@
                                     ans = 2;
                                     changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, ans, qnum);
                                 }
-                                
                             }
                         });
                     }
@@ -246,9 +248,8 @@
             }
         });
 
-        
-        
-        
+
+
     }
 
     function changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, ans, qnum) {
@@ -273,7 +274,7 @@
         });
     }
 
-    function finalSubmitAnswer(gameid, teamname, questionid, teamid, correct, ans, qnum){
+    function finalSubmitAnswer(gameid, teamname, questionid, teamid, correct, ans, qnum) {
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/answers/add",
             type: 'POST',
@@ -292,7 +293,12 @@
             }
         });
     }
+
+    function gameOver() {
+        const searchParams = new URLSearchParams(window.location.search);
+        var gameid = searchParams.get('gameid');
+        var teamname = searchParams.get('teamname');
+        window.location.assign("/GameOverPage?&teamname=" + teamname + "&gameid=" + gameid);
+
+    }
 </script>
-
-
-
