@@ -104,12 +104,15 @@
 </div>
 
 <script>
+    const searchParams = new URLSearchParams(window.location.search);
+    var gamecode = searchParams.get('gamecode');
+    var teamname = searchParams.get('teamname');
+    var gameid = searchParams.get('gameid');
+    var currentqid = -1;
+
     // Sets the title of the page
     function getGameData() {
-        const searchParams = new URLSearchParams(window.location.search);
-        var gamecode = searchParams.get('gamecode');
-        var teamname = searchParams.get('teamname');
-        var gameid = searchParams.get('gameid');
+        
         // Check the url to see if the judge is assigned a team. If not, it prompts the judge to enter a team
         if (teamname == null) {
             $.ajax({
@@ -123,7 +126,6 @@
                     var games = response;
                     games.forEach(function (item) {
                         if (item.gamecode === gamecode) {
-                            console.log(item);
                             document.getElementById('headerTitle').textContent = item.title;
                             document.getElementById('team-total').textContent = "You’ve joined the game. There are " + item.teams.length + " teams in this lobby.";
                             enterTeamNameModal();
@@ -153,11 +155,9 @@
                 crossDomain: true,
                 success: function (response) {
                     JSON.stringify(response);
-                    console.log(response);
                     var games = response;
                     games.forEach(function (item) {
                         if (item.id === parseInt(gameid)) {
-                            console.log(item);
                             document.getElementById('headerTitle').textContent = item.title;
                             document.getElementById('judging-id').textContent = "You are currently judging: " + teamname;
                             document.getElementById('team-total').textContent = "You’ve joined the game. There are " + item.teams.length + " teams in this lobby.";
@@ -206,7 +206,13 @@
                             if(team.teamname === teamname){
                                 teamFound = true;
                                 $('#EnterTeamModal').modal('hide');
-                                window.location.assign("/JudgeWaitingPage?gamecode=" + gamecode + "&teamname=" + teamname + "&gameid=" + gameid);
+
+                                if (item.description != "0" && item.description != null) {
+                                    console.log("Checking question submission");
+                                    isCurrentQuestionSubmitted(team.id, gameid, teamname);
+                                }else{
+                                    window.location.assign("/JudgeWaitingPage?gamecode=" + gamecode + "&teamname=" + teamname + "&gameid=" + gameid);
+                                }
                                 
                             }
                         });
@@ -247,6 +253,85 @@
             error: function (xhr, status, error) {
                 console.log("Error: " + error.message);
                 document.getElementById("teamHelp").textContent = 'Error creating team';
+            }
+        });
+    }
+
+    // Checks to see if the number of answers a team has corresponds to the number of questions - sends to post-submission page, otherwise sends to submission page
+    function isCurrentQuestionSubmitted(teamid, gameid, teamname) {
+
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/teams/" + teamid,
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                JSON.stringify(response);
+                var team = response;
+                var totalquestions = team.numcorrect + team.nummissed + team.numskipped;
+                getCurrentQuestion(team.game_id, function () {
+                    // The team has submitted an answer for the current question
+                    if (totalquestions == parseInt(team.game.description)) {
+                        if (currentqid == -1) {
+                            console.log("Error finding question");
+                        } else {
+                            team.answers.forEach(function (answer) {
+                                console.log("currentqid: " + currentqid + ", answer.question_id: " + answer.question_id);
+                                if (answer.question_id == currentqid) {
+                                    if (answer.correct == 1) {
+                                        window.location.assign("/JudgePostSubmission?gameid=" + gameid + "&teamname=" + teamname + "&Q=" + team.game.description + "&ans=" + 1);
+                                    } else if (answer.wrong == 1) {
+                                        window.location.assign("/JudgePostSubmission?gameid=" + gameid + "&teamname=" + teamname + "&Q=" + team.game.description + "&ans=" + 0);
+                                    } else {
+                                        window.location.assign("/JudgePostSubmission?gameid=" + gameid + "&teamname=" + teamname + "&Q=" + team.game.description + "&ans=" + 2);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                    // The team hasn't submitted an answer for the current question
+                    else {
+                        window.location.assign("/JudgeSubmission?&teamname=" + teamname + "&gameid=" + gameid + "&Q=" + team.game.description);
+                    }
+                });
+                
+               
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
+        
+    }
+// Gets the question id to the most recent question for the post-submission page
+    function getCurrentQuestion(gameid, callback) {
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/list/" + gameid,
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                JSON.stringify(response);
+                console.log(response);
+                var games = response;
+                games.forEach(function (item) {
+                    if (item.id === gameid) {
+                        item.questions.forEach(function (question) {
+                            if (question.title == item.description) {
+                                console.log("Question found. Returning: " + question.id);
+                                currentqid = question.id;
+                                callback();
+                            }
+                        });
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log("Error: " + error.message);
+                callback();
             }
         });
     }
