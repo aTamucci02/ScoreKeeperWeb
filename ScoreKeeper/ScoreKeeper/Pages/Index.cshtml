@@ -98,13 +98,16 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="StartGameModalLabel">Start Game Lobby</h1>
+                <h1 class="modal-title fs-5" id="StartGameModalLabel">Start or Resume Game Lobby</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="game-passcode" class="col-form-label">Game Name:</label>
+                    <label for="game-passcode" class="col-form-label">
+                        Enter the title of the game you would like to start. Entering a title of an active game will resume the game
+                    </label>
                     <input type="text" class="form-control" id="gameName" placeholder="Game Name">
+                    <div id="errorText" style="color: red;"></div>
                 </div>
                 <div class="col-sm-4">
                     <small id="gameNameHelp" class="text-danger">
@@ -356,9 +359,15 @@
                 games.forEach(function (item) {
                     // console.log(item);
                     if (item.title === gameName) {
-                        console.log(item.id)
-                        window.location.assign("/AdminWaiting?gamecode=" + item.title +"&id=" + item.id);
-                        isLoaded = true;
+                        if (item.description == "0") {
+                           window.location.assign("/AdminWaiting?gamecode=" + item.title + "&id=" + item.id);
+                            isLoaded = true;
+
+                        }
+                        else{
+                        window.location.assign("/AdminActiveQ?id=" + item.id + "&Q=" + item.description);
+
+                        }
                         // We'll want to put something here that stores the judge and what game they're assigned to
                     }
                 });
@@ -366,7 +375,7 @@
                 if (!isLoaded) {
                     $("#StartGameModal #gameName").removeClass('form-control');
                     $("#StartGameModal #gameName").addClass('form-control is-invalid');
-                    document.getElementById("gameName").textContent = 'Game name is incorrect';
+                    document.getElementById("errorText").textContent = 'Game Title is incorrect';
                 }
             },
             error: function (xhr, status, error) {
