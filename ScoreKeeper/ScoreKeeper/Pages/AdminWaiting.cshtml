@@ -5,7 +5,6 @@
 
 <head>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <meta http-equiv="refresh" content="5">
     <style>
 
 
@@ -163,6 +162,9 @@
                 console.log("Error: " + error.message);
             }
         });
+        getGameData();
+        setInterval(loadTeams, 5000);
+
     }
     function loadTeams(gameID) {
         const searchParams = new URLSearchParams(window.location.search);
