@@ -5,7 +5,8 @@
 
 <head>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <meta http-equiv="refresh" content="5">
+    @*<meta http-equiv="refresh" content="5">*@
+
     <style>
 
 
@@ -97,14 +98,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label for="recipient-name" class="col-form-label">Game Code:</label>
-                    <input type="text" class="form-control" id="question_amt">
-                </div>
+                Would you like to view the scoreboard?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" onclick="window.location.href='/JudgeWaitingPage'" class=" btn btn-primary">View Scoreboard</button>
+                <button type="button" onclick="scoreBoard()" class=" btn btn-primary">View Scoreboard</button>
             </div>
         </div>
     </div>
@@ -167,6 +165,36 @@
             },
             error: function (xhr, status, error) {
                 return "1";
+                console.log("Error: " + error.message);
+            }
+        });
+    }
+
+
+    function scoreBoard() {
+        const searchParams = new URLSearchParams(window.location.search);
+        var gameID = searchParams.get('id');
+        var gameCode = 0;
+
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/list",
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                JSON.stringify(response);
+                var games = response;
+                games.forEach(function (item) {
+                    if (item.id == gameID) {
+                        window.location.assign("/Scoreboard?gamecode=" + item.gamecode + "&id=" + item.id);
+                        gameCode = item.gamecode;
+                    }
+                });
+                console.log(gameCode);
+            },
+            error: function (xhr, status, error) {
+
                 console.log("Error: " + error.message);
             }
         });
