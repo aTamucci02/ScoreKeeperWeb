@@ -51,9 +51,8 @@
         const searchParams = new URLSearchParams(window.location.search);
         var gameid = searchParams.get('gameid');
         var teamname = searchParams.get('teamname');
-        var count = 0;
         $.ajax({
-            url: "https://csdev.samford.edu/gamesapi/teams/list",
+            url: "https://csdev.samford.edu/gamesapi/games/list",
             type: 'GET',
             dataType: 'json',
             data: {},
@@ -61,19 +60,25 @@
             success: function (response) {
                 // Assuming the response is an array of team objects
                 JSON.stringify(response);
-                var teams = response;
-                var teamScore, teamPlacement;
-                // Loop through the teams to find the current team's score and placement
-                teams.forEach(function (item) {
-                    if (item.teamname === teamname && item.game_id == gameid) { // Replace with your team's name
-                        teamScore = item.score; // Replace with the actual property for the team's score
-                        teamPlacement = count + 1; // The placement is the index in the sorted list of teams + 1
+                var games = response;
+                games.forEach(function (game) {
+                    if(game.id == gameid){
+                        var teams = game.teams;
+                        var teamScore, teamPlacement;
+                        teams.sort((team1, team2) => team2.score - team1.score);
+                        teams.forEach(function (item) {
+                            if (item.teamname === teamname && item.game_id == gameid) {
+                                teamScore = item.score;
+                                teamPlacement = teams.indexOf(item) + 1;
+                            }
+                        });
+                        // Insert the team's score and placement into the HTML
+                        var scoretext = "Your team's total score: " + teamScore;
+                        document.getElementById("teamScore").textContent = scoretext;
+                        document.getElementById("teamPlacement").textContent = "Your team's placement: " + teamPlacement;
                     }
                 });
-                // Insert the team's score and placement into the HTML
-                var scoretext = "Your team's total score: " + teamScore;
-                document.getElementById("teamScore").textContent = scoretext;
-                document.getElementById("teamPlacement").textContent = "Your team's placement: " + teamPlacement;
+                
             },
             error: function (xhr, status, error) {
                 console.log("Error: " + error.message);
@@ -101,18 +106,3 @@
 </div>
 
 
-<script>
-    function testFunction() {
-        const testPara = document.createElement("p");
-        const testText = document.createTextNode("Leaderboard would appear here?");
-        testPara.appendChild(testText);
-
-        const element = document.getElementById("div2");
-        element.appendChild(testPara);
-
-        setTimeout(fade_out, 4500);
-
-        function fade_out() {
-            testPara.remove();
-        }
-    }</script>
