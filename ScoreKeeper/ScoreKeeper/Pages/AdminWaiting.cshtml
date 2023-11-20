@@ -162,6 +162,9 @@
                 console.log("Error: " + error.message);
             }
         });
+        getGameData();
+        setInterval(loadTeams, 5000);
+
     }
     function loadTeams(gameID) {
         const searchParams = new URLSearchParams(window.location.search);

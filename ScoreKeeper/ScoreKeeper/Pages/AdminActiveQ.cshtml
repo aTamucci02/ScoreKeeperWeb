@@ -5,6 +5,8 @@
 
 <head>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @*<meta http-equiv="refresh" content="5">*@
+
     <style>
 
 
@@ -59,10 +61,11 @@
             <div class="header">
                 <div class="header-container">
                     <div>
-                        <button type="button" class="button buttonmed" data-bs-toggle="modal" data-bs-target="#ScoreboardModal">
+                        <!--May add this back later. Will need an admin scorebaord page -->
+@*                      <button type="button" class="button buttonmed" data-bs-toggle="modal" data-bs-target="#ScoreboardModal">
                             Scoreboard
                         </button>
-                    </div>
+ *@                    </div>
                     <h1 class="display-4" id="QuestionNumber"></h1>
                     <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
                 </div>
@@ -87,8 +90,8 @@
 </body>
 
 <!--Main section with title and main buttons-->
-<!-- Scoreboard Modal -->
-<div class="modal fade" id="ScoreboardModal" tabindex="-1" aria-labelledby="ScoreboardLabel" aria-hidden="true">
+<!-- Scoreboard Modal. Decided we do not want a scoreboard option on this page -->
+@* <div class="modal fade" id="ScoreboardModal" tabindex="-1" aria-labelledby="ScoreboardLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -96,19 +99,16 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label for="recipient-name" class="col-form-label">Game Code:</label>
-                    <input type="text" class="form-control" id="question_amt">
-                </div>
+                Would you like to view the scoreboard?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" onclick="window.location.href='/JudgeWaitingPage'" class=" btn btn-primary">View Scoreboard</button>
+                <button type="button" onclick="scoreBoard()" class=" btn btn-primary">View Scoreboard</button>
             </div>
         </div>
     </div>
 </div>
-
+ *@
 <!-- Next Question Modal -->
 <div class="modal fade" id="NextQuestionModal" tabindex="-1" aria-labelledby="NextQuestionModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -166,6 +166,37 @@
             },
             error: function (xhr, status, error) {
                 return "1";
+                console.log("Error: " + error.message);
+            }
+        });
+        setInterval(getGameData,5000)
+    }
+
+
+    function scoreBoard() {
+        const searchParams = new URLSearchParams(window.location.search);
+        var gameID = searchParams.get('id');
+        var gameCode = 0;
+
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/list",
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                JSON.stringify(response);
+                var games = response;
+                games.forEach(function (item) {
+                    if (item.id == gameID) {
+                        window.location.assign("/Scoreboard?gamecode=" + item.gamecode + "&id=" + item.id);
+                        gameCode = item.gamecode;
+                    }
+                });
+                console.log(gameCode);
+            },
+            error: function (xhr, status, error) {
+
                 console.log("Error: " + error.message);
             }
         });
