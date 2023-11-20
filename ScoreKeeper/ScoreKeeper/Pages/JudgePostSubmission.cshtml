@@ -142,7 +142,9 @@
                 var games = response;
                 games.forEach(function (item) {
                     if (item.id === parseInt(gameid)) {
-                        if (item.description != qnum && item.description != null) {
+                        if(item.description == "end"){
+                            window.location.assign("/GameOverPage?&teamname=" + teamname + "&gameid=" + gameid);
+                        }else if (item.description != qnum && item.description != null) {
                             window.location.assign("/JudgeSubmission?&teamname=" + teamname + "&gameid=" + gameid + "&Q=" + item.description);
                         }
                     }

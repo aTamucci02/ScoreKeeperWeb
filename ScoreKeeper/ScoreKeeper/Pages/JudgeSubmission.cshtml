@@ -298,11 +298,4 @@
         });
     }
 
-    function gameOver() {
-        const searchParams = new URLSearchParams(window.location.search);
-        var gameid = searchParams.get('gameid');
-        var teamname = searchParams.get('teamname');
-        window.location.assign("/GameOverPage?&teamname=" + teamname + "&gameid=" + gameid);
-
-    }
 </script>
