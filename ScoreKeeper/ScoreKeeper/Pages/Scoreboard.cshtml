@@ -119,6 +119,8 @@
     function displayLeaderboard() {
         var scoreExport = '';
         var rank = 1;
+        var numofties = 0;
+        var prevscore = 0;
         const searchParams = new URLSearchParams(window.location.search);
         var gamecode = searchParams.get('gamecode');
         var teams = null;
@@ -139,9 +141,22 @@
                     }
                 });
                 
+                // Sorts each team in descending order of score
                 teams.sort((team1, team2) => team2.score - team1.score);
                 teams.forEach(function (team) {
-                    scoreExport += '<tr><td>' + rank + '</td><td>' + team.teamname + '</td><td>' + team.score + '</td></tr>';
+                    // Checks if you're testing the first team
+                    if (rank == 1) {
+                        prevscore = team.score;
+                    } else {
+                        if (team.score == prevscore) {
+                            numofties += 1;
+                        } else {
+                            numofties = 0;
+                        }
+                        prevscore = team.score;
+                    }
+                    // Creates inner HTML for scoreboard with the rank corrected for ties
+                    scoreExport += '<tr><td>' + (rank - numofties) + '</td><td>' + team.teamname + '</td><td>' + team.score + '</td></tr>';
                     rank += 1;
                     console.log(scoreExport);
                 });

@@ -48,6 +48,9 @@
 <script>
     // Fetch the team's total score and placement against other teams
     function getData() {
+        var prevscore = null;
+        var count = 0;
+
         const searchParams = new URLSearchParams(window.location.search);
         var gameid = searchParams.get('gameid');
         var teamname = searchParams.get('teamname');
@@ -67,9 +70,18 @@
                         var teamScore, teamPlacement;
                         teams.sort((team1, team2) => team2.score - team1.score);
                         teams.forEach(function (item) {
+                            if (item.score == prevscore) {
+                                count += 1;
+                            } else {
+                                count = 0;
+                                prevscore = item.score;
+                            }
+                            
+                            
+                            // Calculate team placement based on the index of the team minus the number of teams with an identical score before it
                             if (item.teamname === teamname && item.game_id == gameid) {
                                 teamScore = item.score;
-                                teamPlacement = teams.indexOf(item) + 1;
+                                teamPlacement = teams.indexOf(item) + 1 - count;
                             }
                         });
                         // Insert the team's score and placement into the HTML
