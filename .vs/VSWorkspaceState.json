@@ -1,7 +1,15 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\ScoreKeeper",
+    "\\ScoreKeeper\\ScoreKeeper",
+    "\\ScoreKeeper\\ScoreKeeper\\bin",
+    "\\ScoreKeeper\\ScoreKeeper\\obj",
+    "\\ScoreKeeper\\ScoreKeeper\\Pages",
+    "\\ScoreKeeper\\ScoreKeeper\\Pages\\Shared",
+    "\\ScoreKeeper\\ScoreKeeper\\Properties",
+    "\\ScoreKeeper\\ScoreKeeper\\wwwroot"
   ],
-  "SelectedNode": "\\ScoreKeeper.sln",
+  "SelectedNode": "\\ScoreKeeper\\ScoreKeeper\\Pages\\Index.cshtml",
   "PreviewInSolutionExplorer": false
 }
