@@ -167,7 +167,7 @@
     }
 
     function getAns() {
-        displayPodium();
+        setInterval(displayPodium, 10000);
         const searchParams = new URLSearchParams(window.location.search);
         var ans = parseInt(searchParams.get('ans'));
         var teamname = searchParams.get('teamname');
@@ -186,7 +186,6 @@
     }
 
     function submitChange() {
-        console.log("submitting answer");
         var teamid;
         var questionid;
         var numcorrect = 0;
@@ -208,7 +207,6 @@
             data: {},
             crossDomain: true,
             success: function (response) {
-                console.log(response);
                 JSON.stringify(response);
                 var games = response;
                 games.forEach(function (item) {
