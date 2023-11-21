@@ -207,8 +207,8 @@
                             if(team.teamname === teamname){
                                 teamFound = true;
                                 $('#EnterTeamModal').modal('hide');
-
-                                if (item.description != "0" && item.description != null) {
+                                // Chekcs that the game has started and has not finished
+                                if (item.description != "0" && item.description != null && item.description != "end") {
                                     console.log("Checking question submission");
                                     isCurrentQuestionSubmitted(team.id, gameid, teamname);
                                 }else{
