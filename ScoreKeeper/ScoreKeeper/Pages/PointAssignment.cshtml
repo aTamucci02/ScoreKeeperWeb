@@ -76,6 +76,10 @@
                         <button type="button" class="button buttonmed" onclick="addInput()">
                             Add Question
                         </button>
+                        <button type="button" class="button buttonmed" onclick="deleteInput()">
+                            Delete Question
+                        </button>
+
                     </div>
                     <h1 class="display-4" id="page-title" >Create Questions </h1>
                     <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
@@ -184,11 +188,25 @@
             }
             
         }
-
         // Display the compiled list in the console (you can modify this part based on your needs)
         console.log("Compiled Inputs:", inputValues);
         return inputValues;
     }
+
+    function deleteInput() {
+        var inputContainers = document.getElementsByClassName("input-container");
+
+        // Check if there is at least one input container
+        if (inputContainers.length > 0) {
+            // Remove the last input container
+            var lastInputContainer = inputContainers[inputContainers.length - 1];
+            lastInputContainer.parentNode.removeChild(lastInputContainer);
+
+            // Decrement the counter when deleting a question
+            counter--;
+        }
+    }
+
 
     function startGame() {
         const searchParams = new URLSearchParams(window.location.search);
