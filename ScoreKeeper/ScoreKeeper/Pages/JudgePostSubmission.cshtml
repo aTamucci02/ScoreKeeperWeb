@@ -51,8 +51,16 @@
             </div>
         </div>
 
-        <div class="vert-container">
+        <div @* class="vert-container *@align="center">
             <div style ="flex-grow:1;">The next question will begin shortly</div>
+
+            <br />
+
+            <div align="center" id="output-container">
+            </div>
+
+            <br />
+            <br />
             <div class="request-change">
                 <div>Want to change your submission?</div>
                 <div>
@@ -159,6 +167,7 @@
     }
 
     function getAns() {
+        setInterval(displayPodium, 10000);
         const searchParams = new URLSearchParams(window.location.search);
         var ans = parseInt(searchParams.get('ans'));
         var teamname = searchParams.get('teamname');
@@ -177,7 +186,6 @@
     }
 
     function submitChange() {
-        console.log("submitting answer");
         var teamid;
         var questionid;
         var numcorrect = 0;
@@ -199,7 +207,6 @@
             data: {},
             crossDomain: true,
             success: function (response) {
-                console.log(response);
                 JSON.stringify(response);
                 var games = response;
                 games.forEach(function (item) {
@@ -357,4 +364,48 @@
 
         });
     }
+
+    function displayPodium(){
+        const searchParams = new URLSearchParams(window.location.search);
+        var gameID = searchParams.get('gameid');
+        var teams;
+        const outputContainer = document.getElementById('output-container')
+
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/list",
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                JSON.stringify(response);
+                var games = response;
+                games.forEach(function (game) {
+                    if (game.id == gameID) {
+                        teams = game.teams;
+                        teams.sort((team1, team2) => team2.score - team1.score);
+                    }
+                });
+                var podiumException=6;
+                if (teams.length < 5) {
+                    podiumException = teams.length;
+                }
+                console.log(podiumException);
+                for (let i = 1; i < podiumException+1; i++) {
+                    const paragraph = document.createElement('p');
+                    
+                    paragraph.textContent =""+ i + "." + teams[i-1].teamname ;
+
+                    outputContainer.appendChild(paragraph);
+                }
+
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
+
+    }
+
 </script>
