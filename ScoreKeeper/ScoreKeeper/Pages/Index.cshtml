@@ -25,6 +25,9 @@
                 <button type="button" class="button buttonsmall" data-bs-toggle="modal" data-bs-target="#StartGameModal">
                     Start Game
                 </button>
+                <button type="button" class="button buttonsmall" data-bs-toggle="modal" data-bs-target="#RestartGameModal">
+                    Restart Game
+                </button>
                 </div>
 
                 <h1 class="display-4">Home Page</h1>
@@ -117,6 +120,36 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" onclick="StartGame();" class=" btn btn-primary">Start</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Restart Game Modal -->
+<div class="modal fade" id="RestartGameModal" tabindex="-1" aria-labelledby="RestartGameModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="RestartGameModalLabel">Restart Game to Question 1</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="game-passcode" class="col-form-label">
+                        Enter the title of the game you would like to restart. Game must be active to restart
+                    </label>
+                    <input type="text" class="form-control" id="gameTitle" placeholder="Game Title">
+                    <div id="errorText" style="color: red;"></div>
+                </div>
+                <div class="col-sm-4">
+                    <small id="gameNameHelp" class="text-danger">
+                    </small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" onclick="restartGame();" class=" btn btn-primary">Start</button>
             </div>
         </div>
     </div>
@@ -383,6 +416,53 @@
                 console.log("Error: " + error.message);
             }
         });
+    }
+    function restartGame(){
+        var title = $("#RestartGameModal #gameTitle").val().trim();
+        var id = getGameId(title);
+        console.log(id)
+            $.ajax({
+                url: "https://csdev.samford.edu/gamesapi/games/edit/" + id,
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    "description": "0",
+                },
+                crossDomain: true,
+                success: function (response) {
+                    window.location.assign("/AdminWaiting?id=" + id + "&gamecode=" + item.title);
+
+                },
+                error: function (xhr, status, error) {
+
+                    console.log("Error: " + error.message);
+                }
+            });
+    }
+    function getGameId(title) {
+        var gameId = 0;
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/list",
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                JSON.stringify(response);
+                var games = response;
+                games.forEach(function (item) {
+                    if (item.title == title) {
+                        gameId = item.id
+                    }
+                });
+                return gameId;
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
+
     }
 
 </script>
