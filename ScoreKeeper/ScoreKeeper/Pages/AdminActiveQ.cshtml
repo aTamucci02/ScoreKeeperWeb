@@ -62,10 +62,11 @@
                 <div class="header-container">
                     <div>
                         <!--May add this back later. Will need an admin scorebaord page -->
-@*                      <button type="button" class="button buttonmed" data-bs-toggle="modal" data-bs-target="#ScoreboardModal">
-                            Scoreboard
-                        </button>
- *@                    </div>
+                        @*                      <button type="button" class="button buttonmed" data-bs-toggle="modal" data-bs-target="#ScoreboardModal">
+                                Scoreboard
+                            </button>
+                        *@
+                    </div>
                     <h1 class="display-4" id="QuestionNumber"></h1>
                     <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
                 </div>
@@ -92,23 +93,23 @@
 <!--Main section with title and main buttons-->
 <!-- Scoreboard Modal. Decided we do not want a scoreboard option on this page -->
 @* <div class="modal fade" id="ScoreboardModal" tabindex="-1" aria-labelledby="ScoreboardLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="ScoreboardLabel">View Scoreboard</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Would you like to view the scoreboard?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" onclick="scoreBoard()" class=" btn btn-primary">View Scoreboard</button>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ScoreboardLabel">View Scoreboard</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Would you like to view the scoreboard?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" onclick="scoreBoard()" class=" btn btn-primary">View Scoreboard</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
- *@
+*@
 <!-- Next Question Modal -->
 <div class="modal fade" id="NextQuestionModal" tabindex="-1" aria-labelledby="NextQuestionModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -119,14 +120,13 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" onclick="window.location.href='/AdminActiveQ'" class=" btn btn-primary">Confirm</button>
+                <button type="button" onclick="nextQuestion()" class=" btn btn-primary">Confirm</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-
     function getGameData() {
         const searchParams = new URLSearchParams(window.location.search);
         var gameID = searchParams.get('id');
@@ -145,6 +145,7 @@
                 games.forEach(function (item) {
                     if (gameID == item.id) {
                         var teams = item.teams;
+                        var questions = item.questions;
                         var teamcount = 0;
                         teams.forEach(function (team) {
                             teamcount++;
@@ -162,6 +163,12 @@
                         });
                     }
 
+                    if (questions.length == questionNum) {
+                        let element = document.getElementById("NextQuestion");
+                        let hidden = element.getAttribute("hidden");
+
+                        element.setAttribute("hidden", "hidden");
+                    }
                 });
             },
             error: function (xhr, status, error) {
@@ -169,9 +176,8 @@
                 console.log("Error: " + error.message);
             }
         });
-        setInterval(getGameData,5000)
+        setInterval(getGameData, 5000)
     }
-
 
     function scoreBoard() {
         const searchParams = new URLSearchParams(window.location.search);
@@ -194,6 +200,38 @@
                     }
                 });
                 console.log(gameCode);
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
+    }
+
+
+    function nextQuestion() {
+        const searchParams = new URLSearchParams(window.location.search);
+        var id = searchParams.get('id');
+        var q = searchParams.get('Q');
+        var qAdd = 0;
+        var qAdd = Number(q) + 1;
+        console.log(id);
+        console.log(q);
+        console.log(qAdd);
+        
+        var url = window.location.href;
+        console.log(url);
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/edit/" + id,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                "description": qAdd,
+            },
+            crossDomain: true,
+            success: function (response) {
+                window.location.assign("/AdminActiveQ?id=" + id + "&" + "Q=" + qAdd);
+
             },
             error: function (xhr, status, error) {
 
