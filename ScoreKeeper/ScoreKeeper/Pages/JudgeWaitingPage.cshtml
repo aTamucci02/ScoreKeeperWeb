@@ -5,16 +5,16 @@
 }
 <head>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    
     <style>
-        
-
         .main-window {
             background-color: #102F3B;
         }
     </style>
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
-            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-            crossorigin="anonymous"> </script>
+
 </head>
 
 <body onload="getGameData();">
@@ -28,6 +28,7 @@
                     <button type="button" class="button buttonmed" data-bs-toggle="modal" data-bs-target="#HomeButtonModal">
                         Home
                     </button>
+                    
                 </div>
                 <h1 class="display-4" id="headerTitle"></h1>
                 <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
@@ -44,6 +45,19 @@
         <p>
             The game will start when the game administrator is ready to begin.
         </p>
+        
+        <div>
+            <button type="button" class="button buttonmed" id="add-button" data-bs-toggle="modal" data-bs-target="#AddTeamModal">
+                Add Team
+            </button>
+            <button type="button" class="button buttonmed" id="remove-button" data-bs-toggle="modal" data-bs-target="#RemoveTeamModal">
+                Remove Team
+            </button>
+            <button type="button" class="button buttonmed" id="change-button" data-bs-toggle="modal" data-bs-target="#ChangeTeamModal">
+                Change Team
+            </button>
+        </div>
+        
     </div>
 
 
@@ -90,14 +104,98 @@
                     <label for="team-name" class="col-form-label">Enter which team you are judging:</label>
                     <input type="text" class="form-control" id="team-name" placeholder="Team Name">
                 </div>
-                <div class="col-sm-4" id="team-error">
-                    <small id="teamHelp" class="text-danger">
+                <div class="col-sm-4" id="team-enter-error">
+                    <small id="teamEnterHelp" class="text-danger">
                     </small>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="window.location.href='/Index'">Cancel</button>
-                <button type="button" onclick="submitTeam();" class="btn btn-primary">Confirm</button>
+                <button type="button" onclick="submitTeam('enter');" class="btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Team Modal -->
+<div class="modal fade" id="ChangeTeamModal" tabindex="-1" aria-labelledby="ChangeTeamModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal">
+            <!-- Add the 'modal' class here -->
+            <div class="modal-header d-flex justify-content-center position-relative">
+                <h1 class="modal-title fs-5" id="ChangeTeamModalLabel">Enter Team</h1>
+                <div class="logo position-absolute end-0" style="height: 90%;"></div>
+            </div>
+            <div class="modal-body text-center">
+                <!-- Added text in the center of the window -->
+                <div class="form-group">
+                    <label for="team-name" class="col-form-label">Enter which team you are judging:</label>
+                    <input type="text" class="form-control" id="team-name" placeholder="Team Name">
+                </div>
+                <div class="col-sm-4" id="team-change-error">
+                    <small id="teamChangeHelp" class="text-danger">
+                    </small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" onclick="submitTeam('change');" class="btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Team Modal -->
+<div class="modal fade" id="AddTeamModal" tabindex="-1" aria-labelledby="AddTeamModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal">
+            <!-- Add the 'modal' class here -->
+            <div class="modal-header d-flex justify-content-center position-relative">
+                <h1 class="modal-title fs-5" id="AddTeamModalLabel">Enter Team</h1>
+                <div class="logo position-absolute end-0" style="height: 90%;"></div>
+            </div>
+            <div class="modal-body text-center">
+                <!-- Added text in the center of the window -->
+                <div class="form-group">
+                    <label for="team-name" class="col-form-label">Enter the additional team you are judging:</label>
+                    <input type="text" class="form-control" id="team-name" placeholder="Team Name">
+                </div>
+                <div class="col-sm-8" id="team-add-error">
+                    <small id="teamAddHelp" class="text-danger">
+                    </small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" onclick="submitTeam('add');" class="btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Remove Team Modal -->
+<div class="modal fade" id="RemoveTeamModal" tabindex="-1" aria-labelledby="RemoveTeamModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content modal">
+            <!-- Add the 'modal' class here -->
+            <div class="modal-header d-flex justify-content-center position-relative">
+                <h1 class="modal-title fs-5" id="RemoveTeamModalLabel">Remove Team</h1>
+                <div class="logo position-absolute end-0" style="height: 90%;"></div>
+            </div>
+            <div class="modal-body text-center">
+                <!-- Added text in the center of the window -->
+                <div class="form-group">
+                    <label for="team-name" class="col-form-label">Enter which team you would like to remove:</label>
+                    <input type="text" class="form-control" id="team-name" placeholder="Team Name">
+                </div>
+                <div class="col-sm-12" id="team-remove-error" style="text-align: left;">
+                    <small id="teamRemoveHelp" class="text-warning">Note: This only removes the team from the list of teams you are judging. If you entered a team that is not competing, please contact the game administrator
+                    </small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" onclick="submitTeam('remove');" class="btn btn-primary">Confirm</button>
             </div>
         </div>
     </div>
@@ -107,12 +205,13 @@
     const searchParams = new URLSearchParams(window.location.search);
     var gamecode = searchParams.get('gamecode');
     var teamname = searchParams.get('teamname');
+    var teamname2 = searchParams.get('teamname2');
     var gameid = searchParams.get('gameid');
     var currentqid = -1;
 
     // Sets the title of the page
     function getGameData() {
-        
+
         // Check the url to see if the judge is assigned a team. If not, it prompts the judge to enter a team
         if (teamname == null) {
             $.ajax({
@@ -134,17 +233,16 @@
 
                 },
                 error: function (xhr, status, error) {
-
                     console.log("Error: " + error.message);
                 }
             });
-
 
         }else{
             updatePageInfo();
             setInterval(updatePageInfo, 5000);
         }
 
+        // Sets the text on the page based on relevant game info
         function updatePageInfo(){
             console.log("Attempting to update page info. gameid: " + gameid + " teamname: " + teamname);
             $.ajax({
@@ -159,7 +257,23 @@
                     games.forEach(function (item) {
                         if (item.id === parseInt(gameid)) {
                             document.getElementById('headerTitle').textContent = item.title;
-                            document.getElementById('judging-id').textContent = "You are currently judging: " + teamname;
+                            if (teamname2) {
+                                var judgingteamscontent = "You are currently judging: " + teamname;
+                                var allNames = false;
+                                var counter = 2;
+                                while (!allNames) {
+                                    var currentTeamParam = searchParams.get('teamname' + counter);
+                                    if (currentTeamParam) {
+                                        judgingteamscontent += ", " + currentTeamParam;
+                                        counter += 1;
+                                    } else {
+                                        allNames = true;
+                                    }
+                                }
+                                document.getElementById('judging-id').textContent = judgingteamscontent;
+                            } else {
+                                document.getElementById('judging-id').textContent = "You are currently judging: " + teamname;
+                            }
                             document.getElementById('team-total').textContent = "You’ve joined the game. There are " + item.teams.length + " teams in this lobby.";
                             if (item.description == "end") {
                                 window.location.assign("/GameOverPage?&teamname=" + teamname + "&gameid=" + gameid);
@@ -175,63 +289,132 @@
                     console.log("Error: " + error.message);
                 }
             });
+
+            // Removes change team button if the judge is judging more than 1 team, removes remove team button if judge is judging only 1 team
+            if(teamname2){
+                document.getElementById('change-button').style.display = "none";
+            }else{
+                document.getElementById('remove-button').style.display = "none";
+            }
         
         }
     }
 
-
     function enterTeamNameModal() {
-        var teamModal = new bootstrap.Modal(document.getElementById('EnterTeamModal'), {});
+        var teamModal = new bootstrap.Modal(document.getElementById('EnterTeamModal'), { backdrop: "static" });
         teamModal.show();
     }
 
-    function submitTeam(){
+    function submitTeam(operation){
         const searchParams = new URLSearchParams(window.location.search);
         var gamecode = searchParams.get('gamecode');
-        var teamname = $("#EnterTeamModal #team-name").val().trim();
+        var teamname;
         var gameid = -1;
         var teamFound = false;
 
-        $.ajax({
-            url: "https://csdev.samford.edu/gamesapi/games/list",
-            type: 'GET',
-            dataType: 'json',
-            data: {},
-            crossDomain: true,
-            success: function (response) {
-                JSON.stringify(response);
-                var games = response;
-                games.forEach(function (item) {
-                    if (item.gamecode === gamecode) {
-                        gameid = item.id;
-                        item.teams.forEach(function (team) {
-                            if(team.teamname === teamname){
-                                teamFound = true;
-                                $('#EnterTeamModal').modal('hide');
-
-                                if (item.description != "0" && item.description != null) {
-                                    console.log("Checking question submission");
-                                    isCurrentQuestionSubmitted(team.id, gameid, teamname);
-                                }else{
-                                    window.location.assign("/JudgeWaitingPage?gamecode=" + gamecode + "&teamname=" + teamname + "&gameid=" + gameid);
-                                }
-                                
-                            }
-                        });
-                        if(!teamFound){
-                            createTeam(gameid, teamname, gamecode);
-                        }
-                        
-                    }
-                });
-
-            },
-            error: function (xhr, status, error) {
-                console.log("Error: " + error.message);
+        // Gets the number of teams currently being judged
+        var numteams = 0;
+        var allTeamsRecorded = false;
+        var teams = [];
+        var testname;
+        while (!allTeamsRecorded) {
+            if (numteams == 0) {
+                testname = searchParams.get('teamname');
+                if(testname){
+                    numteams += 1;
+                    teams.push(testname);
+                }else{
+                    allTeamsRecorded = true;
+                }
+            } else {
+                testname = searchParams.get('teamname' + (numteams + 1));
+                if (testname) {
+                    numteams += 1;
+                    teams.push(testname);
+                } else {
+                    allTeamsRecorded = true;
+                }
             }
-        });
-        
+        }
 
+
+        // Pulls team name from appropriate modal
+        var validated = true;
+        switch (operation) {
+            case "enter":
+                teamname = $("#EnterTeamModal #team-name").val().trim();
+                teams.push(teamname);
+                break;
+            case "change":
+                teamname = $("#ChangeTeamModal #team-name").val().trim();
+                teams.push(teamname);
+                break;
+            case "add":
+                teamname = $("#AddTeamModal #team-name").val().trim();
+                if (teamname == searchParams.get('teamname')) {
+                    document.getElementById("teamAddHelp").textContent = 'Please enter a new team, not any current teams';
+                    validated = false;
+                } else {
+                    teams.push(teamname);
+                    numteams += 1;
+                }
+                break;
+            case 'remove':
+                teamname = $("#RemoveTeamModal #team-name").val().trim();
+                console.log("Teams: " + teams + "\n Teamname:" + teamname);
+                if (teams.includes(teamname)) {
+                    teams.splice(teams.indexOf(teamname), 1);
+                    numteams -= 1;
+                    teamname = teams[0];
+                    console.log(teams);
+                } else {
+                    document.getElementById("teamRemoveHelp").setAttribute("class", "text-danger");
+                    document.getElementById("teamRemoveHelp").textContent = "Please enter a team you're currently judging";
+                    validated = false;
+                }
+                break;
+        }
+        if (validated) {
+            $.ajax({
+                url: "https://csdev.samford.edu/gamesapi/games/list",
+                type: 'GET',
+                dataType: 'json',
+                data: {},
+                crossDomain: true,
+                success: function (response) {
+                    JSON.stringify(response);
+                    var games = response;
+                    games.forEach(function (item) {
+                        if (item.gamecode === gamecode) {
+                            gameid = item.id;
+                            item.teams.forEach(function (team) {
+                                if(team.teamname === teamname){
+                                    teamFound = true;
+                                    $('#EnterTeamModal').modal('hide').data('bs.modal', null);
+                                    // Checks that the game has started and has not finished
+                                    if (item.description != "0" && item.description != null && item.description != "end") {
+                                        console.log("Checking question submission");
+                                        isCurrentQuestionSubmitted(team.id, gameid, teamname);
+                                    }else{
+                                        console.log(teams);
+                                        createURL(numteams, gamecode, teams, gameid);
+                                    }
+                                
+                                }
+                            });
+                            if(!teamFound){
+                                createTeam(gameid, teamname, gamecode);
+                            }
+                        
+                        }
+                    });
+
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error: " + error.message);
+                }
+            });
+        }
     }
 
     function createTeam(gameid, teamname, gamecode){
@@ -249,14 +432,40 @@
             },
             crossDomain: true,
             success: function (response) {
-                $('#EnterTeamModal').modal('hide');
+                $('#EnterTeamModal').modal('hide').data('bs.modal', null);
                 window.location.assign("/JudgeWaitingPage?gamecode=" + gamecode + "&teamname=" + teamname + "&gameid=" + gameid);
             },
             error: function (xhr, status, error) {
                 console.log("Error: " + error.message);
-                document.getElementById("teamHelp").textContent = 'Error creating team';
+                document.getElementById("teamEnterHelp").textContent = 'Error creating team';
             }
         });
+    }
+
+    function addTeam(){
+
+    }
+
+    function removeTeam() {
+
+    }
+    
+    // Makes URL based on team names and number of teams
+    function createURL(numteams, gamecode, teams, gameid){
+        if (numteams <= 1) {
+            window.location.assign("/JudgeWaitingPage?gamecode=" + gamecode + "&teamname=" + teams[0] + "&gameid=" + gameid);
+        } else {
+            var redirect = "/JudgeWaitingPage?gamecode=" + gamecode + "&teamname=" + teams[0];
+            var counter = 2;
+            teams.splice(0,1);
+            teams.forEach(function (team) {
+                redirect += "&teamname" + counter + "=" + team;
+                counter += 1;
+            });
+            redirect += "&gameid=" + gameid;
+            window.location.assign(redirect);
+        }
+        
     }
 
     // Checks to see if the number of answers a team has corresponds to the number of questions - sends to post-submission page, otherwise sends to submission page
@@ -307,7 +516,8 @@
         });
         
     }
-// Gets the question id to the most recent question for the post-submission page
+    
+    // Gets the question id to the most recent question for the post-submission page
     function getCurrentQuestion(gameid, callback) {
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/games/list/" + gameid,
