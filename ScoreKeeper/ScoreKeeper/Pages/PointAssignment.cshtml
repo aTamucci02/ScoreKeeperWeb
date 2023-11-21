@@ -47,6 +47,11 @@
                 justify-content: space-around;
                 align-items: center;
             }
+        .input-container{
+            color: white;
+            padding: 10px;
+            row-gap: 10px;
+        }
     </style>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"
             integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
@@ -80,11 +85,13 @@
         <div align="center" style="color:white; padding:10px;">
         Enter the amount of points you'd like each question to be worth
         </div>
-        <div align="center" style = "color:white; padding:10px;" id="input-container">
+        <div align="center" id="input-container">
             <div class="input_container">
                 <label for="dynamicInput1">Question 1:</label>
-                <input type="number" name="dynamicInput[]" id="dynamicInput1"/>
+                <input type="number" name="dynamicInput[]" id="dynamicInput1" />
+                <div style="height: 10px;"></div>
             </div>
+            
         </div>
 
         <button type="button" class="button buttonmed" style="position: absolute; bottom: 10px; right: 10px;" data-bs-toggle="modal" data-bs-target="#StartGameModal">
@@ -93,10 +100,7 @@
 
     </div>
 
-
-    <button type="button" class="button buttonmed" style="position: absolute; bottom: 10px; right: 10px;" data-bs-toggle="modal" data-bs-target="#StartGameModal">
-        Start Game
-    </button>
+    
 </body>
 
 
@@ -135,12 +139,16 @@
 <script>
     var counter = 1;
     function addInput() {
+        // Removes any previous add points error
+        if (document.getElementById("add-points")) { document.getElementById("add-points").remove(); }
+
         // Increment the counter for labeling questions
         counter++;
 
         // Create a new label element
         var newLabel = document.createElement("label");
         newLabel.setAttribute("for", "dynamicInput" + counter);
+        newLabel.setAttribute("style", "padding-right: 4px;");
         newLabel.textContent = "Question " + counter + ":";
 
         // Create a new input element
@@ -168,7 +176,13 @@
 
         // Loop through each input element and add its value to the array
         for (var i = 0; i < inputElements.length; i++) {
-            inputValues.push(inputElements[i].value);
+            console.log("value: " + inputElements[i].value);
+            if (inputElements[i].value) {
+                inputValues.push(inputElements[i].value);
+            } else {
+                return -1;
+            }
+            
         }
 
         // Display the compiled list in the console (you can modify this part based on your needs)
@@ -180,54 +194,73 @@
         const searchParams = new URLSearchParams(window.location.search);
         var id = searchParams.get('id');
         console.log(id);
-        addQuestions(id);
-
-        var url = window.location.href;
-        console.log(url);
-        $.ajax({
-            url: "https://csdev.samford.edu/gamesapi/games/edit/" + id,
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                "description": "1",
-            },
-            crossDomain: true,
-            success: function (response) {
-                window.location.assign("/AdminActiveQ?id=" + id + "&Q=" + "1");
-
-            },
-            error: function (xhr, status, error) {
-
-                console.log("Error: " + error.message);
-            }
-        });
-
-    }
-
-    function addQuestions(gameID) {
-        var count = 1;
-        var pointList = compileInputs();
-        pointList.forEach(function (item) {
+        if(addQuestions(id)){
+            var url = window.location.href;
+            console.log(url);
             $.ajax({
-                url: "https://csdev.samford.edu/gamesapi/questions/add",
+                url: "https://csdev.samford.edu/gamesapi/games/edit/" + id,
                 type: 'POST',
                 dataType: 'json',
                 data: {
-                    "game_id": gameID,
-                    "title": count,
-                    "pointscorrect": item,
+                    "description": "1",
                 },
                 crossDomain: true,
                 success: function (response) {
-                    console.log(response);
+                    window.location.assign("/AdminActiveQ?id=" + id + "&Q=" + "1");
+
                 },
                 error: function (xhr, status, error) {
 
                     console.log("Error: " + error.message);
                 }
             });
-            count++;
-        });
+
+        }
+
+
+    }
+
+    function addQuestions(gameID) {
+        var count = 1;
+        var pointList = compileInputs();
+        if (pointList == -1) {
+            // Create a new warning label
+            var warningDiv = document.createElement("div");
+            warningDiv.setAttribute("class", "alert alert-danger");
+            warningDiv.setAttribute("style", "width: fit-content;");
+            warningDiv.setAttribute("role", "warning");
+            warningDiv.setAttribute("id", "add-points");
+            warningDiv.innerText = "Please enter points for every question";
+
+            // Append the new input container to the main container
+            document.getElementById("input-container").appendChild(warningDiv);
+            $('#StartGameModal').modal('hide');
+            return false;
+        } else {
+            pointList.forEach(function (item) {
+                $.ajax({
+                    url: "https://csdev.samford.edu/gamesapi/questions/add",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        "game_id": gameID,
+                        "title": count,
+                        "pointscorrect": item,
+                    },
+                    crossDomain: true,
+                    success: function (response) {
+                       
+                        console.log(response);
+                    },
+                    error: function (xhr, status, error) {
+                        
+                        console.log("Error: " + error.message);
+                    }
+                });
+                count++;
+            });
+            return true;
+        }
     }
 
 </script>
