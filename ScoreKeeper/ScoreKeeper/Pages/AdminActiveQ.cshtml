@@ -84,8 +84,12 @@
     </div>
 
 
-    <button type="button" class="button buttonmed" style="position: absolute; bottom: 10px; right: 10px;" data-bs-toggle="modal" data-bs-target="#NextQuestionModal">
+    <button id="nextQuestionButton" type="button" class="button buttonmed" style="position: absolute; bottom: 10px; right: 10px;" data-bs-toggle="modal" data-bs-target="#NextQuestionModal">
         Next Question
+    </button>
+
+    <button id="endGameButton" type="button" class="button buttonmed" style="display: none;" data-bs-toggle="modal" data-bs-target="#EndGameModal">
+        End Game
     </button>
 
 </body>
@@ -126,12 +130,29 @@
     </div>
 </div>
 
+<!-- End Game Modal -->
+<div class="modal fade" id="EndGameModal" tabindex="-1" aria-labelledby="EndGameModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="EndGameModalLabel">Are you sure you want to end the game?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" onclick="endGame()" class=" btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     function getGameData() {
         const searchParams = new URLSearchParams(window.location.search);
         var gameID = searchParams.get('id');
         var questionNum = searchParams.get('Q');
         var game;
+        var questions;
 
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/games/list",
@@ -145,11 +166,17 @@
                 games.forEach(function (item) {
                     if (gameID == item.id) {
                         var teams = item.teams;
-                        var questions = item.questions;
+                        questions = item.questions;
                         var teamcount = 0;
                         teams.forEach(function (team) {
                             teamcount++;
                         });
+                        if (questions.length == questionNum) {
+                            var Nextbutton = document.getElementById('nextQuestionButton');
+                            var endButton = document.getElementById('endGameButton');
+                            Nextbutton.style.display = 'none';
+                            endButton.style.display = 'block';
+                        }
                         item.questions.forEach(function (question) {
                             if (questionNum == question.title) {
                                 document.getElementById('QuestionNumber').textContent = "Question " + questionNum;
@@ -163,12 +190,6 @@
                         });
                     }
 
-                    if (questions.length == questionNum) {
-                        let element = document.getElementById("NextQuestion");
-                        let hidden = element.getAttribute("hidden");
-
-                        element.setAttribute("hidden", "hidden");
-                    }
                 });
             },
             error: function (xhr, status, error) {
@@ -218,7 +239,7 @@
         console.log(id);
         console.log(q);
         console.log(qAdd);
-        
+
         var url = window.location.href;
         console.log(url);
         $.ajax({
@@ -239,4 +260,9 @@
             }
         });
     }
+
+    function endGame() {
+
+    }
+
 </script>
