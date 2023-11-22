@@ -139,6 +139,7 @@
     function getGameData() {
         const searchParams = new URLSearchParams(window.location.search);
         var title = searchParams.get('gamecode');
+        var gameID = 0;
 
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/games/list",
@@ -151,8 +152,14 @@
                 var games = response;
                 games.forEach(function (item) {
                     if (item.title === title) {
+                        gameID = item.id;
                         document.getElementById('page-title').textContent = item.title;
-                        loadTeams(item.id);
+                        if (item.teams.length > 0) {
+                            loadTeams(gameID);
+                        }
+                        else{
+                            document.getElementById('div1').textContent = "No teams in the lobby";
+                        }
                     }
                 });
 
@@ -162,8 +169,7 @@
                 console.log("Error: " + error.message);
             }
         });
-        getGameData();
-        setInterval(loadTeams, 5000);
+        setInterval(getGameData, 5000);
 
     }
     function loadTeams(gameID) {
@@ -188,7 +194,6 @@
                     }
 
                 });
-                // console.log(teamList);
                 document.getElementById('div1').textContent = teamList;
 
             },
@@ -202,10 +207,8 @@
     function startGame(){
         const searchParams = new URLSearchParams(window.location.search);
         var id = searchParams.get('id');
-        console.log(id);
 
         var url =window.location.href;
-        console.log(url);
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/games/edit/"+id,
             type: 'POST',
