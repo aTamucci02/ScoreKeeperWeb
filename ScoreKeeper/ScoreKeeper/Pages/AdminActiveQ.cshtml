@@ -62,10 +62,11 @@
                 <div class="header-container">
                     <div>
                         <!--May add this back later. Will need an admin scorebaord page -->
-@*                      <button type="button" class="button buttonmed" data-bs-toggle="modal" data-bs-target="#ScoreboardModal">
-                            Scoreboard
-                        </button>
- *@                    </div>
+                        @*                      <button type="button" class="button buttonmed" data-bs-toggle="modal" data-bs-target="#ScoreboardModal">
+                                Scoreboard
+                            </button>
+                        *@
+                    </div>
                     <h1 class="display-4" id="QuestionNumber"></h1>
                     <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
                 </div>
@@ -83,8 +84,12 @@
     </div>
 
 
-    <button type="button" class="button buttonmed" style="position: absolute; bottom: 10px; right: 10px;" data-bs-toggle="modal" data-bs-target="#NextQuestionModal">
+    <button id="nextQuestionButton" type="button" class="button buttonmed" style="position: absolute; bottom: 10px; right: 10px;" data-bs-toggle="modal" data-bs-target="#NextQuestionModal">
         Next Question
+    </button>
+
+    <button id="endGameButton" type="button" class="button buttonmed" style="position: absolute; bottom: 10px; right: 10px; display:none" data-bs-toggle="modal" data-bs-target="#EndGameModal">
+        End Game
     </button>
 
 </body>
@@ -92,23 +97,23 @@
 <!--Main section with title and main buttons-->
 <!-- Scoreboard Modal. Decided we do not want a scoreboard option on this page -->
 @* <div class="modal fade" id="ScoreboardModal" tabindex="-1" aria-labelledby="ScoreboardLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="ScoreboardLabel">View Scoreboard</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Would you like to view the scoreboard?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" onclick="scoreBoard()" class=" btn btn-primary">View Scoreboard</button>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ScoreboardLabel">View Scoreboard</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Would you like to view the scoreboard?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" onclick="scoreBoard()" class=" btn btn-primary">View Scoreboard</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
- *@
+*@
 <!-- Next Question Modal -->
 <div class="modal fade" id="NextQuestionModal" tabindex="-1" aria-labelledby="NextQuestionModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -119,19 +124,38 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" onclick="window.location.href='/AdminActiveQ'" class=" btn btn-primary">Confirm</button>
+                <button type="button" onclick="nextQuestion();" class=" btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- End Game Modal -->
+<div class="modal fade" id="EndGameModal" tabindex="-1" aria-labelledby="EndGameModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="EndGameModalLabel">Are you sure you want to end the game?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                You will be sent to the scoreboard.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" onclick="endGame();" class=" btn btn-primary">Confirm</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-
     function getGameData() {
         const searchParams = new URLSearchParams(window.location.search);
         var gameID = searchParams.get('id');
         var questionNum = searchParams.get('Q');
         var game;
+        var questions;
 
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/games/list",
@@ -145,10 +169,17 @@
                 games.forEach(function (item) {
                     if (gameID == item.id) {
                         var teams = item.teams;
+                        questions = item.questions;
                         var teamcount = 0;
                         teams.forEach(function (team) {
                             teamcount++;
                         });
+                        if (questions.length == questionNum) {
+                            var Nextbutton = document.getElementById('nextQuestionButton');
+                            var endGameButton = document.getElementById('endGameButton');
+                            Nextbutton.style.display = 'none';
+                            endGameButton.style.display = 'block';
+                        }
                         item.questions.forEach(function (question) {
                             if (questionNum == question.title) {
                                 document.getElementById('QuestionNumber').textContent = "Question " + questionNum;
@@ -169,9 +200,8 @@
                 console.log("Error: " + error.message);
             }
         });
-        setInterval(getGameData,5000)
+        setInterval(getGameData, 5000)
     }
-
 
     function scoreBoard() {
         const searchParams = new URLSearchParams(window.location.search);
@@ -201,4 +231,90 @@
             }
         });
     }
-</script>
+
+
+    function nextQuestion() {
+        const searchParams = new URLSearchParams(window.location.search);
+        var id = searchParams.get('id');
+        var q = searchParams.get('Q');
+        var qAdd = 0;
+        var qAdd = Number(q) + 1;
+        console.log(id);
+        console.log(q);
+        console.log(qAdd);
+
+        var url = window.location.href;
+        console.log(url);
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/edit/" + id,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                "description": qAdd,
+            },
+            crossDomain: true,
+            success: function (response) {
+                window.location.assign("/AdminActiveQ?id=" + id + "&" + "Q=" + qAdd);
+
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
+    }
+
+    function endGame() {
+        const searchParams = new URLSearchParams(window.location.search);
+        var id = searchParams.get('id');
+        var gameCode = getGameID(id);
+        console.log(id);
+        console.log(gameCode);
+
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/edit/" + id,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                "description": "end",
+            },
+            crossDomain: true,
+            success: function (response) {
+                window.location.assign("/scoreboard?&gamecode=" + gameCode);
+
+            },
+            error: function (xhr, status, error) {
+                console.log("Error: " + error.message);
+
+            }
+        });
+    }
+
+    function getGameID(title) {
+        const searchParams = new URLSearchParams(window.location.search);
+        var id = searchParams.get('id');
+        var gameCode = 0;
+
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/list",
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                JSON.stringify(response);
+                var games = response;
+                games.forEach(function (item) {
+                    if (item.id === id) {
+                        gameCode = item.gameCode;
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log("Error: " + error.message);
+            }
+        });
+        return gameCode;
+    }
+    
+    </script>
