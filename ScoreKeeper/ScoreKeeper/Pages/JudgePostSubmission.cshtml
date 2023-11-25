@@ -53,6 +53,7 @@
 
         <div @* class="vert-container *@align="center">
             <div style ="flex-grow:1;">The next question will begin shortly</div>
+            <div id="answersSub"></div>
 
             <br />
 
@@ -167,7 +168,7 @@
     }
 
     function getAns() {
-        setInterval(displayPodium, 10000);
+        displayPodium();
         const searchParams = new URLSearchParams(window.location.search);
         var ans = parseInt(searchParams.get('ans'));
         var teamname = searchParams.get('teamname');
@@ -368,6 +369,7 @@
     function displayPodium(){
         const searchParams = new URLSearchParams(window.location.search);
         var gameID = searchParams.get('gameid');
+        var qnum = searchParams.get('Q');
         var teams;
         const outputContainer = document.getElementById('output-container')
 
@@ -384,6 +386,12 @@
                     if (game.id == gameID) {
                         teams = game.teams;
                         teams.sort((team1, team2) => team2.score - team1.score);
+                        game.questions.forEach(function (question) {
+                            if (question.title == qnum) {
+                                document.getElementById("answersSub").textContent = "Answers Submitted: " + question.answers.length + " of " + game.teams.length;
+
+                            }
+                        });
                     }
                 });
                 var podiumException=6;
