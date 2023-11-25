@@ -88,7 +88,7 @@
         Next Question
     </button>
 
-    <button id="endGameButton" type="button" class="button buttonmed" style="display: none;" data-bs-toggle="modal" data-bs-target="#EndGameModal">
+    <button id="endGameButton" type="button" class="button buttonmed" style="position: absolute; bottom: 10px; right: 10px; display:none" data-bs-toggle="modal" data-bs-target="#EndGameModal">
         End Game
     </button>
 
@@ -124,7 +124,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" onclick="nextQuestion()" class=" btn btn-primary">Confirm</button>
+                <button type="button" onclick="nextQuestion();" class=" btn btn-primary">Confirm</button>
             </div>
         </div>
     </div>
@@ -138,9 +138,12 @@
                 <h1 class="modal-title fs-5" id="EndGameModalLabel">Are you sure you want to end the game?</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body">
+                You will be sent to the scoreboard.
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" onclick="endGame()" class=" btn btn-primary">Confirm</button>
+                <button type="button" onclick="endGame();" class=" btn btn-primary">Confirm</button>
             </div>
         </div>
     </div>
@@ -173,9 +176,9 @@
                         });
                         if (questions.length == questionNum) {
                             var Nextbutton = document.getElementById('nextQuestionButton');
-                            var endButton = document.getElementById('endGameButton');
+                            var endGameButton = document.getElementById('endGameButton');
                             Nextbutton.style.display = 'none';
-                            endButton.style.display = 'block';
+                            endGameButton.style.display = 'block';
                         }
                         item.questions.forEach(function (question) {
                             if (questionNum == question.title) {
@@ -262,7 +265,57 @@
     }
 
     function endGame() {
+        const searchParams = new URLSearchParams(window.location.search);
+        var id = searchParams.get('id');
+        var gameCode = getGameID(id);
+        console.log(id);
+        console.log(gameCode);
 
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/edit/" + id,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                "description": "end",
+            },
+            crossDomain: true,
+            success: function (response) {
+                window.location.assign("/scoreboard?&gamecode=" + gameCode);
+
+            },
+            error: function (xhr, status, error) {
+                console.log("Error: " + error.message);
+
+            }
+        });
     }
 
-</script>
+    function getGameID(title) {
+        const searchParams = new URLSearchParams(window.location.search);
+        var id = searchParams.get('id');
+        var gameCode = 0;
+
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/list",
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                JSON.stringify(response);
+                var games = response;
+                games.forEach(function (item) {
+                    if (item.id === id) {
+                        gameCode = item.gameCode;
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log("Error: " + error.message);
+            }
+        });
+        return gameCode;
+    }
+    
+    </script>
+
