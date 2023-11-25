@@ -7,7 +7,7 @@
 <head>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"
-            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" 
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
             crossorigin="anonymous"></script>
 </head>
 
@@ -15,39 +15,42 @@
 <!--Main section with title and main buttons-->
 <div class="main-window">
 
-        <!--Top buttons section-->
-        <div class="header">
-            <div class="header-container">
-                <div>
-                    <button type="button" class="button buttonsmall" data-bs-toggle="modal" data-bs-target="#CreateGameModal">
-                        Create Game
-                    </button>
+    <!--Top buttons section-->
+    <div class="header">
+        <div class="header-container">
+            <div>
+                <button type="button" class="button buttonsmall" data-bs-toggle="modal" data-bs-target="#CreateGameModal">
+                    Create Game
+                </button>
                 <button type="button" class="button buttonsmall" data-bs-toggle="modal" data-bs-target="#StartGameModal">
                     Start Game
                 </button>
-                </div>
-
-                <h1 class="display-4">Home Page</h1>
-                <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
+                <button type="button" class="button buttonsmall" data-bs-toggle="modal" data-bs-target="#RestartGameModal">
+                    Restart Game
+                </button>
             </div>
+
+            <h1 class="display-4">Home Page</h1>
+            <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
         </div>
+    </div>
 
-        <div class="button-container">
-
-
-
-            <button type="button" class="button buttonbig" data-bs-toggle="modal" data-bs-target="#JoinGameModal">
-                Join Game
-            </button>
-
-            <div class="break"></div>
+    <div class="button-container">
 
 
-            <button type="button" class="button buttonbig" data-bs-toggle="modal" data-bs-target="#ScoreboardModal">
-                Scoreboard
-            </button>
 
-        </div>
+        <button type="button" class="button buttonbig" data-bs-toggle="modal" data-bs-target="#JoinGameModal">
+            Join Game
+        </button>
+
+        <div class="break"></div>
+
+
+        <button type="button" class="button buttonbig" data-bs-toggle="modal" data-bs-target="#ScoreboardModal">
+            Scoreboard
+        </button>
+
+    </div>
 </div>
 
 
@@ -117,6 +120,36 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" onclick="StartGame();" class=" btn btn-primary">Start</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Restart Game Modal -->
+<div class="modal fade" id="RestartGameModal" tabindex="-1" aria-labelledby="RestartGameModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="RestartGameModalLabel">Restart Game to Question 1</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="game-passcode" class="col-form-label">
+                        Enter the title of the game you would like to restart. Game must be active to restart
+                    </label>
+                    <input type="text" class="form-control" id="gameTitle" placeholder="Game Title">
+                    <div id="errorText" style="color: red;"></div>
+                </div>
+                <div class="col-sm-4">
+                    <small id="gameNameHelp" class="text-danger">
+                    </small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="restartButton" onclick="restartGame();" class=" btn btn-primary">Restart</button>
             </div>
         </div>
     </div>
@@ -203,21 +236,21 @@
                     }
                 });
                 // Changes class of input box to indicate passcode is incorrect
-                if(!isLoaded){
+                if (!isLoaded) {
                     $("#JoinGameModal #passcode").removeClass('form-control');
                     $("#JoinGameModal #passcode").addClass('form-control is-invalid');
                     document.getElementById("passcodeHelp").textContent = 'Game code is incorrect';
                 }
             },
             error: function (xhr, status, error) {
-                
+
                 console.log("Error: " + error.message);
             }
         });
     }
 
-    // Once we get the gamecodes working correctly, we need to 
-    function testScoreboardCode(){
+    // Once we get the gamecodes working correctly, we need to
+    function testScoreboardCode() {
         var scorecode = $("#ScoreboardModal #scoreboardcode").val().trim();
         var isLoaded = false;
 
@@ -252,7 +285,7 @@
     }
 
     // Validates scoreboard code and redirects to scoreboard webpage with gamecode query
-    function testScoreboardCode(){
+    function testScoreboardCode() {
         var scorecode = $("#ScoreboardModal #scoreboardcode").val().trim();
         var isLoaded = false;
 
@@ -280,7 +313,7 @@
                 }
             },
             error: function (xhr, status, error) {
-                
+
                 console.log("Error: " + error.message);
             }
         });
@@ -307,7 +340,7 @@
                 },
                 crossDomain: true,
                 success: function (response) {
-                    window.location.assign("/PointAssignment?gamecode=" + scoreCode +"&id="+response);
+                    window.location.assign("/PointAssignment?gamecode=" + scoreCode + "&id=" + response);
                 },
                 error: function (xhr, status, error) {
                     console.log("Error: " + error.message);
@@ -330,7 +363,7 @@
                 $("#CreateGameModal #judge_code").addClass('form-control');
                 document.getElementById("createJudgeCodeHelp").textContent = '';
             }
-            if(!scoreCode){
+            if (!scoreCode) {
                 $("#CreateGameModal #score_code").removeClass('form-control');
                 $("#CreateGameModal #score_code").addClass('form-control is-invalid');
                 document.getElementById("createScoreCodeHelp").textContent = 'Please enter a valid scoreboard code';
@@ -360,12 +393,12 @@
                     // console.log(item);
                     if (item.title === gameName) {
                         if (item.description == "0") {
-                           window.location.assign("/AdminWaiting?gamecode=" + item.title + "&id=" + item.id);
+                            window.location.assign("/AdminWaiting?gamecode=" + item.title + "&id=" + item.id);
                             isLoaded = true;
 
                         }
-                        else{
-                        window.location.assign("/AdminActiveQ?id=" + item.id + "&Q=" + item.description);
+                        else {
+                            window.location.assign("/AdminActiveQ?id=" + item.id + "&Q=" + item.description);
 
                         }
                         // We'll want to put something here that stores the judge and what game they're assigned to
@@ -377,6 +410,78 @@
                     $("#StartGameModal #gameName").addClass('form-control is-invalid');
                     document.getElementById("errorText").textContent = 'Game Title is incorrect';
                 }
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
+    }
+    function restartGame() {
+        var title = $("#RestartGameModal #gameTitle").val().trim();
+        var id;
+        id = getGameId(title);
+        console.log(id)
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/edit/" + id,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                "description": "0",
+            },
+            crossDomain: true,
+            success: function (response) {
+                window.location.assign("/AdminWaiting?id=" + id + "&gamecode=" + title);
+
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
+    }
+    function getGameId(title) {
+        var gameId = 0;
+        var answers;
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/list",
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                JSON.stringify(response);
+                var games = response;
+                games.forEach(function (item) {
+                    if (item.title === title) {
+                        gameId = item.id
+                        var questions = item.questions;
+                        questions.forEach(function (question) { 
+                            question.answers.forEach(function (answer) { 
+                                clearAnswer(answer.id);
+                            });
+                        });
+                    }
+                });
+                console.log("test")
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
+        return gameId;
+
+    }
+    function clearAnswer(id){
+        $.ajax({
+            url: " https://csdev.samford.edu/gamesapi/answers/delete/"+id,
+            type: 'POST',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+
             },
             error: function (xhr, status, error) {
 

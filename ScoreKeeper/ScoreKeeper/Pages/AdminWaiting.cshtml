@@ -185,16 +185,23 @@
             success: function (response) {
                 JSON.stringify(response);
                 var teams = response;
+                console.log(teams);
                 var teamList = "";
                 var teamNum = 1;
-                teams.forEach(function (item) {
-                    if (item.game_id === gameID) {
-                        teamList += ""+ teamNum+ ". "+ item.teamname + "      \n";
-                        teamNum++;
-                    }
+                if (teams.length > 0) {
+                    teams.forEach(function (item) {
+                        if (item.game_id === gameID) {
+                            teamList += "" + teamNum + ". " + item.teamname + "      \n";
+                            teamNum++;
+                        }
 
-                });
-                document.getElementById('div1').textContent = teamList;
+                    });
+                    document.getElementById('div1').textContent = teamList;
+                }
+                else{
+                    document.getElementById('div1').textContent = "No teams in this game";
+
+                }
 
             },
             error: function (xhr, status, error) {
