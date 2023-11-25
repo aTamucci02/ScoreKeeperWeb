@@ -418,31 +418,9 @@
         });
     }
     function restartGame() {
-        var title = $("#RestartGameModal #gameTitle").val().trim();
-        var id;
-        id = getGameId(title);
-        console.log(id)
-        $.ajax({
-            url: "https://csdev.samford.edu/gamesapi/games/edit/" + id,
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                "description": "0",
-            },
-            crossDomain: true,
-            success: function (response) {
-                window.location.assign("/AdminWaiting?id=" + id + "&gamecode=" + title);
-
-            },
-            error: function (xhr, status, error) {
-
-                console.log("Error: " + error.message);
-            }
-        });
-    }
-    function getGameId(title) {
         var gameId = 0;
         var answers;
+        var title = $("#RestartGameModal #gameTitle").val().trim();
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/games/list",
             type: 'GET',
@@ -453,25 +431,46 @@
                 JSON.stringify(response);
                 var games = response;
                 games.forEach(function (item) {
-                    if (item.title === title) {
+                    if (item.title == title) {
                         gameId = item.id
                         var questions = item.questions;
-                        questions.forEach(function (question) { 
-                            question.answers.forEach(function (answer) { 
+                        questions.forEach(function (question) {
+                            question.answers.forEach(function (answer) {
                                 clearAnswer(answer.id);
                             });
                         });
+                        getGameId(gameId);
+                        window.location.assign("/AdminWaiting?id=" + gameId + "&gamecode=" + title);
+
                     }
                 });
-                console.log("test")
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+
+            }
+        });
+        
+    }
+    function getGameId(id) {
+        
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/edit/" + id,
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                "description": "0",
+            },
+            crossDomain: true,
+            success: function (response) {
+
             },
             error: function (xhr, status, error) {
 
                 console.log("Error: " + error.message);
             }
         });
-        return gameId;
-
     }
     function clearAnswer(id){
         $.ajax({
