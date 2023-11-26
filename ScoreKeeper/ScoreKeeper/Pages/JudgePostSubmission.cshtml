@@ -394,7 +394,7 @@
                         });
                     }
                 });
-                var podiumException=6;
+                var podiumException=5;
                 if (teams.length < 5) {
                     podiumException = teams.length;
                 }
@@ -402,7 +402,7 @@
                 for (let i = 1; i < podiumException+1; i++) {
                     const paragraph = document.createElement('p');
                     
-                    paragraph.textContent =""+ i + "." + teams[i-1].teamname ;
+                    paragraph.textContent =""+ i + "." + teams[i-1].teamname + " " +teams[i-1].score + " points" ;
 
                     outputContainer.appendChild(paragraph);
                 }
