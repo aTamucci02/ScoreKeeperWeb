@@ -39,12 +39,17 @@
                     <button type="button" class="button buttonmed" data-bs-toggle="modal" data-bs-target="#HomeButtonModal">
                         Home
                     </button>
+                    <button type="button" class="button buttonmed" onclick="returnToScoreboard()">
+                        Back to Scoreboard
+                    </button>
+
                 </div>
                 <h1 class="display-4" id="headerTitle"></h1>
                 <img src="~/ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
             </div>
         </div>
-        <table>
+
+        <table id="scoreboardID">
             <tr>
                 <th>Question</th>
                 <th>Points</th>
@@ -53,6 +58,13 @@
             <tbody id="scoreboardContent">
             </tbody>
         </table>
+        <div id = "finePrint" style=" text-align: center; color: white; font-weight: bold;">
+            Questions in which the team did not participate do not appear on this scoreboard
+        </div>
+        <div id="emptyAnswers" style=" text-align: left; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: white; font-weight: bold;">
+        </div>
+
+
     </div>
 
 
@@ -87,7 +99,9 @@
 <script>// Sets the title of the page
     function getGameData() {
         const searchParams = new URLSearchParams(window.location.search);
-        var gamecode = searchParams.get('gamecode');
+        var gamecode = searchParams.get('Scorecode');
+        var teamName = searchParams.get('teamname');
+
 
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/games/list",
@@ -100,8 +114,12 @@
                 var games = response;
                 games.forEach(function (item) {
                     if (item.gamecode === gamecode) {
-                        console.log(item);
-                        document.getElementById('headerTitle').textContent = item.title;
+                        item.teams.forEach(function (team) {
+                            if (team.teamname == teamName) {
+                                document.getElementById('headerTitle').textContent ="Team: "+ team.teamname + " Total Score: " + team.score;
+
+                            }
+                        });
                     }
                 });
 
@@ -120,6 +138,10 @@
         var qNum = 1;
         const searchParams = new URLSearchParams(window.location.search);
         var gamecode = searchParams.get('Scorecode');
+        var teamName = searchParams.get('teamname');
+        var scoreTeam;
+        var questions;
+
         var teams = null;
 
         $.ajax({
@@ -131,18 +153,46 @@
             success: function (response) {
                 JSON.stringify(response);
                 var games = response;
+                //Iterate through each game to find correct game
                 games.forEach(function (game) {
                     if (game.gamecode == gamecode) {
-                        var questions = game.questions;
-                        console.log(questions.length)
-                        var answers = questions.answers;
-                        questions.forEach(function (question) {
-                            scoreExport += '<tr><td>' + qNum + '</td><td>' + question.pointscorrect + '</td><td>' + "Answer" + '</td></tr>';
-                            qNum++;
+
+                        questions = game.questions;
+                        //find correct team
+                        game.teams.forEach(function (team) {
+                            if (team.teamname == teamName) {
+                                scoreTeam = team;
+                                team.answers.forEach(function (answer) {
+                                    if (answer.correct == null && answer.incorrect == null && answer.skipped == null) {
+                                        scoreExport += '<tr><td>' + qNum + '</td><td>' + question.pointscorrect + '</td><td>' + "Did not participate (+0)" + '</td></tr>';
+
+                                    }
+                                    else if (answer.correct == 1) {
+                                        scoreExport += '<tr><td>' + qNum + '</td><td>' + questions[qNum - 1].pointscorrect + '</td><td>' + "Correct (+" + questions[qNum - 1].pointscorrect + ")" + '</td></tr>';
+                                    }
+                                    else if (answer.incorrect == 1) {
+                                        scoreExport += '<tr><td>' + qNum + '</td><td>' + questions[qNum - 1].pointscorrect + '</td><td>' + "Inocorrect (-" + questions[qNum - 1].pointscorrect + ")" + '</td></tr>';
+                                    }
+                                    else if (answer.skipped == 1) {
+                                        scoreExport += '<tr><td>' + qNum + '</td><td>' + questions[qNum - 1].pointscorrect + '</td><td>' + "Did not answer (+0)" + '</td></tr>';
+                                    }
+                                    qNum++;
+                                });
+                            }
                         });
                     }
                 });
-                document.getElementById("scoreboardContent").innerHTML = scoreExport;
+                if (scoreExport == "") {
+                    document.getElementById("scoreboardID").style.display = 'none';
+                    document.getElementById("finePrint").style.display = 'none';
+                    document.getElementById("emptyAnswers").textContent = "No questions were answered this game";
+
+
+                }
+                else {
+                    document.getElementById("scoreboardContent").innerHTML = scoreExport;
+
+                }
                 console.log(scoreExport);
             },
             error: function (xhr, status, error) {
@@ -151,5 +201,11 @@
             }
         });
 
+    }
+    function returnToScoreboard(){
+        const searchParams = new URLSearchParams(window.location.search);
+        var gamecode = searchParams.get('Scorecode');
+        var url = "/Scoreboard?gamecode=" + gamecode;
+        window.location.assign(url);
     }
     </script>
