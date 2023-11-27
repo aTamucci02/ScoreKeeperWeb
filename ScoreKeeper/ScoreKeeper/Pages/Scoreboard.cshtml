@@ -156,15 +156,16 @@
                         prevscore = team.score;
                     }
                     // Creates inner HTML for scoreboard with the rank corrected for ties
-                    scoreExport += '<tr><td>' + (rank - numofties) + '</td><td>' + team.teamname + '</td><td>' + team.score + '</td></tr>';
+                    scoreExport += '<tr><td>' + (rank - numofties) + '</td><td><a href="/TeamScoreboard?Scorecode=' + gamecode + '">' + team.teamname + '</td><td>' + team.score + '</td></tr>';
                     rank += 1;
-                    console.log(scoreExport);
+
                 });
                 document.getElementById("scoreboardContent").innerHTML = scoreExport; 
             },
             error: function (xhr, status, error) {
 
                 console.log("Error: " + error.message);
+
             }
         });
         

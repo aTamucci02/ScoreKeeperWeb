@@ -137,9 +137,8 @@
                         console.log(questions.length)
                         var answers = questions.answers;
                         questions.forEach(function (question) {
-                            scoreExport += '<tr><td>' + qNum + '</td><td>' + question.pointscorrect + '</td><td>' + 3 + '</td></tr>';
+                            scoreExport += '<tr><td>' + qNum + '</td><td>' + question.pointscorrect + '</td><td>' + "Answer" + '</td></tr>';
                             qNum++;
-                            
                         });
                     }
                 });
