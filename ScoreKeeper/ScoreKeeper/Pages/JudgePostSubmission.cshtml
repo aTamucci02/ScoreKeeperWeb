@@ -34,7 +34,7 @@
     </style>
 </head>
 
-<body onload="getAns();">
+<body onload="getAns(); displayPodium();">
     <!--Main section with title and main buttons-->
     <div class="main-window">
         <div class="header">
@@ -138,6 +138,7 @@
         }
     });
     setInterval(checkNextQ, 5000);
+    setInterval(displayPodium, 10000);
 
     function checkNextQ(){
         $.ajax({
@@ -368,51 +369,59 @@
 
     function displayPodium(){
         const searchParams = new URLSearchParams(window.location.search);
-        var gameID = searchParams.get('gameid');
-        var qnum = searchParams.get('Q');
         var teams;
-        const outputContainer = document.getElementById('output-container')
 
-        $.ajax({
-            url: "https://csdev.samford.edu/gamesapi/games/list",
-            type: 'GET',
-            dataType: 'json',
-            data: {},
-            crossDomain: true,
-            success: function (response) {
-                JSON.stringify(response);
-                var games = response;
-                games.forEach(function (game) {
-                    if (game.id == gameID) {
-                        teams = game.teams;
-                        teams.sort((team1, team2) => team2.score - team1.score);
-                        game.questions.forEach(function (question) {
-                            if (question.title == qnum) {
-                                document.getElementById("answersSub").textContent = "Answers Submitted: " + question.answers.length + " of " + game.teams.length;
+        var scoreExport = '<div>Leaderboard:</div>';
+        var rank = 1;
+        var numofties = 0;
+        var prevscore = 0;
 
+
+            $.ajax({
+                url: "https://csdev.samford.edu/gamesapi/games/list",
+                type: 'GET',
+                dataType: 'json',
+                data: {},
+                crossDomain: true,
+                success: function (response) {
+                    JSON.stringify(response);
+                    var games = response;
+                    console.log(response);
+                    games.forEach(function (item) {
+                        if (item.id === gameid) {
+                            console.log("team found");
+                            teams = item.teams;
+                        }
+                    });
+
+                    // Sorts each team in descending order of score
+                    teams.sort((team1, team2) => team2.score - team1.score);
+                    teams.forEach(function (team) {
+                        // Checks if you're testing the first team
+                        if (rank == 1) {
+                            prevscore = team.score;
+                        } else {
+                            if (team.score == prevscore) {
+                                numofties += 1;
+                            } else {
+                                numofties = 0;
                             }
-                        });
-                    }
-                });
-                var podiumException=5;
-                if (teams.length < 5) {
-                    podiumException = teams.length;
+                            prevscore = team.score;
+                        }
+                        if (rank <= 3 || team.teamname == teamname){
+                            // Creates inner HTML for scoreboard with the rank corrected for ties
+                            scoreExport += '<div>' + (rank - numofties) + '. ' + team.teamname + ' with ' + team.score + ' points';
+                        }
+                        rank += 1;
+                    });
+                    document.getElementById("output-container").innerHTML = scoreExport;
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error: " + error.message);
                 }
-                console.log(podiumException);
-                for (let i = 1; i < podiumException+1; i++) {
-                    const paragraph = document.createElement('p');
-                    
-                    paragraph.textContent =""+ i + "." + teams[i-1].teamname + " " +teams[i-1].score + " points" ;
+            });
 
-                    outputContainer.appendChild(paragraph);
-                }
-
-            },
-            error: function (xhr, status, error) {
-
-                console.log("Error: " + error.message);
-            }
-        });
+        
 
     }
 

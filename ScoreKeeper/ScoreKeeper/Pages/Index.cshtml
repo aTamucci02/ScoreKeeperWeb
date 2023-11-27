@@ -249,43 +249,9 @@
         });
     }
 
-    // Once we get the gamecodes working correctly, we need to
-    function testScoreboardCode() {
-        var scorecode = $("#ScoreboardModal #scoreboardcode").val().trim();
-        var isLoaded = false;
-
-        $.ajax({
-            url: "https://csdev.samford.edu/gamesapi/games/list",
-            type: 'GET',
-            dataType: 'json',
-            data: {},
-            crossDomain: true,
-            success: function (response) {
-                $("#rawdata").html(JSON.stringify(response));
-                var games = response;
-                games.forEach(function (item) {
-                    if (item.gamecode === scorecode) {
-                        window.location.assign("/Scoreboard?gamecode=" + scorecode);
-                        isLoaded = true;
-                        // We'll want to put something here that stores the judge and what game they're assigned to
-                    }
-                });
-                // Changes class of input box to indicate passcode is incorrect
-                if (!isLoaded) {
-                    $("#ScoreboardModal #scoreboardcode").removeClass('form-control');
-                    $("#ScoreboardModal #scoreboardcode").addClass('form-control is-invalid');
-                    document.getElementById("gamecodeHelp").textContent = 'Game code is incorrect';
-                }
-            },
-            error: function (xhr, status, error) {
-
-                console.log("Error: " + error.message);
-            }
-        });
-    }
-
     // Validates scoreboard code and redirects to scoreboard webpage with gamecode query
-    function testScoreboardCode() {
+    function testScoreboardCode(){
+
         var scorecode = $("#ScoreboardModal #scoreboardcode").val().trim();
         var isLoaded = false;
 
@@ -313,21 +279,58 @@
                 }
             },
             error: function (xhr, status, error) {
-
+                
                 console.log("Error: " + error.message);
             }
         });
     }
 
+    function testGame(){
+        var gameName = $("#CreateGameModal #game_title").val().trim();
+        var judgeCode = $("#CreateGameModal #judge_code").val().trim();
+        var scoreCode = $("#CreateGameModal #scoreboard_code").val().trim();
+
+
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/list",
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                console.log(response);
+                JSON.stringify(response);
+                var games = response;
+                games.forEach(function (item) {
+                    if (item.title != gameName) {
+                        if (item.passcode === judgeCode) {
+                            document.getElementById("createJudgeCodeHelp").textContent = 'Please enter a different password';
+                            return false;
+                        }
+                        if (item.gamecode === scoreCode) {
+                            document.getElementById("createScoreCodeHelp").textContent = 'Please enter a different scoreboard code';
+                            return false;
+                        }
+                    }
+                });
+                return true;
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
+    }
+    
     // Make game with given number of questions
     function createGame() {
         var gameName = $("#CreateGameModal #game_title").val().trim();
         var judgeCode = $("#CreateGameModal #judge_code").val().trim();
         var scoreCode = $("#CreateGameModal #scoreboard_code").val().trim();
         var isLoaded = false;
+        var infoValid = testGame();
 
-
-        if (gameName && judgeCode && scoreCode) {
+        if (infoValid) {
             $.ajax({
                 url: "https://csdev.samford.edu/gamesapi/games/add",
                 type: 'POST',
