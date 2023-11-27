@@ -53,6 +53,7 @@
 
         <div @* class="vert-container *@align="center">
             <div style ="flex-grow:1;">The next question will begin shortly</div>
+            <div id="answersSub"></div>
 
             <br />
 
@@ -168,6 +169,11 @@
     }
 
     function getAns() {
+        displayPodium();
+        const searchParams = new URLSearchParams(window.location.search);
+        var ans = parseInt(searchParams.get('ans'));
+        var teamname = searchParams.get('teamname');
+        var qnum = searchParams.get('Q');
         var answer;
 
         if(ans == 0){
@@ -411,7 +417,6 @@
                     document.getElementById("output-container").innerHTML = scoreExport;
                 },
                 error: function (xhr, status, error) {
-
                     console.log("Error: " + error.message);
                 }
             });
