@@ -211,6 +211,8 @@
     function startGame() {
         const searchParams = new URLSearchParams(window.location.search);
         var id = searchParams.get('id');
+        var scoreCode = searchParams.get('gamecode');
+
         console.log(id);
         if(addQuestions(id)){
             var url = window.location.href;
@@ -224,7 +226,7 @@
                 },
                 crossDomain: true,
                 success: function (response) {
-                    window.location.assign("/AdminActiveQ?id=" + id + "&Q=" + "1");
+                    window.location.assign("/AdminWaiting?id=" + id + "&gamecode=" + scoreCode);
 
                 },
                 error: function (xhr, status, error) {

@@ -343,7 +343,7 @@
                 },
                 crossDomain: true,
                 success: function (response) {
-                    window.location.assign("/PointAssignment?gamecode=" + scoreCode + "&id=" + response);
+                    window.location.assign("/PointAssignment?gamecode=" + gameName + "&id=" + response);
                 },
                 error: function (xhr, status, error) {
                     console.log("Error: " + error.message);
@@ -433,10 +433,17 @@
             success: function (response) {
                 JSON.stringify(response);
                 var games = response;
-                games.forEach(function (item) {
-                    if (item.title == title) {
-                        gameId = item.id
-                        var questions = item.questions;
+                games.forEach(function (game) {
+                    if (game.title == title) {
+                        gameId = game.id
+                        
+                        console.log(game.teams);
+                        game.teams.forEach(function (team){
+                            console.log(team.id);
+                            deleteTeam(team.id);
+                        });
+
+                        var questions = game.questions;
                         questions.forEach(function (question) {
                             question.answers.forEach(function (answer) {
                                 clearAnswer(answer.id);
@@ -456,6 +463,25 @@
         });
         
     }
+
+
+    function deleteTeam(id){
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/teams/delete/" + id,
+            type: 'POST',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                console.log("deleted: " + id);
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
+    }
+
     function getGameId(id) {
         
         $.ajax({

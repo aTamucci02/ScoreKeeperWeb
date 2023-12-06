@@ -150,6 +150,13 @@
 </div>
 
 <script>
+    const searchParams = new URLSearchParams(window.location.search);
+    var gameID = searchParams.get('id');
+
+    var globalGame;
+
+
+
     function getGameData() {
         const searchParams = new URLSearchParams(window.location.search);
         var gameID = searchParams.get('id');
@@ -168,6 +175,7 @@
                 var games = response;
                 games.forEach(function (item) {
                     if (gameID == item.id) {
+                        globalGame = item;
                         var teams = item.teams;
                         questions = item.questions;
                         var teamcount = 0;
@@ -264,10 +272,10 @@
         });
     }
 
-    function endGame() {
+    function  endGame() {
         const searchParams = new URLSearchParams(window.location.search);
         var id = searchParams.get('id');
-        var gameCode = getGameID(id);
+        var gameCode = globalGame.gamecode;
         console.log(id);
         console.log(gameCode);
 
@@ -290,32 +298,32 @@
         });
     }
 
-    function getGameID(title) {
-        const searchParams = new URLSearchParams(window.location.search);
-        var id = searchParams.get('id');
-        var gameCode = 0;
+    // function  getGameID(title) {
+    //     const searchParams = new URLSearchParams(window.location.search);
+    //     var id = searchParams.get('id');
+    //     var gameCode = 0;
 
-        $.ajax({
-            url: "https://csdev.samford.edu/gamesapi/games/list",
-            type: 'GET',
-            dataType: 'json',
-            data: {},
-            crossDomain: true,
-            success: function (response) {
-                JSON.stringify(response);
-                var games = response;
-                games.forEach(function (item) {
-                    if (item.id === id) {
-                        gameCode = item.gameCode;
-                    }
-                });
-            },
-            error: function (xhr, status, error) {
-                console.log("Error: " + error.message);
-            }
-        });
-        return gameCode;
-    }
+    //     $.ajax({
+    //         url: "https://csdev.samford.edu/gamesapi/games/list",
+    //         type: 'GET',
+    //         dataType: 'json',
+    //         data: {},
+    //         crossDomain: true,
+    //         success: function (response) {
+    //             JSON.stringify(response);
+    //             var games = response;
+    //             games.forEach(function (item) {
+    //                 if (item.id == id) {
+    //                     gameCode = item.gameCode;
+    //                 }
+    //             });
+    //         },
+    //         error: function (xhr, status, error) {
+    //             console.log("Error: " + error.message);
+    //         }
+    //     });
+    //     return gameCode;
+    // }
     
     </script>
 
