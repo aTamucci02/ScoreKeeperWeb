@@ -9,32 +9,35 @@
 
         .main-window {
             background-color: #102F3B;
-            color:white;
-            font-size:32px;
+            color: white;
+            font-size: 32px;
         }
 
 
-        .vert-container{
+        .vert-container {
             flex-direction: column;
             display: flex;
             flex-grow: 1;
-            align-items:center;
-            justify-content:space-evenly;
+            align-items: center;
+            justify-content: space-evenly;
             margin-top: 10vh;
         }
 
-        .request-change{
+        .request-change {
             font-size: 24px;
-            display:flex;
+            display: flex;
             flex-direction: column;
             flex-grow: 2;
             align-items: center;
         }
 
     </style>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
 </head>
 
-<body onload="getAns(); displayPodium();">
+<body onload="getAns();">
     <!--Main section with title and main buttons-->
     <div class="main-window">
         <div class="header">
@@ -52,7 +55,7 @@
         </div>
 
         <div @* class="vert-container *@align="center">
-            <div style ="flex-grow:1;">The next question will begin shortly</div>
+            <div style="flex-grow:1;">The next question will begin shortly</div>
             <div id="answersSub"></div>
 
             <br />
@@ -69,9 +72,9 @@
                         Change Submission
                     </button>
                 </div>
-            
+
             </div>
-        
+
         </div>
     </div>
 </body>
@@ -140,7 +143,7 @@
     setInterval(checkNextQ, 5000);
     setInterval(displayPodium, 10000);
 
-    function checkNextQ(){
+    function checkNextQ() {
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/games/list",
             type: 'GET',
@@ -152,9 +155,9 @@
                 var games = response;
                 games.forEach(function (item) {
                     if (item.id === parseInt(gameid)) {
-                        if(item.description == "end"){
+                        if (item.description == "end") {
                             window.location.assign("/GameOverPage?&teamname=" + teamname + "&gameid=" + gameid);
-                        }else if (item.description != qnum && item.description != null) {
+                        } else if (item.description != qnum && item.description != null) {
                             window.location.assign("/JudgeSubmission?&teamname=" + teamname + "&gameid=" + gameid + "&Q=" + item.description);
                         }
                     }
@@ -176,11 +179,11 @@
         var qnum = searchParams.get('Q');
         var answer;
 
-        if(ans == 0){
+        if (ans == 0) {
             answer = "INCORRECT";
-        }else if(ans == 1){
+        } else if (ans == 1) {
             answer = "CORRECT";
-        }else{
+        } else {
             answer = "NO ANSWER";
         }
         document.getElementById("answer").innerHTML = "You submitted: " + answer + " for " + teamname + " for question " + qnum;
@@ -227,7 +230,7 @@
                                 numskipped += team.numskipped;
                                 score += team.score;
 
-                                // Removes the old answer and points 
+                                // Removes the old answer and points
                                 if (parseInt(ans) == 0) {
                                     // Incorrect
                                     nummissed -= 1;
@@ -243,7 +246,7 @@
                                     numskipped -= 1;
                                     deleteOldAnswerRequest(questionid, teamid);
                                 }
-                                
+
 
                                 // Adds the new answer
                                 if (answerVal == 0) {
@@ -367,7 +370,7 @@
         });
     }
 
-    function displayPodium(){
+    function displayPodium() {
         const searchParams = new URLSearchParams(window.location.search);
         var teams;
 
@@ -377,51 +380,51 @@
         var prevscore = 0;
 
 
-            $.ajax({
-                url: "https://csdev.samford.edu/gamesapi/games/list",
-                type: 'GET',
-                dataType: 'json',
-                data: {},
-                crossDomain: true,
-                success: function (response) {
-                    JSON.stringify(response);
-                    var games = response;
-                    console.log(response);
-                    games.forEach(function (item) {
-                        if (item.id === gameid) {
-                            console.log("team found");
-                            teams = item.teams;
-                        }
-                    });
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/list",
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                JSON.stringify(response);
+                var games = response;
+                console.log(response);
+                games.forEach(function (item) {
+                    if (item.id === gameid) {
+                        console.log("team found");
+                        teams = item.teams;
+                    }
+                });
 
-                    // Sorts each team in descending order of score
-                    teams.sort((team1, team2) => team2.score - team1.score);
-                    teams.forEach(function (team) {
-                        // Checks if you're testing the first team
-                        if (rank == 1) {
-                            prevscore = team.score;
+                // Sorts each team in descending order of score
+                teams.sort((team1, team2) => team2.score - team1.score);
+                teams.forEach(function (team) {
+                    // Checks if you're testing the first team
+                    if (rank == 1) {
+                        prevscore = team.score;
+                    } else {
+                        if (team.score == prevscore) {
+                            numofties += 1;
                         } else {
-                            if (team.score == prevscore) {
-                                numofties += 1;
-                            } else {
-                                numofties = 0;
-                            }
-                            prevscore = team.score;
+                            numofties = 0;
                         }
-                        if (rank <= 3 || team.teamname == teamname){
-                            // Creates inner HTML for scoreboard with the rank corrected for ties
-                            scoreExport += '<div>' + (rank - numofties) + '. ' + team.teamname + ' with ' + team.score + ' points';
-                        }
-                        rank += 1;
-                    });
-                    document.getElementById("output-container").innerHTML = scoreExport;
-                },
-                error: function (xhr, status, error) {
-                    console.log("Error: " + error.message);
-                }
-            });
+                        prevscore = team.score;
+                    }
+                    if (rank <= 3 || team.teamname == teamname) {
+                        // Creates inner HTML for scoreboard with the rank corrected for ties
+                        scoreExport += '<div>' + (rank - numofties) + '. ' + team.teamname + ' with ' + team.score + ' points';
+                    }
+                    rank += 1;
+                });
+                document.getElementById("output-container").innerHTML = scoreExport;
+            },
+            error: function (xhr, status, error) {
+                console.log("Error: " + error.message);
+            }
+        });
 
-        
+
 
     }
 

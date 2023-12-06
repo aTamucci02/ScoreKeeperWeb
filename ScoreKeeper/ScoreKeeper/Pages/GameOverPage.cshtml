@@ -11,6 +11,9 @@
             background-color: #102F3B;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
 </head>
 
 
@@ -24,9 +27,7 @@
                     <button type="button" class="button buttonmed" data-bs-toggle="modal" data-bs-target="#HomeButtonModal">
                         Home
                     </button>
-                    <button type="button" class="button buttonmed">
-                        Game Over
-                    </button>
+
                 </div>
                 <h1 class="display-4">Game Over!</h1>
                 <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
@@ -34,22 +35,36 @@
         </div>
     </div>
 
-    <div id="div1" onload="getData()" style=" text-align: center; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: white; font-weight: bold;">
-        <p id="teamScore">
+    <div id="div1" onload="getData()" style=" text-align: center; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: white; font-weight: bold; ">
+        <p id="teamScore" style="font-size: 24px;">
             <!-- Team score will be inserted here -->
         </p>
-        <p id="teamPlacement">
+        <p id="teamPlacement" style="font-size: 24px;">
             <!-- Team placement will be inserted here -->
         </p>
+        <br />
+        <br />
+        <div align="center" id="output-container" style="font-size: 20px;">
+            <!--Top 5 placements will be here-->
+        </div>
+        <br />
+        <br />
+        <button type="button" class="button buttonmed" data-bs-toggle="modal" onclick="sendToScoreboard();">
+            See Scoreboard
+        </button>
     </div>
 
 </body>
 
 <script>
+    var scorecode;
     // Fetch the team's total score and placement against other teams
     function getData() {
         var prevscore = null;
         var count = 0;
+        var rank = 1;
+        var scoreExport = '<div>Leaderboard:</div>';
+        var numofties = 0;
 
         const searchParams = new URLSearchParams(window.location.search);
         var gameid = searchParams.get('gameid');
@@ -65,19 +80,30 @@
                 JSON.stringify(response);
                 var games = response;
                 games.forEach(function (game) {
-                    if(game.id == gameid){
+                    if (game.id == gameid) {
                         var teams = game.teams;
                         var teamScore, teamPlacement;
                         teams.sort((team1, team2) => team2.score - team1.score);
                         teams.forEach(function (item) {
-                            if (item.score == prevscore) {
-                                count += 1;
+                            scorecode = game.gamecode;
+
+                            // Checks if you're testing the first team
+                            if (rank == 1) {
+                                prevscore = item.score;
                             } else {
-                                count = 0;
+                                if (item.score == prevscore) {
+                                    numofties += 1;
+                                } else {
+                                    numofties = 0;
+                                }
                                 prevscore = item.score;
                             }
-                            
-                            
+                            if (rank <= 5 || team.teamname == teamname) {
+                                // Creates inner HTML for scoreboard with the rank corrected for ties
+                                scoreExport += '<div>' + (rank - numofties) + '. ' + item.teamname + ' with ' + item.score + ' points';
+                            }
+                            rank += 1;
+
                             // Calculate team placement based on the index of the team minus the number of teams with an identical score before it
                             if (item.teamname === teamname && item.game_id == gameid) {
                                 teamScore = item.score;
@@ -88,15 +114,20 @@
                         var scoretext = "Your team's total score: " + teamScore;
                         document.getElementById("teamScore").textContent = scoretext;
                         document.getElementById("teamPlacement").textContent = "Your team's placement: " + teamPlacement;
+                        document.getElementById("output-container").innerHTML = scoreExport;
                     }
                 });
-                
+
             },
             error: function (xhr, status, error) {
                 console.log("Error: " + error.message);
             }
         });
     }
+    function sendToScoreboard() {
+        window.location.assign("/Scoreboard?gamecode=" + scorecode);
+    }
+
 </script>
 
 
@@ -116,5 +147,3 @@
         </div>
     </div>
 </div>
-
-
