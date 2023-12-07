@@ -58,7 +58,7 @@
             <tbody id="scoreboardContent">
             </tbody>
         </table>
-        <div id = "finePrint" style=" text-align: center; color: white; font-weight: bold;">
+        <div id="finePrint" style=" text-align: center; color: white; font-weight: bold;">
             Questions in which the team did not participate do not appear on this scoreboard
         </div>
         <div id="emptyAnswers" style=" text-align: left; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: white; font-weight: bold;">
@@ -96,7 +96,8 @@
     </div>
 </div>
 
-<script>// Sets the title of the page
+<script>
+    // Sets the title of the page
     function getGameData() {
         const searchParams = new URLSearchParams(window.location.search);
         var gamecode = searchParams.get('Scorecode');
@@ -116,7 +117,7 @@
                     if (item.gamecode === gamecode) {
                         item.teams.forEach(function (team) {
                             if (team.teamname == teamName) {
-                                document.getElementById('headerTitle').textContent ="Team: "+ team.teamname + " Total Score: " + team.score;
+                                document.getElementById('headerTitle').textContent = "Team: " + team.teamname + " Total Score: " + team.score;
 
                             }
                         });
@@ -142,6 +143,8 @@
         var scoreTeam;
         var questions;
 
+        var test = "";
+
         var teams = null;
 
         $.ajax({
@@ -165,16 +168,20 @@
                                 team.answers.forEach(function (answer) {
                                     if (answer.correct == null && answer.incorrect == null && answer.skipped == null) {
                                         scoreExport += '<tr><td>' + qNum + '</td><td>' + question.pointscorrect + '</td><td>' + "Did not participate (+0)" + '</td></tr>';
+                                        test += "DNP ";
 
                                     }
                                     else if (answer.correct == 1) {
                                         scoreExport += '<tr><td>' + qNum + '</td><td>' + questions[qNum - 1].pointscorrect + '</td><td>' + "Correct (+" + questions[qNum - 1].pointscorrect + ")" + '</td></tr>';
+                                        test += "Correct ";
                                     }
-                                    else if (answer.incorrect == 1) {
+                                    else if (answer.correct == 0 && answer.skipped == 0) {
                                         scoreExport += '<tr><td>' + qNum + '</td><td>' + questions[qNum - 1].pointscorrect + '</td><td>' + "Inocorrect (-" + questions[qNum - 1].pointscorrect + ")" + '</td></tr>';
+                                        test += "Incorrect ";
                                     }
                                     else if (answer.skipped == 1) {
                                         scoreExport += '<tr><td>' + qNum + '</td><td>' + questions[qNum - 1].pointscorrect + '</td><td>' + "Did not answer (+0)" + '</td></tr>';
+                                        test += "DNA";
                                     }
                                     qNum++;
                                 });
@@ -201,10 +208,10 @@
         });
 
     }
-    function returnToScoreboard(){
+    function returnToScoreboard() {
         const searchParams = new URLSearchParams(window.location.search);
         var gamecode = searchParams.get('Scorecode');
         var url = "/Scoreboard?gamecode=" + gamecode;
         window.location.assign(url);
     }
-    </script>
+</script>
