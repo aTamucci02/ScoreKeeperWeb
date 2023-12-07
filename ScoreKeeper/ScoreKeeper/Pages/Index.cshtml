@@ -20,13 +20,13 @@
         <div class="header-container">
             <div>
                 <button type="button" class="button buttonsmall" data-bs-toggle="modal" data-bs-target="#CreateGameModal">
-                    Create game
+                    Create Game
                 </button>
                 <button type="button" class="button buttonsmall" data-bs-toggle="modal" data-bs-target="#StartGameModal">
-                    Start game
+                    Resume Game
                 </button>
                 <button type="button" class="button buttonsmall" data-bs-toggle="modal" data-bs-target="#RestartGameModal">
-                    Restart game
+                    Start Game
                 </button>
             </div>
 
@@ -250,7 +250,7 @@
     }
 
     // Validates scoreboard code and redirects to scoreboard webpage with gamecode query
-    function testScoreboardCode(){
+    function testScoreboardCode() {
 
         var scorecode = $("#ScoreboardModal #scoreboardcode").val().trim();
         var isLoaded = false;
@@ -279,13 +279,13 @@
                 }
             },
             error: function (xhr, status, error) {
-                
+
                 console.log("Error: " + error.message);
             }
         });
     }
 
-    function testGame(){
+    function testGame() {
         var gameName = $("#CreateGameModal #game_title").val().trim();
         var judgeCode = $("#CreateGameModal #judge_code").val().trim();
         var scoreCode = $("#CreateGameModal #scoreboard_code").val().trim();
@@ -321,7 +321,7 @@
         });
         return true;
     }
-    
+
     // Make game with given number of questions
     function createGame() {
         var gameName = $("#CreateGameModal #game_title").val().trim();
@@ -343,7 +343,7 @@
                 },
                 crossDomain: true,
                 success: function (response) {
-                    window.location.assign("/PointAssignment?gamecode=" + gameName + "&id=" + response);
+                    window.location.assign("/PointAssignment?gamecode=" + scoreCode + "&id=" + response);
                 },
                 error: function (xhr, status, error) {
                     console.log("Error: " + error.message);
@@ -400,6 +400,10 @@
                             isLoaded = true;
 
                         }
+                        if (item.description == "end") {
+                            window.location.assign("/Scoreboard?id=" + item.id + "&gamecode=" + item.gamecode);
+
+                        }
                         else {
                             window.location.assign("/AdminActiveQ?id=" + item.id + "&Q=" + item.description);
 
@@ -433,17 +437,10 @@
             success: function (response) {
                 JSON.stringify(response);
                 var games = response;
-                games.forEach(function (game) {
-                    if (game.title == title) {
-                        gameId = game.id
-                        
-                        console.log(game.teams);
-                        game.teams.forEach(function (team){
-                            console.log(team.id);
-                            deleteTeam(team.id);
-                        });
-
-                        var questions = game.questions;
+                games.forEach(function (item) {
+                    if (item.title == title) {
+                        gameId = item.id
+                        var questions = item.questions;
                         questions.forEach(function (question) {
                             question.answers.forEach(function (answer) {
                                 clearAnswer(answer.id);
@@ -461,27 +458,8 @@
 
             }
         });
-        
+
     }
-
-
-    function deleteTeam(id){
-        $.ajax({
-            url: "https://csdev.samford.edu/gamesapi/teams/delete/" + id,
-            type: 'POST',
-            dataType: 'json',
-            data: {},
-            crossDomain: true,
-            success: function (response) {
-                console.log("deleted: " + id);
-            },
-            error: function (xhr, status, error) {
-
-                console.log("Error: " + error.message);
-            }
-        });
-    }
-
     function getGameId(id) {
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/games/edit/" + id,
@@ -500,9 +478,9 @@
             }
         });
     }
-    function clearAnswer(id){
+    function clearAnswer(id) {
         $.ajax({
-            url: " https://csdev.samford.edu/gamesapi/answers/delete/"+id,
+            url: " https://csdev.samford.edu/gamesapi/answers/delete/" + id,
             type: 'POST',
             dataType: 'json',
             data: {},
