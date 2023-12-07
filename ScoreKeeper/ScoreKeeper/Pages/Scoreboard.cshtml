@@ -44,7 +44,6 @@
                 <img src="~/ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
             </div>
         </div>
-        <div id="noTeams" style="text-align: center; color: white;"> </div>
         <table>
             <tr>
                 <th>Place</th>
@@ -161,13 +160,7 @@
                     rank += 1;
 
                 });
-                
-                if (scoreExport == "") {
-                    document.getElementById("noTeams").innerHTML = "No teams are in this game";
-
-                } else {
                 document.getElementById("scoreboardContent").innerHTML = scoreExport; 
-                }
             },
             error: function (xhr, status, error) {
 

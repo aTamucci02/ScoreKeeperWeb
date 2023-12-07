@@ -142,8 +142,6 @@
         var scoreTeam;
         var questions;
 
-        var test = "";
-
         var teams = null;
 
         $.ajax({
@@ -165,28 +163,20 @@
                             if (team.teamname == teamName) {
                                 scoreTeam = team;
                                 team.answers.forEach(function (answer) {
-                                    console.log(answer);
                                     if (answer.correct == null && answer.incorrect == null && answer.skipped == null) {
                                         scoreExport += '<tr><td>' + qNum + '</td><td>' + question.pointscorrect + '</td><td>' + "Did not participate (+0)" + '</td></tr>';
-                                        test += "DNP ";
 
                                     }
                                     else if (answer.correct == 1) {
                                         scoreExport += '<tr><td>' + qNum + '</td><td>' + questions[qNum - 1].pointscorrect + '</td><td>' + "Correct (+" + questions[qNum - 1].pointscorrect + ")" + '</td></tr>';
-                                        test += "Correct ";
                                     }
-                                    else if (answer.correct == 0 && answer.skipped == 0) {
+                                    else if (answer.incorrect == 1) {
                                         scoreExport += '<tr><td>' + qNum + '</td><td>' + questions[qNum - 1].pointscorrect + '</td><td>' + "Inocorrect (-" + questions[qNum - 1].pointscorrect + ")" + '</td></tr>';
-                                        test += "Incorrect ";
                                     }
                                     else if (answer.skipped == 1) {
                                         scoreExport += '<tr><td>' + qNum + '</td><td>' + questions[qNum - 1].pointscorrect + '</td><td>' + "Did not answer (+0)" + '</td></tr>';
-                                        test += "DNA";
                                     }
                                     qNum++;
-                                    console.log(qNum);
-                                    console.log(scoreExport);
-                                    console.log(test);
                                 });
                             }
                         });
