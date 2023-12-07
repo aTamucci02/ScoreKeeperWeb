@@ -165,7 +165,6 @@
                             if (team.teamname == teamName) {
                                 scoreTeam = team;
                                 team.answers.forEach(function (answer) {
-                                    console.log(answer);
                                     if (answer.correct == null && answer.incorrect == null && answer.skipped == null) {
                                         scoreExport += '<tr><td>' + qNum + '</td><td>' + question.pointscorrect + '</td><td>' + "Did not participate (+0)" + '</td></tr>';
                                         test += "DNP ";
@@ -184,9 +183,6 @@
                                         test += "DNA";
                                     }
                                     qNum++;
-                                    console.log(qNum);
-                                    console.log(scoreExport);
-                                    console.log(test);
                                 });
                             }
                         });
@@ -203,7 +199,6 @@
                     document.getElementById("scoreboardContent").innerHTML = scoreExport;
 
                 }
-                console.log(scoreExport);
             },
             error: function (xhr, status, error) {
 
