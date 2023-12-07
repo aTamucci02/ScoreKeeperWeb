@@ -20,13 +20,13 @@
         <div class="header-container">
             <div>
                 <button type="button" class="button buttonsmall" data-bs-toggle="modal" data-bs-target="#CreateGameModal">
-                    Create game
+                    Create Game
                 </button>
                 <button type="button" class="button buttonsmall" data-bs-toggle="modal" data-bs-target="#StartGameModal">
-                    Start game
+                    Resume Game
                 </button>
                 <button type="button" class="button buttonsmall" data-bs-toggle="modal" data-bs-target="#RestartGameModal">
-                    Restart game
+                    Start Game
                 </button>
             </div>
 
@@ -398,6 +398,10 @@
                         if (item.description == "0") {
                             window.location.assign("/AdminWaiting?gamecode=" + item.title + "&id=" + item.id);
                             isLoaded = true;
+
+                        }
+                        if (item.description == "end") {
+                            window.location.assign("/Scoreboard?id=" + item.id + "&gamecode=" + item.gamecode);
 
                         }
                         else {
