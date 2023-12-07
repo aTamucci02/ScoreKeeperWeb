@@ -44,6 +44,7 @@
                 <img src="~/ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
             </div>
         </div>
+        <div id="noTeams" style="text-align: center; color: white;"> </div>
         <table>
             <tr>
                 <th>Place</th>
@@ -55,8 +56,8 @@
         </table>
     </div>
 
-    
-    
+
+
 </body>
 <!-- Home Button Modal -->
 <div class="modal fade" id="HomeButtonModal" tabindex="-1" aria-labelledby="HomeButtonModalLabel" aria-hidden="true">
@@ -123,7 +124,7 @@
         const searchParams = new URLSearchParams(window.location.search);
         var gamecode = searchParams.get('gamecode');
         var teams = null;
-       
+
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/games/list",
             type: 'GET',
@@ -138,7 +139,7 @@
                         teams = item.teams;
                     }
                 });
-                
+
                 // Sorts each team in descending order of score
                 teams.sort((team1, team2) => team2.score - team1.score);
                 teams.forEach(function (team) {
@@ -154,11 +155,17 @@
                         prevscore = team.score;
                     }
                     // Creates inner HTML for scoreboard with the rank corrected for ties
-                    scoreExport += '<tr><td>' + (rank - numofties) + '</td><td><a href="/TeamScoreboard?Scorecode=' + gamecode +'&teamname=' + team.teamname +'">' + team.teamname + '</td><td>' + team.score + '</td></tr>';
+                    scoreExport += '<tr><td>' + (rank - numofties) + '</td><td><a href="/TeamScoreboard?Scorecode=' + gamecode + '&teamname=' + team.teamname + '">' + team.teamname + '</td><td>' + team.score + '</td></tr>';
                     rank += 1;
 
                 });
-                document.getElementById("scoreboardContent").innerHTML = scoreExport; 
+
+                if (scoreExport == "") {
+                    document.getElementById("noTeams").innerHTML = "No teams are in this game";
+
+                } else {
+                    document.getElementById("scoreboardContent").innerHTML = scoreExport;
+                }
             },
             error: function (xhr, status, error) {
 
@@ -166,7 +173,7 @@
 
             }
         });
-        
+
     }
 
 </script>
