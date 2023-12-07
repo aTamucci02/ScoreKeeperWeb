@@ -101,7 +101,6 @@
                 var games = response;
                 games.forEach(function (item) {
                     if (item.gamecode === gamecode) {
-                        console.log(item);
                         document.getElementById('headerTitle').textContent = item.title;
                     }
                 });
@@ -134,7 +133,6 @@
             success: function (response) {
                 JSON.stringify(response);
                 var games = response;
-                console.log(response);
                 games.forEach(function (item) {
                     if (item.gamecode === gamecode) {
                         teams = item.teams;
