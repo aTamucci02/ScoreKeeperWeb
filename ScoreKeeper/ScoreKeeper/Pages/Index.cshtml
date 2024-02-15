@@ -28,7 +28,12 @@
                 <button type="button" class="button buttonsmall" data-bs-toggle="modal" data-bs-target="#RestartGameModal">
                     Start Game
                 </button>
+                <button type="button" class="button buttonsmall" onclick="LastQ()">
+                    Last Q
+                </button>
+
             </div>
+
 
             <h1 class="display-4">Home Page</h1>
             <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
@@ -493,5 +498,9 @@
                 console.log("Error: " + error.message);
             }
         });
+    }
+
+    function LastQ() {
+        window.location.assign("https://acsmscoring.samford.edu/JudgeSubmission?&teamname=test&gameid=1&Q=2")
     }
 </script>

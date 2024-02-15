@@ -69,6 +69,7 @@
                     <h2 id="teaminfo" class="display-6">Judge your team's answer</h2>
                     <h2 class="display-6">and submit the result</h2>
                 </div>
+                <div id="wagerPts"></div>
                 <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
             </div>
         </div>
@@ -160,13 +161,103 @@
     </div>
 </div>
 
+<!-- Final Jeopardy Button Modal -->
+@* <div class="modal fade" id="FinalJeoModal" tabindex="-1" aria-labelledby="FinalJeoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="JoinGameModalLabel">Final Jeopardy</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="totalPoints"></div>
+                <div class="form-group">
+                    <label for="final-jeo" class="col-form-label">Points:</label>
+                    <input type="number" class="form-control" id="wager" placeholder="Points">
+                </div>
+                <div class="col-sm-4">
+                    <small id="passcodeHelp" class="text-danger">
+                    </small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" onclick="finalJeopardy();" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+ *@
+<div class="modal fade" id="FinalJeoModal" tabindex="-1" aria-labelledby="FinalJeoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="JoinGameModalLabel">Final Jeopardy</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="totalPoints"></div>
+                <div class="form-group">
+                    <label for="final-jeo" class="col-form-label">Points:</label>
+                    <input type="number" class="form-control" id="wager" placeholder="Points" min="0">
+                    <small id="pointError" class="text-danger"></small> <!-- Error message placeholder -->
+                </div>
+                <div class="col-sm-4">
+                    <small id="passcodeHelp" class="text-danger">
+                    </small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" onclick="submitFinalJeopardy();" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    var teamPts = 0;
     function getGameData() {
         const searchParams = new URLSearchParams(window.location.search);
         var teamname = searchParams.get('teamname');
         var gameid = searchParams.get('gameid');
         var qnum = parseInt(searchParams.get('Q'));
         document.getElementById("teaminfo").innerHTML = "Judge " + teamname + "'s answer for question " + qnum;
+        
+        $.ajax({
+            url: "https://csdev.samford.edu/gamesapi/games/list",
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
+                JSON.stringify(response);
+                var games = response;
+                games.forEach(function (game) {
+                    if (game.id == gameid) {
+                        var teams = game.teams;
+                        teams.forEach(function (team) {
+                            if (teamname == team.teamname) {
+                                teamPts = team.score;
+                            }
+                        });
+                        var questions = game.questions;
+                        if (qnum == questions.length) {
+                            var myModal = new bootstrap.Modal(document.getElementById('FinalJeoModal'));
+                            var pointsDiv = document.getElementById('totalPoints');
+                            pointsDiv.textContent = 'You have ' + teamPts + ' points to wager';
+                            //myModal.show();
+                            finalJeopardy();
+                        }
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
+
     }
 
     function submitAnswer(answerVal) {
@@ -298,4 +389,38 @@
         });
     }
 
+    function finalJeopardy() {
+        try {
+            var myModal = new bootstrap.Modal(document.getElementById('FinalJeoModal'));
+            myModal.show();
+        } catch (error) {
+            console.error("Error hiding modal:", error);
+        }
+    }
+
+    function submitFinalJeopardy() {
+        var wagerVal = parseInt(document.getElementById("wager").value);
+
+        var pointError = document.getElementById("pointError");
+
+        if (isNaN(wagerVal) || wagerVal < 0) {
+            pointError.textContent = "Please enter a valid positive number.";
+        } else if (wagerVal > teamPts) {
+            pointError.textContent = "You cannot wager more points than your team currently has.";
+        } else {
+            pointError.textContent = ""; // Clear error message if input is valid
+            var myModal = new bootstrap.Modal(document.getElementById('FinalJeoModal'));
+            var wagerVal = document.getElementById("wager").value;
+            var wagerDiv = document.getElementById('wagerPts');
+
+
+            wagerDiv.textContent = 'Points Wagered ' + wagerVal;
+            
+            console.log(myModal);
+            myModal.hide();
+            console.log(myModal);
+
+
+        }
+    }
 </script>
