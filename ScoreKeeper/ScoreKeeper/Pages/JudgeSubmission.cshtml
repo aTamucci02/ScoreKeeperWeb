@@ -15,25 +15,25 @@
             align-items: center;
         }
 
+
         .container-submit {
             flex-direction: row;
             display: flex;
             background-color: #102F3B;
             flex-grow: 1;
-            align-content: stretch;
-            align-items: stretch;
-            gap: 50px;
         }
 
-            .container-submit > div {
+            .btn-div {
                 display: flex;
+                flex-direction: row;
                 flex-grow: 1;
                 margin: 30px;
             }
-
         .main-window {
             background-color: #102F3B;
         }
+
+
 
         .button-text {
             font-size: 32px;
@@ -50,6 +50,36 @@
             margin: 38px;
             border-bottom: 9px solid black;
             border-right: 9px solid black;
+        }
+        @@media only screen and (max-width: 768px) {
+            .container-submit {
+                flex-direction: row;
+                flex-flow: column wrap;
+                display: flex;
+                background-color: #102F3B;
+                flex-grow: 1;
+            }
+
+            .btn-div {
+                display: flex;
+                flex-direction: row;
+                flex-grow: 1;
+                margin: 10px;
+               
+            }
+
+            .answer-symbol {
+                font-size: 64px;
+            }
+
+            #checkmark {
+                transform: rotate(45deg);
+                height: 45px;
+                width: 20px;
+                margin: 19px;
+                border-bottom: 9px solid black;
+                border-right: 9px solid black;
+            }
         }
     </style>
 </head>
@@ -72,20 +102,21 @@
                 <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
             </div>
         </div>
+        
         <div class="container-submit">
-            <div>
+            <div class="btn-div">
                 <button type="button" class="button" data-bs-toggle="modal" data-bs-target="#IncorrectModal">
                     <div class="button-text">Incorrect</div>
                     <div class="answer-symbol">x</div>
                 </button>
             </div>
-            <div>
+            <div class="btn-div">
                 <button type="button" class="button" data-bs-toggle="modal" data-bs-target="#NoAnswerModal">
                     <div class="button-text">No Answer</div>
                     <div class="answer-symbol">-</div>
                 </button>
             </div>
-            <div>
+            <div class="btn-div">
                 <button type="button" class="button" data-bs-toggle="modal" data-bs-target="#CorrectModal">
                     <div class="button-text">Correct</div>
                     <div id="checkmark"></div>
