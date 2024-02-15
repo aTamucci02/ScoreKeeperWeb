@@ -161,33 +161,6 @@
     </div>
 </div>
 
-<!-- Final Jeopardy Button Modal -->
-@* <div class="modal fade" id="FinalJeoModal" tabindex="-1" aria-labelledby="FinalJeoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="JoinGameModalLabel">Final Jeopardy</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div id="totalPoints"></div>
-                <div class="form-group">
-                    <label for="final-jeo" class="col-form-label">Points:</label>
-                    <input type="number" class="form-control" id="wager" placeholder="Points">
-                </div>
-                <div class="col-sm-4">
-                    <small id="passcodeHelp" class="text-danger">
-                    </small>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" onclick="finalJeopardy();" class="btn btn-primary">Submit</button>
-            </div>
-        </div>
-    </div>
-</div>
- *@
 <div class="modal fade" id="FinalJeoModal" tabindex="-1" aria-labelledby="FinalJeoModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -209,7 +182,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" onclick="submitFinalJeopardy();" class="btn btn-primary">Submit</button>
+                <button type="button" onclick="submitFinalJeopardy();" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
             </div>
         </div>
     </div>
@@ -246,7 +219,6 @@
                             var myModal = new bootstrap.Modal(document.getElementById('FinalJeoModal'));
                             var pointsDiv = document.getElementById('totalPoints');
                             pointsDiv.textContent = 'You have ' + teamPts + ' points to wager';
-                            //myModal.show();
                             finalJeopardy();
                         }
                     }
@@ -409,16 +381,12 @@
             pointError.textContent = "You cannot wager more points than your team currently has.";
         } else {
             pointError.textContent = ""; // Clear error message if input is valid
-            var myModal = new bootstrap.Modal(document.getElementById('FinalJeoModal'));
             var wagerVal = document.getElementById("wager").value;
             var wagerDiv = document.getElementById('wagerPts');
 
 
             wagerDiv.textContent = 'Points Wagered ' + wagerVal;
             
-            console.log(myModal);
-            myModal.hide();
-            console.log(myModal);
 
 
         }
