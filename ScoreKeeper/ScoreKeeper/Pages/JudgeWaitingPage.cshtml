@@ -276,9 +276,16 @@
                             }
                             document.getElementById('team-total').textContent = "You’ve joined the game. There are " + item.teams.length + " teams in this lobby.";
                             if (item.description == "end") {
-                                window.location.assign("/GameOverPage?&teamname=" + teamname + "&gameid=" + gameid);
+                                var teams = getTeams();
+                                createURL("GameOverPage", teams.length, item.gamecode, teams, gameid);
                             } else if (item.description != 0 && item.description != null) {
-                                window.location.assign("/JudgeSubmission?&teamname=" + teamname + "&gameid=" + gameid + "&Q=" + item.description);
+                                var teams = getTeams();
+                                var subvals = []
+                                for (var i = 0; i < teams.length; i++) {
+                                    subvals.push(-1);
+                                }
+                                newurl = createURL("JudgeSubmission", teams.length, item.gamecode, teams, gameid);
+                                window.location.assign(newurl + "&Q=" + item.description + "&sbmt=" + subvals);
                             }
                         }
                     });
@@ -300,6 +307,33 @@
         }
     }
 
+    function getTeams() {
+        // Gets the number of teams currently being judged
+        var numteams = 0;
+        var allTeamsRecorded = false;
+        var teams = [];
+        var testname;
+        while (!allTeamsRecorded) {
+            if (numteams == 0) {
+                testname = searchParams.get('teamname');
+                if (testname) {
+                    numteams += 1;
+                    teams.push(testname);
+                } else {
+                    allTeamsRecorded = true;
+                }
+            } else {
+                testname = searchParams.get('teamname' + (numteams + 1));
+                if (testname) {
+                    numteams += 1;
+                    teams.push(testname);
+                } else {
+                    allTeamsRecorded = true;
+                }
+            }
+        }
+        return teams;
+    }
 
     function enterTeamNameModal() {
         var teamModal = new bootstrap.Modal(document.getElementById('EnterTeamModal'), {});
@@ -398,7 +432,7 @@
                                         isCurrentQuestionSubmitted(team.id, gameid, teamname);
                                     }else{
                                         console.log(teams);
-                                        createURL(numteams, gamecode, teams, gameid);
+                                        createURL("JudgeWaitingPage", numteams, gamecode, teams, gameid);
                                     }
                                 
                                 }
@@ -444,20 +478,51 @@
     }
     
     // Makes URL based on team names and number of teams
-    function createURL(numteams, gamecode, teams, gameid){
-        if (numteams <= 1) {
-            window.location.assign("/JudgeWaitingPage?gamecode=" + gamecode + "&teamname=" + teams[0] + "&gameid=" + gameid);
+    function createURL(page, numteams, gamecode, teams, gameid){
+        if (page == "JudgeWaitingPage") {
+            if (numteams <= 1) {
+                window.location.assign("/" + page + "?gamecode=" + gamecode + "&teamname=" + teams[0] + "&gameid=" + gameid);
+            } else {
+                var redirect = "/" + page + "?gamecode=" + gamecode + "&teamname=" + teams[0];
+                var counter = 2;
+                teams.splice(0, 1);
+                teams.forEach(function (team) {
+                    redirect += "&teamname" + counter + "=" + team;
+                    counter += 1;
+                });
+                redirect += "&gameid=" + gameid;
+                window.location.assign(redirect);
+            }
+        } else if (page == "GameOverPage") {
+            if (numteams <= 1) {
+                window.location.assign("/" + page + "?teamname=" + teams[0] + "&gameid=" + gameid);
+            } else {
+                var redirect = "/" + page + "?teamname=" + teams[0];
+                var counter = 2;
+                teams.splice(0, 1);
+                teams.forEach(function (team) {
+                    redirect += "&teamname" + counter + "=" + team;
+                    counter += 1;
+                });
+                redirect += "&gameid=" + gameid;
+                window.location.assign(redirect);
+            }
         } else {
-            var redirect = "/JudgeWaitingPage?gamecode=" + gamecode + "&teamname=" + teams[0];
-            var counter = 2;
-            teams.splice(0,1);
-            teams.forEach(function (team) {
-                redirect += "&teamname" + counter + "=" + team;
-                counter += 1;
-            });
-            redirect += "&gameid=" + gameid;
-            window.location.assign(redirect);
+            if (numteams <= 1) {
+                window.location.assign("/" + page + "?teamname=" + teams[0] + "&gameid=" + gameid);
+            } else {
+                var redirect = "/" + page + "?teamname=" + teams[0];
+                var counter = 2;
+                teams.splice(0, 1);
+                teams.forEach(function (team) {
+                    redirect += "&teamname" + counter + "=" + team;
+                    counter += 1;
+                });
+                redirect += "&gameid=" + gameid;
+                return redirect;
+            }
         }
+        
         
     }
 
