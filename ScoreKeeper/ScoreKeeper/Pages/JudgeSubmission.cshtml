@@ -4,6 +4,9 @@
 }
 <head>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"> </script>
     <style>
         .button {
             display: flex;
@@ -15,25 +18,26 @@
             align-items: center;
         }
 
+
         .container-submit {
             flex-direction: row;
             display: flex;
             background-color: #102F3B;
             flex-grow: 1;
-            align-content: stretch;
-            align-items: stretch;
-            gap: 50px;
         }
 
-            .container-submit > div {
-                display: flex;
-                flex-grow: 1;
-                margin: 30px;
-            }
+        .btn-div {
+            display: flex;
+            flex-direction: row;
+            flex-grow: 1;
+            margin: 30px;
+        }
 
         .main-window {
             background-color: #102F3B;
         }
+
+
 
         .button-text {
             font-size: 32px;
@@ -50,6 +54,36 @@
             margin: 38px;
             border-bottom: 9px solid black;
             border-right: 9px solid black;
+        }
+
+        @@media only screen and (max-width: 768px) {
+            .container-submit {
+                flex-direction: row;
+                flex-flow: column wrap;
+                display: flex;
+                background-color: #102F3B;
+                flex-grow: 1;
+            }
+
+            .btn-div {
+                display: flex;
+                flex-direction: row;
+                flex-grow: 1;
+                margin: 10px;
+            }
+
+            .answer-symbol {
+                font-size: 64px;
+            }
+
+            #checkmark {
+                transform: rotate(45deg);
+                height: 45px;
+                width: 20px;
+                margin: 19px;
+                border-bottom: 9px solid black;
+                border-right: 9px solid black;
+            }
         }
     </style>
 </head>
@@ -74,22 +108,22 @@
             </div>
         </div>
         <div class="container-submit">
-            <div>
-                <button type="button" class="button" data-bs-toggle="modal" data-bs-target="#IncorrectModal">
-                    <div class="button-text">Incorrect</div>
-                    <div class="answer-symbol">x</div>
+            <div class="btn-div">
+                <button type="button" class="button" data-bs-toggle="modal" onclick="showAnsModal('CorrectModal','Correct');">
+                    <div class="button-text">Correct</div>
+                    <div id="checkmark"></div>
                 </button>
             </div>
-            <div>
-                <button type="button" class="button" data-bs-toggle="modal" data-bs-target="#NoAnswerModal">
+            <div class="btn-div">
+                <button type="button" class="button" data-bs-toggle="modal" onclick="showAnsModal('NoAnswerModal','NA');">
                     <div class="button-text">No Answer</div>
                     <div class="answer-symbol">-</div>
                 </button>
             </div>
-            <div>
-                <button type="button" class="button" data-bs-toggle="modal" data-bs-target="#CorrectModal">
-                    <div class="button-text">Correct</div>
-                    <div id="checkmark"></div>
+            <div class="btn-div">
+                <button type="button" class="button" data-bs-toggle="modal" onclick="showAnsModal('IncorrectModal','Incorrect');">
+                    <div class="button-text">Incorrect</div>
+                    <div class="answer-symbol">x</div>
                 </button>
             </div>
         </div>
@@ -121,9 +155,16 @@
                 <h1 class="modal-title fs-5" id="IncorrectModalLabel">The team's answer is INCORRECT</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body">
+                <!-- Add a dropdown list for selecting a team -->
+                <label for="teamSelection" class="form-label">Select a team:</label>
+                <select class="form-select" id="teamSelectionIncorrect">
+                    <!-- Options will be dynamically added here -->
+                </select>
+            </div>
             <div class="modal-footer" style="justify-content:space-around">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change Submission</button>
-                <button type="button" onclick="submitAnswer(0);" class=" btn btn-primary">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" onclick="submitAnswer(0,'Incorrect');" class=" btn btn-primary" data-bs-dismiss="modal">Confirm</button>
             </div>
         </div>
     </div>
@@ -137,9 +178,16 @@
                 <h1 class="modal-title fs-5" id="NoAnswerModalLabel">The team did not submit an answer</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body">
+                <!-- Add a dropdown list for selecting a team -->
+                <label for="teamSelection" class="form-label">Select a team:</label>
+                <select class="form-select" id="teamSelectionNA">
+                    <!-- Options will be dynamically added here -->
+                </select>
+            </div>
             <div class="modal-footer" style="justify-content:space-around">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change Submission</button>
-                <button type="button" onclick="submitAnswer(2);" class=" btn btn-primary">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" onclick="submitAnswer(2,'NA');" class=" btn btn-primary" data-bs-dismiss="modal">Confirm</button>
             </div>
         </div>
     </div>
@@ -153,14 +201,22 @@
                 <h1 class="modal-title fs-5" id="CorrectModalLabel">The team's answer is CORRECT</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body">
+                <!-- Add a dropdown list for selecting a team -->
+                <label for="teamSelection" class="form-label">Select a team:</label>
+                <select class="form-select" id="teamSelectionCorrect">
+                    <!-- Options will be dynamically added here -->
+                </select>
+            </div>
             <div class="modal-footer" style="justify-content:space-around">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change Submission</button>
-                <button type="button" onclick="submitAnswer(1);" class=" btn btn-primary">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" onclick="submitAnswer(1,'Correct');" class=" btn btn-primary" data-bs-dismiss="modal">Confirm</button>
             </div>
         </div>
     </div>
 </div>
 
+<!--Final Jeopardy Modal-->
 <div class="modal fade" id="FinalJeoModal" tabindex="-1" aria-labelledby="FinalJeoModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -190,12 +246,25 @@
 
 <script>
     var teamPts = 0;
+    const searchParams = new URLSearchParams(window.location.search);
+    var sbmt = searchParams.get('sbmt');
+    var subvals = sbmt.split(',').map(function (item) {
+        return parseInt(item, 10);
+    });
+    console.log(subvals);
+
+
+    function showAnsModal(modaltype, dropcode){
+        var myModal = new bootstrap.Modal(document.getElementById(modaltype))
+        myModal.show()
+        populateTeamDropdown(dropcode);
+    }
+
     function getGameData() {
-        const searchParams = new URLSearchParams(window.location.search);
         var teamname = searchParams.get('teamname');
         var gameid = searchParams.get('gameid');
         var qnum = parseInt(searchParams.get('Q'));
-        document.getElementById("teaminfo").innerHTML = "Judge " + teamname + "'s answer for question " + qnum;
+        document.getElementById("teaminfo").innerHTML = "Judge question " + qnum;
         
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/games/list",
@@ -232,10 +301,56 @@
 
     }
 
-    function submitAnswer(answerVal) {
+    function getTeams() {
+        // Gets the number of teams currently being judged
+        var numteams = 0;
+        var allTeamsRecorded = false;
+        var teams = [];
+        var testname;
+        while (!allTeamsRecorded) {
+            if (numteams == 0) {
+                testname = searchParams.get('teamname');
+                if (testname) {
+                    numteams += 1;
+                    teams.push(testname);
+                } else {
+                    allTeamsRecorded = true;
+                }
+            } else {
+                testname = searchParams.get('teamname' + (numteams + 1));
+                if (testname) {
+                    numteams += 1;
+                    teams.push(testname);
+                } else {
+                    allTeamsRecorded = true;
+                }
+            }
+        }
+        console.log(teams);
+        return teams;
+    }
+
+    function populateTeamDropdown(selectname) {
+        var select = document.getElementById('teamSelection' + selectname);
+        select.innerHTML = ''; // Clear existing options first
+
+        // Assuming teams[] is an array of team names
+        var teams = getTeams(); // Example array, replace with actual
+
+        // Create and append the options
+        for (var i = 0; i < teams.length; i++) {
+            var opt = document.createElement('option');
+            opt.value = teams[i];
+            opt.innerHTML = teams[i];
+            if (subvals[i] == -1) {
+                select.appendChild(opt);
+            }
+        }
+    }
+
+    function submitAnswer(answerVal, anstype) {
         console.log("submitting answer");
-        const searchParams = new URLSearchParams(window.location.search);
-        var teamname = searchParams.get('teamname');
+        const teamname = document.getElementById('teamSelection' + anstype).value;
         var teamid;
         var gameid = parseInt(searchParams.get('gameid'));
         var qnum = searchParams.get('Q');
@@ -249,7 +364,7 @@
         var incorrect = 0;
         var skipped = 0;
         var ans;
-
+        console.log(teamname);
 
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/games/list",
@@ -283,22 +398,19 @@
                                     score -= points;
                                     incorrect = 1;
                                     ans = 0;
-                                    changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, incorrect, skipped, ans, qnum);
                                 } else if (answerVal == 1) {
                                     // Correct
                                     numcorrect += 1;
                                     score += points;
                                     correct = 1;
                                     ans = 1;
-                                    changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, incorrect, skipped, ans, qnum);
                                 } else {
                                     //No Answer
                                     numskipped += 1;
                                     skipped = 1;
                                     ans = 2;
-                                    changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, incorrect, skipped, ans, qnum);
                                 }
-
+                                changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, incorrect, skipped, ans, qnum);
                             }
                         });
                     }
@@ -318,6 +430,8 @@
 
     // Edits team score and number of questions correct/incorrect/skipped
     function changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, incorrect, skipped, ans, qnum) {
+        var teams = getTeams();
+        
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/teams/edit/" + teamid,
             type: 'POST',
@@ -331,7 +445,18 @@
             },
             crossDomain: true,
             success: function (response) {
-                finalSubmitAnswer(gameid, teamname, questionid, teamid, correct, incorrect, skipped, ans, qnum);
+                var subsFull = false;
+                for (var i = 0; i < subvals.length; i++){
+                    if (teams[i] == teamname) {
+                        subvals[i] = ans;
+                        break;
+                        console.log(subvals);
+                    }
+                }
+                console.log(subvals)
+                if (subvals.includes(-1) == false){
+                    finalSubmitAnswer(gameid, teams, questionid, teamid, correct, incorrect, skipped, subvals, qnum);
+                }
             },
             error: function (xhr, status, error) {
                 console.log("Error: " + error.message);
@@ -339,26 +464,20 @@
         });
     }
 
-    function finalSubmitAnswer(gameid, teamname, questionid, teamid, correct, incorrect, skipped, ans, qnum) {
-        $.ajax({
-            url: "https://csdev.samford.edu/gamesapi/answers/add",
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                "team_id": teamid,
-                "question_id": questionid,
-                "correct": correct,
-                "wrong": incorrect,
-                "skipped": skipped
-            },
-            crossDomain: true,
-            success: function (response) {
-                window.location.assign("/JudgePostSubmission?gameid=" + gameid + "&teamname=" + teamname + "&Q=" + qnum + "&ans=" + ans);
-            },
-            error: function (xhr, status, error) {
-                console.log("Error: " + error.message);
-            }
-        });
+    function finalSubmitAnswer(gameid, teams, questionid, teamid, correct, incorrect, skipped, ans, qnum) {
+        if (teams.length <= 1) {
+            var redirect = "/JudgePostSubmission?gameid=" + gameid + "&teamname=" + teams[0] + "&gameid=" + "&Q=" + qnum + "&ans=" + ans;
+        } else {
+            var redirect = "/JudgePostSubmission?gameid=" + gameid + "&teamname=" + teams[0];
+            var counter = 2;
+            teams.splice(0, 1);
+            teams.forEach(function (team) {
+                redirect += "&teamname" + counter + "=" + team;
+                counter += 1;
+            });
+            redirect += "&Q=" + qnum + "&ans=" + ans;
+        }
+        window.location.assign(redirect);
     }
 
     function finalJeopardy() {
