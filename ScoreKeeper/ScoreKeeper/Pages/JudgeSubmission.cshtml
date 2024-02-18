@@ -248,10 +248,14 @@
     var teamPts = 0;
     const searchParams = new URLSearchParams(window.location.search);
     var sbmt = searchParams.get('sbmt');
-    var subvals = sbmt.split(',').map(function (item) {
-        return parseInt(item, 10);
-    });
-    console.log(subvals);
+    if (sbmt == "-1") {
+        var subvals = [-1];
+    } else {
+        var subvals = sbmt.split(',').map(function (item) {
+            return parseInt(item, 10);
+        });
+    }
+    
 
 
     function showAnsModal(modaltype, dropcode){
