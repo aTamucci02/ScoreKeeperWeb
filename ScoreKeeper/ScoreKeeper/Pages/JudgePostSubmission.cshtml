@@ -10,7 +10,7 @@
         .main-window {
             background-color: #102F3B;
             color: white;
-            font-size: 32px;
+            font-size: 2.5vw;
         }
 
 
@@ -24,12 +24,58 @@
         }
 
         .request-change {
-            font-size: 24px;
+            font-size: 2.3vw;
             display: flex;
             flex-direction: column;
             flex-grow: 2;
             align-items: center;
         }
+        .button{
+            font-size: 2.3vw; 
+            margin-top: 15px;
+        }
+
+        .display-6 {
+            font-size: 3vw;
+            
+        }
+
+        .ansclass {
+            font-size: 2vw;
+            font-weight: normal;
+        }
+
+        @@media only screen and (max-width: 768px) {
+            .main-window {
+                background-color: #102F3B;
+                color: white;
+                font-size: 4vw;
+            }
+
+            .request-change {
+                font-size: 3.5vw;
+                display: flex;
+                flex-direction: column;
+                flex-grow: 2;
+                align-items: center;
+            }
+
+            .button {
+                font-size: 3.5vw;
+                margin-top: 15px;
+            }
+
+            .display-6 {
+                font-size: 3.5vw;
+            }
+
+            .ansclass {
+                font-size: 2.5vw;
+                font-weight: normal;
+            }
+        }
+
+        
 
     </style>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"
@@ -47,8 +93,11 @@
                         Home
                     </button>
                 </div>
-                <div style="display:flex; flex-direction:column; align-items:center;">
-                    <h2 class="display-6" id="answer">You submitted [x answer]</h2>
+                <div style="display:flex; flex-direction:column; align-items:center; margin-left:1vw;">
+                    <h2 class="display-6" id="answer">Answers submitted</h2>
+                </div>
+                <div style="display:flex; flex-direction:column; align-items:start;" id="listOfAns">
+                    
                 </div>
                 <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
             </div>
@@ -68,7 +117,7 @@
             <div class="request-change">
                 <div>Want to change your submission?</div>
                 <div>
-                    <button type="button" class="button buttonmed" style="font-size: 24px; margin-top: 15px;" data-bs-toggle="modal" data-bs-target="#RequestChangeModal">
+                    <button type="button" class="button buttonmed" data-bs-toggle="modal" onclick="showAnsModal();">
                         Change Submission
                     </button>
                 </div>
@@ -102,10 +151,15 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="RequestChangeModalLabel">You submitted [xyz]</h1>
+                <h1 class="modal-title fs-5" id="RequestChangeModalLabel">Change Submission</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <!-- Add a dropdown list for selecting a team -->
+                <label for="teamSelection" class="form-label">Select a team:</label>
+                <select class="form-select" id="teamSelection">
+                    <!-- Options will be dynamically added here -->
+                </select>
                 <p>What would you like to change your submission to?</p>
 
                 <select name="submission" id="submission">
@@ -126,15 +180,32 @@
 
 <script>
     const select = document.getElementById('submission');
+    const teamSelect = document.getElementById('teamSelection');
     const submitButton = document.getElementById('submit');
     const searchParams = new URLSearchParams(window.location.search);
-    var ans = parseInt(searchParams.get('ans'));
+    const teams = getTeams();
     var teamname = searchParams.get('teamname');
+    var teamnum = 0;
     var gameid = parseInt(searchParams.get('gameid'));
     var qnum = searchParams.get('Q');
-    document.getElementById('RequestChangeModalLabel').innerHTML = "You submitted " + getAns();
+    var sbmt = searchParams.get('ans');
+    var ans = sbmt[teamnum];
+    if (sbmt == "-1") {
+        var subvals = [-1];
+    } else {
+        var subvals = sbmt.split(',').map(function (item) {
+            return parseInt(item, 10);
+        });
+    }
+
+    document.getElementById('teamSelection').addEventListener('change', () => {
+        teamname = teamSelect.value;
+        teamnum = teams.indexOf(teamname);
+    });
+
+    // document.getElementById('RequestChangeModalLabel').innerHTML = "You submitted " + getAns();
     document.getElementById('submission').addEventListener('change', () => {
-        if (select.value === 'blank' || select.value == ans) {
+        if (select.value === 'blank' || select.value.toUpperCase() == subvals[teamnum]) {
             submitButton.disabled = true;
         } else {
             submitButton.disabled = false;
@@ -143,7 +214,26 @@
     setInterval(checkNextQ, 5000);
     setInterval(displayPodium, 10000);
 
+    function showAnsModal() {
+        var myModal = new bootstrap.Modal(document.getElementById('RequestChangeModal'));
+        myModal.show();
+        populateTeamDropdown();
+    }
 
+    function populateTeamDropdown() {
+        
+        teamSelect.innerHTML = ''; // Clear existing options first
+
+        // Create and append the options
+        for (var i = 0; i < teams.length; i++) {
+            var opt = document.createElement('option');
+            opt.value = teams[i];
+            opt.innerHTML = teams[i];
+            teamSelect.appendChild(opt);
+            
+        }
+        
+    }
 
     function checkNextQ() {
         $.ajax({
@@ -173,23 +263,55 @@
         });
     }
 
+    function getTeams() {
+        // Gets the number of teams currently being judged
+        var numteams = 0;
+        var allTeamsRecorded = false;
+        var teamstemp = [];
+        var testname;
+        while (!allTeamsRecorded) {
+            if (numteams == 0) {
+                testname = searchParams.get('teamname');
+                if (testname) {
+                    numteams += 1;
+                    teamstemp.push(testname);
+                } else {
+                    allTeamsRecorded = true;
+                }
+            } else {
+                testname = searchParams.get('teamname' + (numteams + 1));
+                if (testname) {
+                    numteams += 1;
+                    teamstemp.push(testname);
+                } else {
+                    allTeamsRecorded = true;
+                }
+            }
+        }
+        console.log(teamstemp);
+        return teamstemp;
+    }
+
     function getAns() {
         displayPodium();
-        const searchParams = new URLSearchParams(window.location.search);
-        var ans = parseInt(searchParams.get('ans'));
-        var teamname = searchParams.get('teamname');
-        var qnum = searchParams.get('Q');
         var answer;
+        var ansHeader = document.getElementById('listOfAns');
 
-        if (ans == 0) {
-            answer = "INCORRECT";
-        } else if (ans == 1) {
-            answer = "CORRECT";
-        } else {
-            answer = "NO ANSWER";
+        for (var i = 0; i < teams.length; i++) {
+            var ansEntry = document.createElement('h2');
+            ansEntry.classList.add("ansclass");
+            if (subvals[i] == 0) {
+                answer = "INCORRECT";
+            } else if (subvals[i] == 1) {
+                answer = "CORRECT";
+            } else {
+                answer = "NO ANSWER";
+            }
+            console.log(teams[i] + " Answer: " + answer)
+            ansEntry.innerHTML = teams[i] + ": " + answer;
+            ansHeader.appendChild(ansEntry);
         }
-        document.getElementById("answer").innerHTML = "You submitted: " + answer + " for " + teamname + " for question " + qnum;
-        return answer;
+        document.getElementById("answer").innerHTML = "Answers submitted for question " + qnum;
     }
 
     function submitChange() {
@@ -205,6 +327,7 @@
         var skipped = 0;
         var newAns = select.value;
         var answerVal = parseInt(newAns);
+        ans = sbmt[teamnum];
 
 
         $.ajax({
@@ -298,7 +421,7 @@
             },
             crossDomain: true,
             success: function (response) {
-                finalSubmitAnswer(gameid, teamname, questionid, teamid, correct, incorrect, skipped, ans, qnum);
+                finalSubmitAnswer(gameid, questionid, ans, qnum);
             },
             error: function (xhr, status, error) {
                 console.log("Error: " + error.message);
@@ -306,26 +429,21 @@
         });
     }
 
-    function finalSubmitAnswer(gameid, teamname, questionid, teamid, correct, incorrect, skipped, ans, qnum) {
-        $.ajax({
-            url: "https://csdev.samford.edu/gamesapi/answers/add",
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                "team_id": teamid,
-                "question_id": questionid,
-                "correct": correct,
-                "wrong": incorrect,
-                "skipped": skipped
-            },
-            crossDomain: true,
-            success: function (response) {
-                window.location.assign("/JudgePostSubmission?gameid=" + gameid + "&teamname=" + teamname + "&Q=" + qnum + "&ans=" + ans);
-            },
-            error: function (xhr, status, error) {
-                console.log("Error: " + error.message);
-            }
-        });
+    function finalSubmitAnswer(gameid, questionid, ans, qnum) {
+        subvals[teamnum] = ans;
+        if (teams.length <= 1) {
+            var redirect = "/JudgePostSubmission?gameid=" + gameid + "&teamname=" + teams[0] + "&gameid=" + "&Q=" + qnum + "&ans=" + ans;
+        } else {
+            var redirect = "/JudgePostSubmission?gameid=" + gameid + "&teamname=" + teams[0];
+            var counter = 2;
+            teams.splice(0, 1);
+            teams.forEach(function (team) {
+                redirect += "&teamname" + counter + "=" + team;
+                counter += 1;
+            });
+            redirect += "&Q=" + qnum + "&ans=" + subvals;
+        }
+        window.location.assign(redirect);
     }
 
     function deleteOldAnswerRequest(questionid, teamid) {
