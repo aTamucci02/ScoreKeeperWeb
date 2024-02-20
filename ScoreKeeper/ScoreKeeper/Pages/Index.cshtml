@@ -28,9 +28,7 @@
                 <button type="button" class="button buttonsmall" data-bs-toggle="modal" data-bs-target="#RestartGameModal">
                     Start Game
                 </button>
-
             </div>
-
 
             <h1 class="display-4">Home Page</h1>
             <img src="ACSMLogo.png" alt="American College of Sports Medicine Logo" style="background:transparent;width:90px;height:90px;" />
@@ -429,6 +427,7 @@
     function restartGame() {
         var gameId = 0;
         var answers;
+        var teams;
         var title = $("#RestartGameModal #gameTitle").val().trim();
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/games/list",
@@ -442,13 +441,17 @@
                 games.forEach(function (item) {
                     if (item.title == title) {
                         gameId = item.id
+                        teams = item.teams;
                         var questions = item.questions;
                         questions.forEach(function (question) {
                             question.answers.forEach(function (answer) {
                                 clearAnswer(answer.id);
                             });
                         });
-                        getGameId(gameId);
+                        teams.forEach(function (team) {
+                            clearTeam(team.id);
+                        });
+                        resetGame(gameId);
                         window.location.assign("/AdminWaiting?id=" + gameId + "&gamecode=" + title);
 
                     }
@@ -462,7 +465,7 @@
         });
 
     }
-    function getGameId(id) {
+    function resetGame(id) {
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/games/edit/" + id,
             type: 'POST',
@@ -496,8 +499,21 @@
             }
         });
     }
+    function clearTeam(id) {
+        $.ajax({
+            url: " https://csdev.samford.edu/gamesapi/teams/delete/" + id,
+            type: 'POST',
+            dataType: 'json',
+            data: {},
+            crossDomain: true,
+            success: function (response) {
 
-    function LastQ() {
-        window.location.assign("https://acsmscoring.samford.edu/JudgeSubmission?&teamname=test&gameid=1&Q=2")
+            },
+            error: function (xhr, status, error) {
+
+                console.log("Error: " + error.message);
+            }
+        });
     }
+
 </script>
