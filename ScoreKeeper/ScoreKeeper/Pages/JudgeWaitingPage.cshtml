@@ -432,15 +432,16 @@
                                         console.log("Checking question submission");
                                         isCurrentQuestionSubmitted(team.id, gameid, teamname);
                                     }else{
-                                        console.log(teams);
-                                        window.location.assign(createURL("JudgeWaitingPage", numteams, gamecode, teams, gameid));
-
+                                        var redir = createURL("JudgeWaitingPage", teams.length, gamecode, teams, gameid);
+                                        window.location.assign(redir);
                                     }
                                 
                                 }
                             });
                             if(!teamFound){
-                                createTeam(gameid, teamname, gamecode);
+                                var redir = createTeam(gameid, teamname, teams, gamecode);
+                                console.log(redir);
+                                //window.location.assign(redir);
                             }
                         
                         }
@@ -454,7 +455,7 @@
         }
     }
 
-    function createTeam(gameid, teamname, gamecode){
+    function createTeam(gameid, teamname, teams, gamecode){
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/teams/add",
             type: 'POST',
@@ -470,7 +471,8 @@
             crossDomain: true,
             success: function (response) {
                 $('#EnterTeamModal').modal('hide').data('bs.modal', null);
-                window.location.assign("/JudgeWaitingPage?gamecode=" + gamecode + "&teamname=" + teamname + "&gameid=" + gameid);
+                var redir = createURL("JudgeWaitingPage", teams.length, gamecode, teams, gameid);
+                window.location.assign(redir);
             },
             error: function (xhr, status, error) {
                 console.log("Error: " + error.message);
@@ -483,7 +485,7 @@
     function createURL(page, numteams, gamecode, teams, gameid){
         if (page == "JudgeWaitingPage") {
             if (numteams <= 1) {
-                window.location.assign("/" + page + "?gamecode=" + gamecode + "&teamname=" + teams[0] + "&gameid=" + gameid);
+                return "/" + page + "?gamecode=" + gamecode + "&teamname=" + teams[0] + "&gameid=" + gameid;
             } else {
                 var redirect = "/" + page + "?gamecode=" + gamecode + "&teamname=" + teams[0];
                 var counter = 2;
@@ -497,7 +499,7 @@
             }
         } else if (page == "GameOverPage") {
             if (numteams <= 1) {
-                window.location.assign("/" + page + "?teamname=" + teams[0] + "&gameid=" + gameid);
+                return "/" + page + "?teamname=" + teams[0] + "&gameid=" + gameid;
             } else {
                 var redirect = "/" + page + "?teamname=" + teams[0];
                 var counter = 2;
