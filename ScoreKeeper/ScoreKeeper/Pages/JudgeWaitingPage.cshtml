@@ -286,7 +286,7 @@
                                     subvals.push(-1);
                                 }
                                 var redir = createURL("JudgeSubmission", teams.length, item.gamecode, teams, gameid);
-                                window.location.assign(redir + "&Q=" + item.description);
+                                window.location.assign(redir + "&Q=" + item.description + "&sbmt=" + subvals);
                             }
                         }
                     });
