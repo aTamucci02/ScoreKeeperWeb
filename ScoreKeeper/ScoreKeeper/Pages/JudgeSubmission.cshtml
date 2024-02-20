@@ -2,6 +2,7 @@
 @model ScoreKeeper.Pages.JudgeSubmissionModel
 @{
 }
+<!-- CSS -->
 <head>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"
@@ -221,19 +222,14 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="JoinGameModalLabel">Final Jeopardy</h1>
+                <h1 class="modal-title fs-5" id="FinalJeoModalLabel">Final Jeopardy</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div id="totalPoints"></div>
-                <div class="form-group">
-                    <label for="final-jeo" class="col-form-label">Points:</label>
-                    <input type="number" class="form-control" id="wager" placeholder="Points" min="0">
-                    <small id="pointError" class="text-danger"></small> <!-- Error message placeholder -->
-                </div>
-                <div class="col-sm-4">
-                    <small id="passcodeHelp" class="text-danger">
-                    </small>
+                <div id="totalPoints">Each team and their points are listed. You may wager any amount up to the maximum value of points for each team</div>
+                <!-- Generate input boxes dynamically for each team -->
+                <div id="teamPointsInputs">
+                    <!-- Input boxes for team points will be dynamically added here -->
                 </div>
             </div>
             <div class="modal-footer">
@@ -244,8 +240,12 @@
     </div>
 </div>
 
+
+
 <script>
-    var teamPts = 0;
+    var isLastQ = false;
+    var teamPts = [];
+    var wagers = [];
     const searchParams = new URLSearchParams(window.location.search);
     var sbmt = searchParams.get('sbmt');
     if (sbmt == "-1") {
@@ -269,7 +269,7 @@
         var gameid = searchParams.get('gameid');
         var qnum = parseInt(searchParams.get('Q'));
         document.getElementById("teaminfo").innerHTML = "Judge question " + qnum;
-        
+
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/games/list",
             type: 'GET',
@@ -282,29 +282,29 @@
                 games.forEach(function (game) {
                     if (game.id == gameid) {
                         var teams = game.teams;
-                        teams.forEach(function (team) {
-                            if (teamname == team.teamname) {
-                                teamPts = team.score;
+                        var selectedTeams = getTeams(); // Get the names of the teams
+                        teamPts = []; // Reset teamPts array
+                        selectedTeams.forEach(function (selectedTeam) {
+                            var team = teams.find(team => team.teamname === selectedTeam); // Find the team object
+                            if (team) {
+                                teamPts.push(team.score); // Push the score to teamPts if team is found
                             }
                         });
                         var questions = game.questions;
                         if (qnum == questions.length) {
                             var myModal = new bootstrap.Modal(document.getElementById('FinalJeoModal'));
                             var pointsDiv = document.getElementById('totalPoints');
-                            pointsDiv.textContent = 'You have ' + teamPts + ' points to wager';
+                            isLastQ = true;
                             finalJeopardy();
                         }
                     }
                 });
             },
             error: function (xhr, status, error) {
-
                 console.log("Error: " + error.message);
             }
         });
-
     }
-
     function getTeams() {
         // Gets the number of teams currently being judged
         var numteams = 0;
@@ -485,33 +485,95 @@
     }
 
     function finalJeopardy() {
+        var count=0; 
+        console.log(teamPts);
+        var teams = getTeams(); // Assuming getTeams() returns an array of team names
+        var modalBody = document.getElementById('teamPointsInputs');
+
+        // Clear any existing content in the modal body
+        modalBody.innerHTML = '';
+
+        // Generate input boxes for each team
+        teams.forEach(function (team) {
+            // Create a label for the team's input box
+            var label = document.createElement('label');
+            label.textContent = team + ', ' + teamPts[count] + " points";
+            count++;
+
+            // Create an input box for the team's points
+            var input = document.createElement('input');
+            input.type = 'number';
+            input.className = 'form-control';
+            input.placeholder = 'Points for ' + team;
+            input.min = '0';
+
+            // Append the label and input box to the modal body
+            modalBody.appendChild(label);
+            modalBody.appendChild(input);
+        });
+
         try {
             var myModal = new bootstrap.Modal(document.getElementById('FinalJeoModal'));
             myModal.show();
         } catch (error) {
-            console.error("Error hiding modal:", error);
+            console.error("Error showing modal:", error);
         }
     }
+
+
+
 
     function submitFinalJeopardy() {
-        var wagerVal = parseInt(document.getElementById("wager").value);
+        // Clear any existing values in wagers[]
+        wagers = [];
 
-        var pointError = document.getElementById("pointError");
+        // Get all input elements inside the modal body
+        var inputs = document.querySelectorAll('#teamPointsInputs input');
 
-        if (isNaN(wagerVal) || wagerVal < 0) {
-            pointError.textContent = "Please enter a valid positive number.";
-        } else if (wagerVal > teamPts) {
-            pointError.textContent = "You cannot wager more points than your team currently has.";
+        var validWagers = true;
+
+        inputs.forEach(function (input, index) {
+            // Convert the value to an integer
+            var wagerVal = parseInt(input.value);
+
+            // Check if the team has negative points
+            if (teamPts[index] < 0) {
+                // If team has negative points, only allow them to wager 0 points
+                if (wagerVal !== 0) {
+                    validWagers = false;
+
+                    input.classList.add('is-invalid');
+                } else {
+                    wagers.push(0);
+
+                    input.classList.remove('is-invalid');
+                }
+            } else {
+                // Check if the value is negative or greater than the team's points
+                if (wagerVal < 0 || wagerVal > teamPts[index]) {
+                    validWagers = false;
+
+                    input.classList.add('is-invalid');
+                } else {
+                    wagers.push(wagerVal);
+
+                    // Remove any existing error styling for this input
+                    input.classList.remove('is-invalid');
+                }
+            }
+        });
+
+        if (validWagers && wagers.length === teamPts.length) {
+            // All wagers are valid and wagers[] array has values for all teams
+            console.log("All wagers are valid:", wagers);
+
         } else {
-            pointError.textContent = ""; // Clear error message if input is valid
-            var wagerVal = document.getElementById("wager").value;
-            var wagerDiv = document.getElementById('wagerPts');
-
-
-            wagerDiv.textContent = 'Points Wagered ' + wagerVal;
-            
-
-
+            // Display a message indicating invalid wagers
+            var errorMessage = document.getElementById('wagerError');
+            errorMessage.textContent = "Please enter valid wager amounts for all teams.";
+            errorMessage.style.color = "red";
         }
     }
+
+
 </script>
