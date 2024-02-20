@@ -284,8 +284,7 @@
                                 for (var i = 0; i < teams.length; i++) {
                                     subvals.push(-1);
                                 }
-                                newurl = createURL("JudgeSubmission", teams.length, item.gamecode, teams, gameid);
-                                window.location.assign(newurl + "&Q=" + item.description + "&sbmt=" + subvals);
+                                createURL("JudgeSubmission", teams.length, item.gamecode, teams, gameid);
                             }
                         }
                     });
