@@ -236,6 +236,12 @@
     }
 
     function checkNextQ() {
+        var currentURL = window.location.href;
+        var newURL = currentURL.substring(0, currentURL.indexOf("&Q=1") + 4);
+        newURL = newURL.replace("JudgePostSubmission", "JudgeSubmission");
+        newURL = newURL.replace(/(Q=)(\d+)/, function (match, prefix, value) {
+            return prefix + (parseInt(value) + 1);
+        });
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/games/list",
             type: 'GET',
@@ -250,7 +256,7 @@
                         if (item.description == "end") {
                             window.location.assign("/GameOverPage?&teamname=" + teamname + "&gameid=" + gameid);
                         } else if (item.description != qnum && item.description != null) {
-                            window.location.assign("/JudgeSubmission?&teamname=" + teamname + "&gameid=" + gameid + "&Q=" + item.description);
+                            window.location.assign(newURL);
                         }
                     }
                 });
