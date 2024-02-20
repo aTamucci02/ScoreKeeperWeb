@@ -277,14 +277,16 @@
                             document.getElementById('team-total').textContent = "You’ve joined the game. There are " + item.teams.length + " teams in this lobby.";
                             if (item.description == "end") {
                                 var teams = getTeams();
-                                createURL("GameOverPage", teams.length, item.gamecode, teams, gameid);
+                                var redir = createURL("GameOverPage", teams.length, item.gamecode, teams, gameid);
+                                window.location.assign(redir);
                             } else if (item.description != 0 && item.description != null) {
                                 var teams = getTeams();
                                 var subvals = []
                                 for (var i = 0; i < teams.length; i++) {
                                     subvals.push(-1);
                                 }
-                                createURL("JudgeSubmission", teams.length, item.gamecode, teams, gameid);
+                                var redir = createURL("JudgeSubmission", teams.length, item.gamecode, teams, gameid);
+                                window.location.assign(redir + "&Q=" + item.description);
                             }
                         }
                     });
@@ -431,7 +433,8 @@
                                         isCurrentQuestionSubmitted(team.id, gameid, teamname);
                                     }else{
                                         console.log(teams);
-                                        createURL("JudgeWaitingPage", numteams, gamecode, teams, gameid);
+                                        window.location.assign(createURL("JudgeWaitingPage", numteams, gamecode, teams, gameid));
+
                                     }
                                 
                                 }
@@ -490,7 +493,7 @@
                     counter += 1;
                 });
                 redirect += "&gameid=" + gameid;
-                window.location.assign(redirect);
+                return redirect;
             }
         } else if (page == "GameOverPage") {
             if (numteams <= 1) {
@@ -504,7 +507,7 @@
                     counter += 1;
                 });
                 redirect += "&gameid=" + gameid;
-                window.location.assign(redirect);
+                return redirect;
             }
         } else {
             if (numteams <= 1) {
