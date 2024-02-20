@@ -396,7 +396,7 @@
                     // console.log(item);
                     if (item.title === gameName) {
                         if (item.description == "0") {
-                            window.location.assign("/AdminWaiting?gamecode=" + item.title + "&id=" + item.id);
+                            window.location.assign("/AdminWaiting?gamecode=" + item.gamecode + "&id=" + item.id);
                             isLoaded = true;
 
                         }
@@ -453,7 +453,7 @@
                         });
                         resetGame(gameId);
                         if (item.description == 0 && item.teams.length == 0) {
-                            window.location.assign("/AdminWaiting?id=" + gameId + "&gamecode=" + title);
+                            window.location.assign("/AdminWaiting?id=" + gameId + "&gamecode=" + item.gamecode);
                         }
                     }
                 });
