@@ -452,8 +452,9 @@
                             clearTeam(team.id);
                         });
                         resetGame(gameId);
-                        window.location.assign("/AdminWaiting?id=" + gameId + "&gamecode=" + title);
-
+                        if (item.description == 0 && item.teams.length == 0) {
+                            window.location.assign("/AdminWaiting?id=" + gameId + "&gamecode=" + title);
+                        }
                     }
                 });
             },
