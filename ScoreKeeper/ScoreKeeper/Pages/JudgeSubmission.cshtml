@@ -397,6 +397,7 @@
         var skipped = 0;
         var ans;
         var teamList = getTeams();
+        var teamidarray = new Array(teamList.length);
         var index = teamList.indexOf(teamname);
         var wager = wagers[index];
         console.log(teamname);
@@ -450,6 +451,8 @@
                                     skipped = 1;
                                     ans = 2;
                                 }
+                                idindex = teamList.indexOf(teamname);
+                                teamidarray[idindex] = teamid;
                                 changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, incorrect, skipped, ans, qnum);
                             }
                         });
@@ -490,13 +493,11 @@
                     if (teams[i] == teamname) {
                         subvals[i] = ans;
                         break;
-                        console.log(subvals);
                     }
                 }
-                console.log(subvals)
-                if (subvals.includes(-1) == false) {
-                    finalSubmitAnswer(gameid, teams, questionid, teamid, correct, incorrect, skipped, subvals, qnum);
-                }
+                
+                finalSubmitAnswer(gameid, teams, questionid, teamid, correct, incorrect, skipped, subvals, qnum);
+                
             },
             error: function (xhr, status, error) {
                 console.log("Error: " + error.message);
@@ -504,21 +505,45 @@
         });
     }
 
-    function finalSubmitAnswer(gameid, teams, questionid, teamid, correct, incorrect, skipped, ans, qnum) {
-        if (teams.length <= 1) {
-            var redirect = "/JudgePostSubmission?gameid=" + gameid + "&teamname=" + teams[0] + "&gameid=" + "&Q=" + qnum + "&ans=" + ans;
-        } else {
-            var redirect = "/JudgePostSubmission?gameid=" + gameid + "&teamname=" + teams[0];
-            var counter = 2;
-            teams.splice(0, 1);
-            teams.forEach(function (team) {
-                redirect += "&teamname" + counter + "=" + team;
-                counter += 1;
+    function finalSubmitAnswer(gameid, teams, questionid, teamid, correct, incorrect, skipped, subvals, qnum) {
+            $.ajax({
+                url: "https://csdev.samford.edu/gamesapi/answers/add",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    "team_id": teamid,
+                    "question_id": questionid,
+                    "correct": correct,
+                    "wrong": incorrect,
+                    "skipped": skipped
+                },
+                crossDomain: true,
+                success: function (response) {
+                    console.log("success");
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error: " + error.message);
+                }
             });
-            redirect += "&Q=" + qnum + "&ans=" + ans;
-        }
+     
+
+        if (subvals.includes(-1) == false) {
+            if (teams.length <= 1) {
+                var redirect = "/JudgePostSubmission?gameid=" + gameid + "&teamname=" + teams[0] + "&gameid=" + "&Q=" + qnum + "&ans=" + subvals;
+            } else {
+                var redirect = "/JudgePostSubmission?gameid=" + gameid + "&teamname=" + teams[0];
+                var counter = 2;
+                teams.splice(0, 1);
+                teams.forEach(function (team) {
+                    redirect += "&teamname" + counter + "=" + team;
+                    counter += 1;
+                });
+                redirect += "&Q=" + qnum + "&ans=" + subvals;
+            }
         window.location.assign(redirect);
-    }
+        }
+        
+   }
 
     function finalJeopardy() {
         var count = 0;
