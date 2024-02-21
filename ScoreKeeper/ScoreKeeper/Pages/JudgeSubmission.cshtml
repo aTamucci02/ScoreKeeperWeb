@@ -248,12 +248,20 @@
     var wagers = [];
     const searchParams = new URLSearchParams(window.location.search);
     var sbmt = searchParams.get('sbmt');
-    if (sbmt == "-1") {
-        var subvals = [-1];
-    } else {
-        var subvals = sbmt.split(',').map(function (item) {
-            return parseInt(item, 10);
-        });
+    if (sbmt) {
+        if (sbmt == "-1") {
+            var subvals = [-1];
+        } else {
+            var subvals = sbmt.split(',').map(function (item) {
+                return parseInt(item, 10);
+            });
+        }
+
+    } else{
+        var teams = getTeams();
+        var subvals = Array.apply(null, Array(teams.length))
+            .map(function () { return -1; });
+        
     }
 
 
@@ -261,7 +269,12 @@
     function showAnsModal(modaltype, dropcode) {
         var myModal = new bootstrap.Modal(document.getElementById(modaltype))
         myModal.show()
-        populateTeamDropdown(dropcode, getTeams(), wagers); // Pass both teams and wagers arrays
+        if (isLastQ) {
+            populateTeamDropdownLastQ(dropcode, getTeams(), wagers); // Pass both teams and wagers arrays
+        } else {
+            populateTeamDropdown(dropcode);
+        }
+        
     }
 
     function getGameData() {
@@ -334,26 +347,26 @@
         return teams;
     }
 
-    // function populateTeamDropdown(selectname) {
-    //     var select = document.getElementById('teamSelection' + selectname);
-    //     select.innerHTML = ''; // Clear existing options first
+    function populateTeamDropdown(selectname) {
+         var select = document.getElementById('teamSelection' + selectname);
+         select.innerHTML = ''; // Clear existing options first
 
-    //     // Assuming teams[] is an array of team names
-    //     var teams = getTeams(); // Example array, replace with actual
+         // Assuming teams[] is an array of team names
+         var teams = getTeams(); // Example array, replace with actual
 
-    //     // Create and append the options
-    //     for (var i = 0; i < teams.length; i++) {
-    //         var opt = document.createElement('option');
-    //         opt.value = teams[i];
-    //         opt.innerHTML = teams[i];
-    //         if (subvals[i] == -1) {
-    //             select.appendChild(opt);
-    //         }
-    //     }
-    // }
+         // Create and append the options
+         for (var i = 0; i < teams.length; i++) {
+             var opt = document.createElement('option');
+             opt.value = teams[i];
+             opt.innerHTML = teams[i];
+             if (subvals[i] == -1) {
+                 select.appendChild(opt);
+             }
+         }
+    }
 
 
-    function populateTeamDropdown(selectname, teams, wagers) {
+    function populateTeamDropdownLastQ(selectname, teams, wagers) {
         var select = document.getElementById('teamSelection' + selectname);
         select.innerHTML = ''; // Clear existing options first
 
