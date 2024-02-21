@@ -1,5 +1,9 @@
 ﻿<Properties StartupConfiguration="{ABFE7544-5794-4DA0-8FCE-929332F96991}|https">
-  <MonoDevelop.Ide.Workbench ActiveDocument="ScoreKeeper/wwwroot/css/site.css">
+  <MonoDevelop.Ide.ItemProperties.ScoreKeeper PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="ScoreKeeper/Pages/JudgeWaitingPage.cshtml">
     <Files>
       <File FileName="ScoreKeeper/Program.cs" />
       <File FileName="ScoreKeeper/appsettings.Development.json" />
@@ -24,22 +28,11 @@
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="ScoreKeeper">
-            <Node name="ScoreKeeper">
-              <Node name="Dependencies" expanded="True">
-                <Node name="FrameworkReferences" expanded="True" />
-              </Node>
-              <Node name="Pages" expanded="True">
-                <Node name="Shared" expanded="True">
-                  <Node name="_Layout.cshtml" expanded="True" />
-                </Node>
-                <Node name="JudgeWaitingPage.cshtml" expanded="True" />
-              </Node>
-              <Node name="Properties" expanded="True" />
+          <Node name="ScoreKeeper" expanded="True">
+            <Node name="ScoreKeeper" expanded="True">
+              <Node name="Pages" expanded="True" />
               <Node name="wwwroot" expanded="True">
-                <Node name="css" expanded="True">
-                  <Node name="site.css" selected="True" />
-                </Node>
+                <Node name="css" expanded="True" />
                 <Node name="lib" expanded="True" />
               </Node>
               <Node name="appsettings.json" expanded="True" />
@@ -52,8 +45,4 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.ScoreKeeper PreferredExecutionTarget="/Applications/Google Chrome.app" />
 </Properties>
