@@ -255,13 +255,13 @@
             return parseInt(item, 10);
         });
     }
-    
 
 
-    function showAnsModal(modaltype, dropcode){
+
+    function showAnsModal(modaltype, dropcode) {
         var myModal = new bootstrap.Modal(document.getElementById(modaltype))
         myModal.show()
-        populateTeamDropdown(dropcode);
+        populateTeamDropdown(dropcode, getTeams(), wagers); // Pass both teams and wagers arrays
     }
 
     function getGameData() {
@@ -334,24 +334,39 @@
         return teams;
     }
 
-    function populateTeamDropdown(selectname) {
+    // function populateTeamDropdown(selectname) {
+    //     var select = document.getElementById('teamSelection' + selectname);
+    //     select.innerHTML = ''; // Clear existing options first
+
+    //     // Assuming teams[] is an array of team names
+    //     var teams = getTeams(); // Example array, replace with actual
+
+    //     // Create and append the options
+    //     for (var i = 0; i < teams.length; i++) {
+    //         var opt = document.createElement('option');
+    //         opt.value = teams[i];
+    //         opt.innerHTML = teams[i];
+    //         if (subvals[i] == -1) {
+    //             select.appendChild(opt);
+    //         }
+    //     }
+    // }
+
+
+    function populateTeamDropdown(selectname, teams, wagers) {
         var select = document.getElementById('teamSelection' + selectname);
         select.innerHTML = ''; // Clear existing options first
-
-        // Assuming teams[] is an array of team names
-        var teams = getTeams(); // Example array, replace with actual
 
         // Create and append the options
         for (var i = 0; i < teams.length; i++) {
             var opt = document.createElement('option');
             opt.value = teams[i];
-            opt.innerHTML = teams[i];
-            if (subvals[i] == -1) {
+            opt.innerHTML = teams[i] + " (Wager: " + wagers[i] + ")";
+            if (subvals && subvals.length > i && subvals[i] === -1) { // Add a check for subvals
                 select.appendChild(opt);
             }
         }
     }
-
     function submitAnswer(answerVal, anstype) {
         console.log("submitting answer");
         const teamname = document.getElementById('teamSelection' + anstype).value;
@@ -368,6 +383,9 @@
         var incorrect = 0;
         var skipped = 0;
         var ans;
+        var teamList = getTeams();
+        var index = teamList.indexOf(teamname);
+        var wager = wagers[index];
         console.log(teamname);
 
         $.ajax({
@@ -383,9 +401,14 @@
                 games.forEach(function (item) {
                     if (item.id === gameid) {
                         item.questions.forEach(function (question) {
-                            if (question.title == qnum) {
+                            if (question.title == qnum && !(isLastQ)) {
                                 points = question.pointscorrect;
                                 questionid = question.id;
+                            }
+                            else if (question.title == qnum && isLastQ) {
+                                points = wager;
+                                questionid = question.id;
+
                             }
                         });
                         item.teams.forEach(function (team) {
@@ -435,7 +458,7 @@
     // Edits team score and number of questions correct/incorrect/skipped
     function changeTeamInfo(gameid, teamname, score, nummissed, numcorrect, numskipped, questionid, teamid, correct, incorrect, skipped, ans, qnum) {
         var teams = getTeams();
-        
+
         $.ajax({
             url: "https://csdev.samford.edu/gamesapi/teams/edit/" + teamid,
             type: 'POST',
@@ -450,7 +473,7 @@
             crossDomain: true,
             success: function (response) {
                 var subsFull = false;
-                for (var i = 0; i < subvals.length; i++){
+                for (var i = 0; i < subvals.length; i++) {
                     if (teams[i] == teamname) {
                         subvals[i] = ans;
                         break;
@@ -458,7 +481,7 @@
                     }
                 }
                 console.log(subvals)
-                if (subvals.includes(-1) == false){
+                if (subvals.includes(-1) == false) {
                     finalSubmitAnswer(gameid, teams, questionid, teamid, correct, incorrect, skipped, subvals, qnum);
                 }
             },
@@ -485,7 +508,7 @@
     }
 
     function finalJeopardy() {
-        var count=0; 
+        var count = 0;
         console.log(teamPts);
         var teams = getTeams(); // Assuming getTeams() returns an array of team names
         var modalBody = document.getElementById('teamPointsInputs');
