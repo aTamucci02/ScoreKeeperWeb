@@ -73,7 +73,7 @@
 <!-- Home Button Modal -->
 <div class="modal fade" id="HomeButtonModal" tabindex="-1" aria-labelledby="HomeButtonModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content modal">
+        <div class="modal-content">
             <!-- Add the 'modal' class here -->
             <div class="modal-header d-flex justify-content-center position-relative">
                 <h1 class="modal-title fs-5" id="HomeButtonModalLabel">Leave Game</h1>
@@ -142,6 +142,7 @@
         var teamName = searchParams.get('teamname');
         var scoreTeam;
         var questions;
+        var expectedpoints = 0;
 
         var test = "";
 
@@ -164,26 +165,51 @@
                         //find correct team
                         game.teams.forEach(function (team) {
                             if (team.teamname == teamName) {
-                                scoreTeam = team;
                                 team.answers.forEach(function (answer) {
-                                    if (answer.correct == null && answer.incorrect == null && answer.skipped == null) {
-                                        scoreExport += '<tr><td>' + qNum + '</td><td>' + question.pointscorrect + '</td><td>' + "Did not participate (+0)" + '</td></tr>';
-                                        test += "DNP ";
+                                    if (qNum == questions.length) { 
+                                        if (answer.correct == null && answer.incorrect == null && answer.skipped == null) {
+                                            scoreExport += '<tr><td>' + qNum + '</td><td>' + '0' + '</td><td>' + "Did not participate (+0)" + '</td></tr>';
+                                            test += "DNP ";
 
+                                        }
+                                        else if (answer.correct == 1) {
+                                            var realpoints = team.score - expectedpoints;
+                                            scoreExport += '<tr><td>' + qNum + '</td><td>' + realpoints + '</td><td>' + "Correct (+" + realpoints + ")" + '</td></tr>';
+                                            test += "Correct ";
+
+                                        }
+                                        else if (answer.correct == 0 && answer.skipped == 0) {
+                                            var realpoints = expectedpoints - team.score;
+                                            scoreExport += '<tr><td>' + qNum + '</td><td>' + realpoints + '</td><td>' + "Incorrect (-" + realpoints + ")" + '</td></tr>';
+                                            test += "Incorrect ";
+                                        }
+                                        else if (answer.skipped == 1) {
+                                            scoreExport += '<tr><td>' + qNum + '</td><td>' + '0' + '</td><td>' + "Did not answer (+0)" + '</td></tr>';
+                                            test += "DNA";
+                                        }
+                                        qNum++;
+                                    } else {
+                                        if (answer.correct == null && answer.incorrect == null && answer.skipped == null) {
+                                            scoreExport += '<tr><td>' + qNum + '</td><td>' + question.pointscorrect + '</td><td>' + "Did not participate (+0)" + '</td></tr>';
+                                            test += "DNP ";
+
+                                        }
+                                        else if (answer.correct == 1) {
+                                            scoreExport += '<tr><td>' + qNum + '</td><td>' + questions[qNum - 1].pointscorrect + '</td><td>' + "Correct (+" + questions[qNum - 1].pointscorrect + ")" + '</td></tr>';
+                                            test += "Correct ";
+                                            expectedpoints += questions[qNum - 1].pointscorrect;
+                                        }
+                                        else if (answer.correct == 0 && answer.skipped == 0) {
+                                            scoreExport += '<tr><td>' + qNum + '</td><td>' + questions[qNum - 1].pointscorrect + '</td><td>' + "Inocorrect (-" + questions[qNum - 1].pointscorrect + ")" + '</td></tr>';
+                                            test += "Incorrect ";
+                                            expectedpoints -= questions[qNum - 1].pointscorrect;
+                                        }
+                                        else if (answer.skipped == 1) {
+                                            scoreExport += '<tr><td>' + qNum + '</td><td>' + questions[qNum - 1].pointscorrect + '</td><td>' + "Did not answer (+0)" + '</td></tr>';
+                                            test += "DNA";
+                                        }
+                                        qNum++;
                                     }
-                                    else if (answer.correct == 1) {
-                                        scoreExport += '<tr><td>' + qNum + '</td><td>' + questions[qNum - 1].pointscorrect + '</td><td>' + "Correct (+" + questions[qNum - 1].pointscorrect + ")" + '</td></tr>';
-                                        test += "Correct ";
-                                    }
-                                    else if (answer.correct == 0 && answer.skipped == 0) {
-                                        scoreExport += '<tr><td>' + qNum + '</td><td>' + questions[qNum - 1].pointscorrect + '</td><td>' + "Inocorrect (-" + questions[qNum - 1].pointscorrect + ")" + '</td></tr>';
-                                        test += "Incorrect ";
-                                    }
-                                    else if (answer.skipped == 1) {
-                                        scoreExport += '<tr><td>' + qNum + '</td><td>' + questions[qNum - 1].pointscorrect + '</td><td>' + "Did not answer (+0)" + '</td></tr>';
-                                        test += "DNA";
-                                    }
-                                    qNum++;
                                 });
                             }
                         });
